@@ -1,0 +1,21 @@
+<mjml lang="en">
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section background-color="#fffdf8" padding="20px">
+      <mj-column>
+        <mj-text color="#173540" font-size="15px" font-weight="700" line-height="22px">
+          Responsive source set
+        </mj-text>
+
+        <mj-image
+          alt="Campaign banner"
+          fluid-on-mobile="true"
+          padding="14px 0px 10px"
+          sizes="(max-width: 480px) 100vw, 280px"
+          src="https://dummyimage.com/560x240/31566b/fffaf2.png&text=Desktop"
+          srcset="https://dummyimage.com/320x160/31566b/fffaf2.png&text=Mobile 320w, https://dummyimage.com/560x240/31566b/fffaf2.png&text=Desktop 560w"
+          width="280px"
+        />
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

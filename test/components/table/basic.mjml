@@ -1,0 +1,21 @@
+<mjml lang="en">
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section background-color="#fffdf8" padding="22px">
+      <mj-column>
+        <mj-table
+          cellpadding="6"
+          cellspacing="0"
+          color="#173540"
+          font-size="14px"
+          padding="0px"
+          role="presentation"
+          width="100%"
+        >
+          <tr><td><strong>Plan</strong></td><td>Pro</td></tr>
+          <tr><td><strong>Status</strong></td><td>Active</td></tr>
+          <tr><td><strong>Renewal</strong></td><td>May 27</td></tr>
+        </mj-table>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

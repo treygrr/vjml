@@ -1,0 +1,37 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-class
+        cellpadding="6"
+        color="#425d64"
+        font-size="13px"
+        line-height="20px"
+        name="meta-table"
+        padding="0px"
+        width="100%"
+      />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section background-color="#fffdf8" padding="20px">
+      <mj-column>
+        <mj-text color="#173540" font-size="15px" font-weight="700" line-height="22px">
+          Class-backed table
+        </mj-text>
+
+        <mj-spacer height="12px" />
+
+        <mj-table mj-class="meta-table">
+          <tr><td><strong>Audience</strong></td><td>Customers</td></tr>
+          <tr><td><strong>Locale</strong></td><td>Global</td></tr>
+        </mj-table>
+
+        <mj-spacer height="12px" />
+
+        <mj-table border="1px solid #db7636" mj-class="meta-table" width="auto">
+          <tr><td><strong>Version</strong></td><td>Spring</td></tr>
+        </mj-table>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

@@ -1,0 +1,26 @@
+<mjml lang="en">
+  <mj-body background-color="#f4efe7" width="340px">
+    <mj-section background-color="#fff8ef" padding="20px">
+      <mj-column>
+        <mj-text color="#173540" font-size="15px" font-weight="700" line-height="22px">
+          Auto-width pricing table
+        </mj-text>
+
+        <mj-spacer height="12px" />
+
+        <mj-table
+          border="1px solid #db7636"
+          cellpadding="8"
+          cellspacing="0"
+          color="#173540"
+          font-size="13px"
+          padding="0px"
+          width="auto"
+        >
+          <tr><td><strong>Seat</strong></td><td>$24</td></tr>
+          <tr><td><strong>Storage</strong></td><td>2 TB</td></tr>
+        </mj-table>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

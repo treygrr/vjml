@@ -1,0 +1,26 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-image border-radius="16px" padding="0px" width="260px" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section background-color="#fffdf8" padding="20px">
+      <mj-column>
+        <mj-image
+          alt="Inherited defaults"
+          src="https://dummyimage.com/520x220/fbe8d7/173540.png&text=Defaults"
+        />
+
+        <mj-spacer height="12px" />
+
+        <mj-image
+          alt="Override after inherit"
+          border-radius="6px"
+          src="https://dummyimage.com/440x180/fff2e7/173540.png&text=Override"
+          width="220px"
+        />
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

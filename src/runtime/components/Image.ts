@@ -3,7 +3,7 @@ import { h } from 'vue'
 import { requireVjmlComponentMetadata } from '../internal/componentMetadata'
 import { createVjmlComponent } from '../internal/factory'
 import { makeLowerBreakpoint } from '../internal/helpers/measurements'
-import { getBoxWidths, useVjmlLayoutContext } from '../internal/layout'
+import { compactStyleRecord, getBoxWidths, useVjmlLayoutContext } from '../internal/layout'
 
 const metadata = requireVjmlComponentMetadata('mj-image')
 
@@ -60,7 +60,7 @@ export default createVjmlComponent(metadata, {
       sizes: attrs.sizes,
       src: attrs.src,
       srcset: attrs.srcset,
-      style: {
+      style: compactStyleRecord({
         'border': attrs.border,
         'border-bottom': attrs['border-bottom'],
         'border-left': attrs['border-left'],
@@ -76,7 +76,7 @@ export default createVjmlComponent(metadata, {
         'outline': 'none',
         'text-decoration': 'none',
         'width': '100%',
-      },
+      }),
       title: attrs.title,
       usemap: attrs.usemap,
       width: contentWidth,

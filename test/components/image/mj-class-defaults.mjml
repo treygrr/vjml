@@ -1,0 +1,37 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-class
+        border-radius="18px"
+        name="gallery-image"
+        padding="0px"
+        width="250px"
+      />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section background-color="#fffdf8" padding="20px">
+      <mj-column>
+        <mj-text color="#173540" font-size="15px" font-weight="700" line-height="22px">
+          Class-backed image
+        </mj-text>
+
+        <mj-image
+          alt="Class default image"
+          mj-class="gallery-image"
+          src="https://dummyimage.com/500x220/16353f/fffaf2.png&text=Class+Default"
+        />
+
+        <mj-spacer height="12px" />
+
+        <mj-image
+          alt="Explicit override image"
+          border-radius="8px"
+          mj-class="gallery-image"
+          src="https://dummyimage.com/440x180/fbe8d7/173540.png&text=Override"
+          width="210px"
+        />
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
