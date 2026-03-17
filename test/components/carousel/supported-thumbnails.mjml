@@ -1,0 +1,19 @@
+<mjml>
+  <mj-body background-color="#f6eee4" width="340px">
+    <mj-section background-color="#fffbf5" padding="20px">
+      <mj-column>
+        <mj-carousel
+          padding="0px"
+          tb-border="3px solid #d3b18d"
+          tb-border-radius="12px"
+          tb-width="72px"
+          thumbnails="supported"
+        >
+          <mj-carousel-image alt="Supported slide one" href="https://example.com/stories/1" src="https://dummyimage.com/600x240/16353f/fffaf2.png&text=Story+1" thumbnails-src="https://dummyimage.com/144x96/16353f/fffaf2.png&text=S1" />
+          <mj-carousel-image alt="Supported slide two" href="https://example.com/stories/2" src="https://dummyimage.com/600x240/c56f34/fffaf2.png&text=Story+2" thumbnails-src="https://dummyimage.com/144x96/c56f34/fffaf2.png&text=S2" />
+          <mj-carousel-image alt="Supported slide three" href="https://example.com/stories/3" src="https://dummyimage.com/600x240/246f6d/fffaf2.png&text=Story+3" thumbnails-src="https://dummyimage.com/144x96/246f6d/fffaf2.png&text=S3" />
+        </mj-carousel>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

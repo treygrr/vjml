@@ -1,0 +1,19 @@
+<mjml>
+  <mj-body background-color="#f4ede3" width="340px">
+    <mj-section background-color="#fff9f1" padding="20px">
+      <mj-column>
+        <mj-carousel
+          border-radius="12px"
+          icon-width="32px"
+          left-icon="https://dummyimage.com/32x32/16353f/fffaf2.png&text=%3C"
+          padding="0px"
+          right-icon="https://dummyimage.com/32x32/16353f/fffaf2.png&text=%3E"
+          thumbnails="hidden"
+        >
+          <mj-carousel-image alt="Hidden thumbnail slide one" href="https://example.com/collections" src="https://dummyimage.com/600x220/16353f/fffaf2.png&text=Collections" title="Collections" />
+          <mj-carousel-image alt="Hidden thumbnail slide two" href="https://example.com/releases" rel="nofollow" src="https://dummyimage.com/600x220/8e5f3d/fffaf2.png&text=Releases" title="Releases" />
+        </mj-carousel>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
