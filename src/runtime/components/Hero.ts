@@ -1,4 +1,4 @@
-import { h } from 'vue'
+import { defineComponent, h, onMounted, onUpdated, ref } from 'vue'
 
 import { requireVjmlComponentMetadata } from '../internal/componentMetadata'
 import type { VjmlDocumentContext } from '../internal/context'
@@ -6,10 +6,11 @@ import { createVjmlComponent } from '../internal/factory'
 import { conditionalTag } from '../internal/helpers/conditional'
 import {
   analyzeVjmlChildNodes,
+  compactStyleRecord,
   createVjmlLayoutState,
   createVjmlStaticHtml,
-  getGroupContainerWidth,
   getNormalizedVNodeAttributes,
+  renderHtmlStyle,
   getShorthandAttrValue,
   provideVjmlLayoutContext,
   renderHtmlAttributes,
@@ -18,6 +19,40 @@ import {
 } from '../internal/layout'
 
 const metadata = requireVjmlComponentMetadata('mj-hero')
+
+const RawStyleTd = defineComponent({
+  name: 'VjmlRawStyleTd',
+  props: {
+    background: {
+      required: false,
+      type: String,
+    },
+    height: {
+      required: false,
+      type: [Number, String],
+    },
+    styleText: {
+      required: true,
+      type: String,
+    },
+  },
+  setup(props, { slots }) {
+    const element = ref<HTMLElement | null>(null)
+
+    const applyStyleText = () => {
+      element.value?.setAttribute('style', props.styleText)
+    }
+
+    onMounted(applyStyleText)
+    onUpdated(applyStyleText)
+
+    return () => h('td', {
+      background: props.background || undefined,
+      height: props.height || undefined,
+      ref: element,
+    }, slots.default?.())
+  },
+})
 
 function buildHeroBackground(attrs: Readonly<Record<string, string>>): string {
   return [
@@ -69,7 +104,7 @@ function getHeroContentRows(
         align: childAttrs.align || undefined,
         background: childAttrs['container-background-color'] || undefined,
         class: childAttrs['css-class'] || undefined,
-        style: {
+        style: compactStyleRecord({
           'background': childAttrs['container-background-color'],
           'font-size': '0px',
           'padding': childAttrs.padding,
@@ -78,7 +113,7 @@ function getHeroContentRows(
           'padding-bottom': childAttrs['padding-bottom'],
           'padding-left': childAttrs['padding-left'],
           'word-break': 'break-word',
-        },
+        }),
       }, [childVNode]),
     ])
   })
@@ -97,11 +132,7 @@ export default createVjmlComponent(metadata, {
     }
   },
   render({ activeMjClass, attrs, content, documentContext }, extra) {
-    const currentContainerWidth = getGroupContainerWidth(
-      attrs,
-      extra.layoutContext.containerWidth,
-      1,
-    )
+    const currentContainerWidth = extra.layoutContext.containerWidth
     const heroBackground = buildHeroBackground(attrs)
     const childEntries = analyzeVjmlChildNodes(content.childNodes)
     const backgroundRatio = getBackgroundRatio(attrs)
@@ -183,56 +214,57 @@ export default createVjmlComponent(metadata, {
       createVjmlStaticHtml(conditionalTag('</td></tr></table>')),
     ]
 
+    const backgroundCellStyle = compactStyleRecord({
+      'background': heroBackground,
+      'background-position': attrs['background-position'],
+      'background-repeat': attrs['background-url'] ? 'no-repeat' : undefined,
+      'border-radius': attrs['border-radius'],
+      'padding': attrs.padding,
+      'padding-top': attrs['padding-top'],
+      'padding-left': attrs['padding-left'],
+      'padding-right': attrs['padding-right'],
+      'padding-bottom': attrs['padding-bottom'],
+      'vertical-align': attrs['vertical-align'],
+    })
+
+    const fluidHeightSideCellStyle = renderHtmlStyle({
+      'width': '0.01%',
+      'padding-bottom': `${backgroundRatio}%`,
+      'mso-padding-bottom-alt': 0,
+    })
+
+    const backgroundCellStyleText = renderHtmlStyle(backgroundCellStyle)
+
+    const fixedBackgroundCellStyleText = renderHtmlStyle(
+      compactStyleRecord({
+        ...backgroundCellStyle,
+        height: fixedHeight ? `${fixedHeight}px` : undefined,
+      }),
+    )
+
     const modeCells = attrs.mode === 'fluid-height'
       ? [
-          h('td', {
-            style: {
-              'mso-padding-bottom-alt': '0',
-              'padding-bottom': `${backgroundRatio}%`,
-              'width': '0.01%',
-            },
+          h(RawStyleTd, {
+            styleText: fluidHeightSideCellStyle,
           }),
-          h('td', {
+          h(RawStyleTd, {
             background: attrs['background-url'] || undefined,
-            style: {
-              'background': heroBackground,
-              'background-position': attrs['background-position'],
-              'background-repeat': 'no-repeat',
-              'border-radius': attrs['border-radius'],
-              'padding': attrs.padding,
-              'padding-top': attrs['padding-top'],
-              'padding-left': attrs['padding-left'],
-              'padding-right': attrs['padding-right'],
-              'padding-bottom': attrs['padding-bottom'],
-              'vertical-align': attrs['vertical-align'],
-            },
-          }, contentNode),
-          h('td', {
-            style: {
-              'mso-padding-bottom-alt': '0',
-              'padding-bottom': `${backgroundRatio}%`,
-              'width': '0.01%',
-            },
+            styleText: backgroundCellStyleText,
+          }, {
+            default: () => contentNode,
+          }),
+          h(RawStyleTd, {
+            styleText: fluidHeightSideCellStyle,
           }),
         ]
       : [
-          h('td', {
+          h(RawStyleTd, {
             background: attrs['background-url'] || undefined,
             height: fixedHeight || undefined,
-            style: {
-              'background': heroBackground,
-              'background-position': attrs['background-position'],
-              'background-repeat': 'no-repeat',
-              'border-radius': attrs['border-radius'],
-              'height': fixedHeight ? `${fixedHeight}px` : undefined,
-              'padding': attrs.padding,
-              'padding-top': attrs['padding-top'],
-              'padding-left': attrs['padding-left'],
-              'padding-right': attrs['padding-right'],
-              'padding-bottom': attrs['padding-bottom'],
-              'vertical-align': attrs['vertical-align'],
-            },
-          }, contentNode),
+            styleText: fixedBackgroundCellStyleText,
+          }, {
+            default: () => contentNode,
+          }),
         ]
 
     return [
@@ -265,6 +297,8 @@ export default createVjmlComponent(metadata, {
             'z-index': '-3',
           },
           'xmlns:v': 'urn:schemas-microsoft-com:vml',
+        }, {
+          escapeAmpersand: false,
         })} />`,
       )),
       h('div', {

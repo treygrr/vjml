@@ -1,0 +1,36 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-hero
+        background-color="#123640"
+        inner-padding="16px 18px"
+        mode="fluid-height"
+        padding="0px"
+        vertical-align="middle"
+      />
+      <mj-text color="#fff8ef" font-size="15px" line-height="22px" />
+      <mj-button
+        align="left"
+        background-color="#df8a55"
+        border-radius="999px"
+        color="#fffdf8"
+        inner-padding="8px 14px"
+      />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#f5efe7" width="340px">
+    <mj-hero
+      background-height="220px"
+      background-url="https://dummyimage.com/960x420/123640/fff8ef.png&text=Head+Defaults"
+      background-width="340px"
+    >
+      <mj-text>
+        Head-driven defaults
+      </mj-text>
+      <mj-spacer height="12px" />
+      <mj-button href="https://example.com/library">
+        Read guide
+      </mj-button>
+    </mj-hero>
+  </mj-body>
+</mjml>

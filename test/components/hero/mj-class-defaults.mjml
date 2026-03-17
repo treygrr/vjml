@@ -1,0 +1,45 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-class
+        background-color="#2f4537"
+        border-radius="18px"
+        height="200px"
+        inner-padding="18px 20px"
+        name="hero-shell"
+        padding="0px"
+        vertical-align="bottom"
+      />
+      <mj-class color="#f8f3eb" font-size="15px" line-height="22px" name="hero-copy" />
+      <mj-class color="#fffdf9" font-size="22px" font-weight="700" line-height="28px" name="hero-title" />
+      <mj-class
+        align="left"
+        background-color="#f0d1aa"
+        border-radius="999px"
+        color="#2f4537"
+        inner-padding="9px 15px"
+        name="hero-cta"
+      />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#f3eee6" width="340px">
+    <mj-hero
+      background-height="260px"
+      background-url="https://dummyimage.com/1040x520/2f4537/fffaf2.png&text=Class+Hero"
+      background-width="340px"
+      mj-class="hero-shell"
+    >
+      <mj-text mj-class="hero-title">
+        Community notes
+      </mj-text>
+      <mj-spacer height="10px" />
+      <mj-text mj-class="hero-copy">
+        Monthly release notes and office hours in a single hero block.
+      </mj-text>
+      <mj-spacer height="12px" />
+      <mj-button href="https://example.com/notes" mj-class="hero-cta">
+        Open notes
+      </mj-button>
+    </mj-hero>
+  </mj-body>
+</mjml>

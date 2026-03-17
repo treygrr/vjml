@@ -78,9 +78,18 @@ function isNullish(value: unknown): value is null | undefined {
   return value === null || value === undefined
 }
 
-function escapeHtmlAttribute(value: string): string {
-  return value
-    .replace(/&/g, '&amp;')
+function escapeHtmlAttribute(
+  value: string,
+  options: {
+    escapeAmpersand?: boolean
+  } = {},
+): string {
+  const escapeAmpersand = options.escapeAmpersand ?? true
+  const escapedValue = escapeAmpersand
+    ? value.replace(/&/g, '&amp;')
+    : value
+
+  return escapedValue
     .replace(/"/g, '&quot;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
@@ -160,6 +169,9 @@ export function compactStyleRecord(
 
 export function renderHtmlAttributes(
   attributes: Record<string, HtmlAttributeValue>,
+  options: {
+    escapeAmpersand?: boolean
+  } = {},
 ): string {
   return Object.entries(attributes)
     .filter(([, value]) => !isNullish(value) && value !== false)
@@ -170,7 +182,7 @@ export function renderHtmlAttributes(
           ? renderHtmlStyle(value as HtmlStyleValue)
           : `${value}`
 
-      return ` ${name}="${escapeHtmlAttribute(serializedValue)}"`
+      return ` ${name}="${escapeHtmlAttribute(serializedValue, options)}"`
     })
     .join('')
 }
