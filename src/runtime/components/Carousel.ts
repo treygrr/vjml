@@ -197,7 +197,7 @@ function getCarouselFallbackHtml(
     },
   }, {
     escapeAmpersand: false,
-  })}>`
+  })} />`
   const contentHtml = childAttrs.href
     ? `<a${renderHtmlAttributes({
         href: childAttrs.href,

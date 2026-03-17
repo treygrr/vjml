@@ -368,7 +368,7 @@ export const STATIC_VJML_COMPONENT_METADATA = [
       "tb-border": "2px solid transparent",
       "tb-border-radius": "6px",
       "tb-hover-border-color": "#fead0d",
-      "tb-selected-border-color": "#ccc"
+      "tb-selected-border-color": "#cccccc"
     },
     "allowedChildTagNames": [
       "mj-carousel-image"
