@@ -1,7 +1,7 @@
 {
   "name": "vjml",
   "version": "0.1.0",
-  "description": "Vue MJML-style email components with a plain Vue plugin and server renderer.",
+  "description": "Vue MJML-style email components with a plain Vue plugin and browser renderer.",
   "type": "module",
   "private": false,
   "main": "./dist/vjml.cjs",
@@ -15,11 +15,6 @@
       "types": "./dist/types/index.d.ts",
       "import": "./dist/vjml.js",
       "require": "./dist/vjml.cjs"
-    },
-    "./server": {
-      "types": "./dist/types/server.d.ts",
-      "import": "./dist/server.js",
-      "require": "./dist/server.cjs"
     }
   },
   "keywords": [
@@ -32,13 +27,11 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vite build && npm run build:types",
+    "dev:playground": "vite",
+    "build": "npm run build:lib",
+    "build:lib": "vite build && npm run build:types",
     "build:types": "vue-tsc -p tsconfig.lib.json",
     "typecheck": "vue-tsc --noEmit -p tsconfig.app.json && vue-tsc --noEmit -p tsconfig.lib.json"
-  },
-  "dependencies": {
-    "cheerio": "^1.1.2",
-    "parse5": "^8.0.0"
   },
   "peerDependencies": {
     "vue": "^3.5.0"

@@ -5,6 +5,7 @@ import { VJML_RUNTIME_COMPONENT_EXPORTS } from './runtime/components.generated'
 import { VJML_RUNTIME_COMPONENTS } from './runtime/manifest.generated'
 import {
   mergeVjmlRuntimeConfig,
+  toVjmlComponentBaseName,
   toVjmlComponentName,
   type VjmlRuntimeConfig,
   type VjmlRuntimeConfigInput,
@@ -24,7 +25,11 @@ export function resolveVjmlPluginConfig(
   return Object.freeze(mergeVjmlRuntimeConfig({}, options))
 }
 
-export function registerVjmlComponents(app: App, prefix: string) {
+export function registerVjmlComponents(
+  app: App,
+  prefix: string,
+  includeUnprefixedAliases = false,
+) {
   for (const entry of VJML_RUNTIME_COMPONENTS) {
     const component = getVjmlRuntimeComponent(entry.exportName)
 
@@ -33,6 +38,10 @@ export function registerVjmlComponents(app: App, prefix: string) {
     }
 
     app.component(toVjmlComponentName(entry.tagName, prefix), component)
+
+    if (includeUnprefixedAliases) {
+      app.component(toVjmlComponentBaseName(entry.tagName), component)
+    }
   }
 }
 

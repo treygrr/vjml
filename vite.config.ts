@@ -5,23 +5,25 @@ import vue from '@vitejs/plugin-vue'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [vue()],
+  resolve: {
+    alias: {
+      vjml: fileURLToPath(new URL('./src/index.ts', import.meta.url)),
+    },
+  },
   build: {
     copyPublicDir: false,
     lib: {
-      entry: {
-        index: fileURLToPath(new URL('./src/index.ts', import.meta.url)),
-        server: fileURLToPath(new URL('./src/server.ts', import.meta.url)),
-      },
+      entry: fileURLToPath(new URL('./src/index.ts', import.meta.url)),
       name: 'Vjml',
-      fileName: (format, entryName) => {
+      fileName: (format) => {
         const extension = format === 'es' ? 'js' : 'cjs'
 
-        return `${entryName === 'index' ? 'vjml' : entryName}.${extension}`
+        return `vjml.${extension}`
       },
       formats: ['es', 'cjs'],
     },
     rollupOptions: {
-      external: ['cheerio', 'parse5', 'vue', 'vue/server-renderer'],
+      external: ['vue'],
       output: {
         exports: 'named',
         globals: {

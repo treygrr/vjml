@@ -1,4 +1,5 @@
 export { default, VjmlPlugin, registerVjmlComponents, resolveVjmlPluginConfig } from './plugin'
+export { default as VjmlRenderFrame } from './components/VjmlRenderFrame.vue'
 export {
 	DEFAULT_VJML_FONTS,
 	DEFAULT_VJML_PREFIX,
@@ -19,6 +20,9 @@ export {
 export { VJML_RUNTIME_COMPONENTS } from './runtime/manifest.generated'
 export { useVjml } from './runtime/composables/useVjml'
 export { useVjmlComponentName } from './runtime/composables/useVjmlComponentName'
+export { createVjmlRenderer, useVjmlRenderer } from './runtime/client/useVjmlRenderer'
+export { renderVjmlToDebugTree } from './runtime/client/renderVjmlToDebugTree'
+export { renderVjmlToHtml } from './runtime/client/renderVjmlToHtml'
 export * from './runtime/components.generated'
 export * from './runtime/component-types.generated'
 export type {

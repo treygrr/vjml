@@ -20,9 +20,5 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.vue"
-  ],
-  "exclude": [
-    "src/App.vue",
-    "src/main.ts"
   ]
 }

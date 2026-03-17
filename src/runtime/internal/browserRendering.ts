@@ -1,6 +1,4 @@
-import { parse, parseFragment, type DefaultTreeAdapterMap } from 'parse5'
-import { createSSRApp, type Component } from 'vue'
-import { renderToString } from 'vue/server-renderer'
+import { createApp, nextTick, type Component } from 'vue'
 
 import type {
   VjmlDebugDocumentState,
@@ -11,9 +9,7 @@ import type {
   VjmlValidationIssue,
   VjmlValidationSeverity,
 } from '../../vjml'
-import { toVjmlComponentName } from '../../vjml'
-import { VJML_RUNTIME_COMPONENT_EXPORTS } from '../components.generated'
-import { VJML_RUNTIME_COMPONENTS } from '../manifest.generated'
+import { registerVjmlComponents } from '../../plugin'
 
 import {
   VJML_BODY_RENDER_CONTEXT_KEY,
@@ -27,49 +23,7 @@ import {
   type VjmlDocumentState,
   type VjmlValidationReporter,
 } from './context'
-import { finalizeVjmlHtml } from './helpers/document'
-
-type Parse5ChildNode = DefaultTreeAdapterMap['childNode']
-type Parse5CommentNode = DefaultTreeAdapterMap['commentNode']
-type Parse5ElementNode = DefaultTreeAdapterMap['element']
-type Parse5TextNode = DefaultTreeAdapterMap['textNode']
-
-function isParse5ElementNode(node: Parse5ChildNode): node is Parse5ElementNode {
-  return 'tagName' in node
-}
-
-function isParse5CommentNode(node: Parse5ChildNode): node is Parse5CommentNode {
-  return node.nodeName === '#comment'
-}
-
-function isParse5TextNode(node: Parse5ChildNode): node is Parse5TextNode {
-  return node.nodeName === '#text'
-}
-
-function isNonEmptyTextNode(node: Parse5ChildNode): node is Parse5TextNode {
-  return isParse5TextNode(node) && node.value.trim().length > 0
-}
-
-function isDefined<T>(value: T | null): value is T {
-  return value !== null
-}
-
-function parseRenderedHtml(html: string): readonly Parse5ChildNode[] {
-  const trimmedHtml = html.trim()
-
-  if (!trimmedHtml) {
-    return []
-  }
-
-  if (
-    trimmedHtml.toLowerCase().startsWith('<!doctype html')
-    || trimmedHtml.toLowerCase().startsWith('<html')
-  ) {
-    return parse(trimmedHtml).childNodes
-  }
-
-  return parseFragment(trimmedHtml).childNodes
-}
+import { finalizeVjmlHtmlInBrowser } from './browserDocument'
 
 function cloneNestedRecord(
   record: Record<string, Record<string, string>>,
@@ -185,115 +139,6 @@ function createVjmlValidationReporter(
   }
 }
 
-function toDebugNode(node: Parse5ChildNode): VjmlDebugNode | null {
-  if (isParse5ElementNode(node)) {
-    return {
-      type: 'element',
-      tagName: node.tagName,
-      attributes: Object.fromEntries(node.attrs.map(attr => [attr.name, attr.value])),
-      children: node.childNodes.map(toDebugNode).filter(isDefined),
-    }
-  }
-
-  if (isParse5CommentNode(node)) {
-    return {
-      type: 'comment',
-      value: node.data,
-    }
-  }
-
-  if (isNonEmptyTextNode(node)) {
-    return {
-      type: 'text',
-      value: node.value,
-    }
-  }
-
-  return null
-}
-
-export function buildVjmlDebugTree(html: string): VjmlDebugNode[] {
-  return parseRenderedHtml(html).map(toDebugNode).filter(isDefined)
-}
-
-function stripVueFragmentArtifacts(html: string): string {
-  return html
-    .replaceAll('<!--[-->', '')
-    .replaceAll('<!--]-->', '')
-}
-
-function collectRenderedHtmlIssues(
-  html: string,
-  config: VjmlRuntimeConfig,
-): VjmlValidationIssue[] {
-  if (config.render.validation === 'off') {
-    return []
-  }
-
-  const issues: VjmlValidationIssue[] = []
-  const trimmedHtml = html.trim()
-
-  if (!trimmedHtml) {
-    issues.push(
-      createValidationIssue(
-        'empty-output',
-        'Rendered HTML is empty.',
-        'error',
-      ),
-    )
-
-    return issues
-  }
-
-  if (trimmedHtml.includes('<!--[-->') || trimmedHtml.includes('<!--]-->')) {
-    issues.push(
-      createValidationIssue(
-        'vue-fragment-artifact',
-        'Rendered HTML includes Vue fragment markers. VJML output should render concrete email HTML without SSR fragment comments.',
-        getStructuralSeverity(config),
-      ),
-    )
-  }
-
-  if (config.render.minify) {
-    issues.push(
-      createValidationIssue(
-        'minify-not-implemented',
-        'Minify was requested, but the current render pipeline intentionally leaves output unminified until an email-safe minification pass exists.',
-        'warning',
-      ),
-    )
-  }
-
-  if (config.render.mode === 'strict') {
-    const meaningfulRootNodes = parseRenderedHtml(trimmedHtml).filter(node =>
-      isParse5ElementNode(node) || isParse5CommentNode(node) || isNonEmptyTextNode(node),
-    )
-
-    if (meaningfulRootNodes.length > 1) {
-      issues.push(
-        createValidationIssue(
-          'multiple-root-nodes',
-          'Strict parity mode expects a single meaningful root node in the rendered email fragment.',
-          'error',
-        ),
-      )
-    }
-
-    if (meaningfulRootNodes.some(isNonEmptyTextNode)) {
-      issues.push(
-        createValidationIssue(
-          'root-text-node',
-          'Strict parity mode does not allow non-empty text nodes at the fragment root.',
-          'error',
-        ),
-      )
-    }
-  }
-
-  return issues
-}
-
 function fontMapsMatch(
   actualFonts: VjmlFontMap,
   expectedFonts: VjmlFontMap,
@@ -378,65 +223,203 @@ function assertValidationIssues(
   throw new Error(`VJML render validation failed:\n${issues.map(formatValidationIssue).join('\n')}`)
 }
 
-function registerRuntimeComponents(
-  app: ReturnType<typeof createSSRApp>,
-  config: VjmlRuntimeConfig,
-) {
-  for (const component of VJML_RUNTIME_COMPONENTS) {
-    const runtimeComponent = VJML_RUNTIME_COMPONENT_EXPORTS[
-      component.exportName as keyof typeof VJML_RUNTIME_COMPONENT_EXPORTS
-    ]
-
-    if (!runtimeComponent) {
-      continue
-    }
-
-    app.component(
-      toVjmlComponentName(component.tagName, config.prefix),
-      runtimeComponent,
-    )
-  }
+function isMeaningfulTextNode(node: Node): node is Text {
+  return node.nodeType === Node.TEXT_NODE && node.textContent?.trim().length !== 0
 }
 
-export async function renderVjmlWithDiagnostics(
+function isCommentNode(node: Node): node is Comment {
+  return node.nodeType === Node.COMMENT_NODE
+}
+
+function isElementNode(node: Node): node is Element {
+  return node.nodeType === Node.ELEMENT_NODE
+}
+
+function parseRenderedHtml(html: string): Node[] {
+  const trimmedHtml = html.trim()
+
+  if (!trimmedHtml) {
+    return []
+  }
+
+  if (typeof DOMParser === 'undefined' || typeof document === 'undefined') {
+    return []
+  }
+
+  if (/^(<!doctype html>|<html\b)/i.test(trimmedHtml)) {
+    const parsedDocument = new DOMParser().parseFromString(
+      trimmedHtml.replace(/^\s*<!doctype html>\s*/i, ''),
+      'text/html',
+    )
+
+    return Array.from(parsedDocument.childNodes)
+  }
+
+  const template = document.createElement('template')
+  template.innerHTML = trimmedHtml
+
+  return Array.from(template.content.childNodes)
+}
+
+function toDebugNode(node: Node): VjmlDebugNode | null {
+  if (isElementNode(node)) {
+    return {
+      type: 'element',
+      tagName: node.tagName.toLowerCase(),
+      attributes: Object.fromEntries(
+        Array.from(node.attributes).map(attr => [attr.name, attr.value]),
+      ),
+      children: Array.from(node.childNodes).map(toDebugNode).filter((value): value is VjmlDebugNode => value !== null),
+    }
+  }
+
+  if (isCommentNode(node)) {
+    return {
+      type: 'comment',
+      value: node.data,
+    }
+  }
+
+  if (isMeaningfulTextNode(node)) {
+    return {
+      type: 'text',
+      value: node.textContent ?? '',
+    }
+  }
+
+  return null
+}
+
+function buildVjmlDebugTree(html: string): VjmlDebugNode[] {
+  return parseRenderedHtml(html)
+    .map(toDebugNode)
+    .filter((value): value is VjmlDebugNode => value !== null)
+}
+
+function collectRenderedHtmlIssues(
+  html: string,
+  config: VjmlRuntimeConfig,
+): VjmlValidationIssue[] {
+  if (config.render.validation === 'off') {
+    return []
+  }
+
+  const issues: VjmlValidationIssue[] = []
+  const trimmedHtml = html.trim()
+
+  if (!trimmedHtml) {
+    issues.push(
+      createValidationIssue(
+        'empty-output',
+        'Rendered HTML is empty.',
+        'error',
+      ),
+    )
+
+    return issues
+  }
+
+  if (trimmedHtml.includes('<!--[-->') || trimmedHtml.includes('<!--]-->')) {
+    issues.push(
+      createValidationIssue(
+        'vue-fragment-artifact',
+        'Rendered HTML includes Vue fragment markers. VJML output should render concrete email HTML without SSR fragment comments.',
+        getStructuralSeverity(config),
+      ),
+    )
+  }
+
+  if (config.render.minify) {
+    issues.push(
+      createValidationIssue(
+        'minify-not-implemented',
+        'Minify was requested, but the current render pipeline intentionally leaves output unminified until an email-safe minification pass exists.',
+        'warning',
+      ),
+    )
+  }
+
+  if (config.render.mode === 'strict') {
+    const meaningfulRootNodes = parseRenderedHtml(trimmedHtml).filter(node =>
+      isElementNode(node) || isCommentNode(node) || isMeaningfulTextNode(node),
+    )
+
+    if (meaningfulRootNodes.length > 1) {
+      issues.push(
+        createValidationIssue(
+          'multiple-root-nodes',
+          'Strict parity mode expects a single meaningful root node in the rendered email fragment.',
+          'error',
+        ),
+      )
+    }
+
+    if (meaningfulRootNodes.some(isMeaningfulTextNode)) {
+      issues.push(
+        createValidationIssue(
+          'root-text-node',
+          'Strict parity mode does not allow non-empty text nodes at the fragment root.',
+          'error',
+        ),
+      )
+    }
+  }
+
+  return issues
+}
+
+export async function renderVjmlInBrowserWithDiagnostics(
   component: Component,
   config: VjmlRuntimeConfig,
   props: Record<string, unknown> = {},
 ): Promise<VjmlDebugRenderResult> {
+  if (typeof document === 'undefined') {
+    throw new Error('VJML browser rendering requires DOM APIs.')
+  }
+
   const runtimeConfig = Object.freeze(config)
   const validationReporter = createVjmlValidationReporter(runtimeConfig)
   const documentContext = createVjmlDocumentContext(runtimeConfig)
   const bodyRenderContext = createVjmlBodyRenderContext(documentContext)
   const headCollectionContext = createVjmlHeadCollectionContext(documentContext)
-  const app = createSSRApp(component, props)
+  const container = document.createElement('div')
+  const app = createApp(component, props)
 
-  registerRuntimeComponents(app, runtimeConfig)
+  registerVjmlComponents(app, runtimeConfig.prefix, true)
   app.provide(VJML_RUNTIME_CONFIG_KEY, runtimeConfig)
   app.provide(VJML_DOCUMENT_CONTEXT_KEY, documentContext)
   app.provide(VJML_BODY_RENDER_CONTEXT_KEY, bodyRenderContext)
   app.provide(VJML_HEAD_COLLECTION_CONTEXT_KEY, headCollectionContext)
   app.provide(VJML_VALIDATION_REPORTER_KEY, validationReporter)
 
-  const renderedHtml = stripVueFragmentArtifacts(await renderToString(app))
-  const documentState = documentContext.getState()
-  const html = finalizeVjmlHtml(renderedHtml, documentState)
-  const document = serializeDocumentState(documentState)
-  const issues = [
-    ...validationReporter.issues,
-    ...collectDocumentContextIssues(documentState, runtimeConfig),
-    ...collectRenderedHtmlIssues(html, runtimeConfig),
-  ]
+  try {
+    app.mount(container)
+    await nextTick()
 
-  assertValidationIssues(issues, runtimeConfig)
+    const renderedHtml = container.innerHTML
+    const documentState = documentContext.getState()
+    const html = finalizeVjmlHtmlInBrowser(renderedHtml, documentState)
+    const issues = [
+      ...validationReporter.issues,
+      ...collectDocumentContextIssues(documentState, runtimeConfig),
+      ...collectRenderedHtmlIssues(html, runtimeConfig),
+    ]
 
-  return {
-    html,
-    warnings: runtimeConfig.render.validation === 'off'
-      ? []
-      : issues.map(formatValidationIssue),
-    issues,
-    config: runtimeConfig,
-    document,
-    tree: buildVjmlDebugTree(html),
+    assertValidationIssues(issues, runtimeConfig)
+
+    return {
+      html,
+      warnings: runtimeConfig.render.validation === 'off'
+        ? []
+        : issues.map(formatValidationIssue),
+      issues,
+      config: runtimeConfig,
+      document: serializeDocumentState(documentState),
+      tree: buildVjmlDebugTree(html),
+    }
+  }
+  finally {
+    app.unmount()
+    container.remove()
   }
 }

@@ -1,14 +1,7 @@
-import { load } from 'cheerio'
-
 import type {
   VjmlBreakpointAwareValue,
   VjmlDocumentState,
 } from '../context'
-
-import {
-  mergeOutlookConditionals,
-  minifyOutlookConditionals,
-} from './conditional'
 
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
@@ -32,31 +25,6 @@ function renderBreakpointAwareValue(
 
 function filterDefinedStrings(values: Array<string | null | undefined>): string[] {
   return values.filter((value): value is string => typeof value === 'string' && value.length > 0)
-}
-
-function applyHtmlAttributes(
-  content: string,
-  htmlAttributes: Readonly<Record<string, Record<string, string>>>,
-): string {
-  if (!content || Object.keys(htmlAttributes).length === 0) {
-    return content
-  }
-
-  const $ = load(content, {
-    xml: {
-      decodeEntities: false,
-    },
-  })
-
-  for (const [selector, attributes] of Object.entries(htmlAttributes)) {
-    for (const [attributeName, value] of Object.entries(attributes)) {
-      $(selector).each((_, element) => {
-        $(element).attr(attributeName, value || '')
-      })
-    }
-  }
-
-  return $.root().html() ?? content
 }
 
 export function buildPreview(content: string): string {
@@ -265,20 +233,4 @@ ${headBlocks.map(block => indentBlock(block)).join('\n')}
 ${bodyBlocks.map(block => indentBlock(block)).join('\n')}
   </body>
 </html>`
-}
-
-export function finalizeVjmlHtml(
-  content: string,
-  documentState: VjmlDocumentState,
-): string {
-  const normalizedContent = minifyOutlookConditionals(content)
-  const htmlWithAttributes = applyHtmlAttributes(
-    normalizedContent,
-    documentState.htmlAttributes,
-  )
-  const wrappedContent = documentState.wrapWithDocument
-    ? buildVjmlDocumentHtml(htmlWithAttributes, documentState)
-    : htmlWithAttributes
-
-  return mergeOutlookConditionals(wrappedContent)
 }
