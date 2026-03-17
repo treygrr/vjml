@@ -46,6 +46,10 @@ const VJML_COMPONENT_TAG_NAME_KEY = Symbol(
   'vue-mjml-component-tag-name',
 ) as InjectionKey<string | null>
 
+const VJML_ACTIVE_MJ_CLASS_KEY = Symbol(
+  'vue-mjml-active-mj-class',
+) as InjectionKey<string>
+
 export type VjmlContentSource = 'none' | 'prop' | 'slot'
 
 export interface VjmlResolvedContent {
@@ -63,12 +67,14 @@ export interface VjmlNormalizedAttributesResult {
 }
 
 export interface VjmlComponentRenderContext {
+  activeMjClass: string
   attrs: Readonly<Record<string, string>>
   bodyRenderContext: VjmlBodyRenderContext | null
   content: VjmlResolvedContent
   documentContext: VjmlDocumentContext | null
   explicitAttrs: Readonly<Record<string, string>>
   headCollectionContext: VjmlHeadCollectionContext | null
+  inheritedMjClass: string
   metadata: VjmlComponentMetadata
   parentTagName: string | null
   rawAttrs: Readonly<Record<string, unknown>>
@@ -77,13 +83,20 @@ export interface VjmlComponentRenderContext {
 }
 
 export interface VjmlComponentSetupContext {
+  activeMjClass: string
   bodyRenderContext: VjmlBodyRenderContext | null
   documentContext: VjmlDocumentContext | null
   headCollectionContext: VjmlHeadCollectionContext | null
+  inheritedMjClass: string
   metadata: VjmlComponentMetadata
   parentTagName: string | null
   slots: Slots
   validationReporter: VjmlValidationReporter | null
+}
+
+export interface VjmlAttributeResolutionOptions {
+  documentContext?: VjmlDocumentContext | null
+  inheritedMjClass?: string
 }
 
 export interface VjmlComponentFactoryOptions<TExtra = undefined> {
@@ -118,6 +131,14 @@ function mergeTokenList(
     .join(' ')
     .trim()
 }
+
+  function splitAttributeTokens(value: string | undefined): string[] {
+    return value
+    ? value
+      .split(/\s+/)
+      .filter(Boolean)
+    : []
+  }
 
 function normalizeAttributeName(attributeName: string): string {
   return ATTRIBUTE_ALIASES[attributeName] ?? toKebabCase(attributeName)
@@ -348,6 +369,75 @@ function normalizeAttributes(
   }
 }
 
+function mergeResolvedAttributes(
+  target: Record<string, string>,
+  source: Readonly<Record<string, string>> | undefined,
+  options: {
+    omitMjClass?: boolean
+  } = {},
+) {
+  if (!source) {
+    return
+  }
+
+  for (const [attributeName, value] of Object.entries(source)) {
+    if (value === undefined) {
+      continue
+    }
+
+    if (options.omitMjClass && attributeName === 'mj-class') {
+      continue
+    }
+
+    if (attributeName === 'css-class') {
+      target[attributeName] = mergeTokenList(target[attributeName], value)
+      continue
+    }
+
+    target[attributeName] = value
+  }
+}
+
+function resolveNormalizedAttributes(
+  rawAttrs: Record<string, unknown>,
+  metadata: VjmlComponentMetadata,
+  options: VjmlAttributeResolutionOptions = {},
+): VjmlNormalizedAttributesResult {
+  const normalized = normalizeAttributes(rawAttrs, metadata)
+  const documentContext = options.documentContext
+
+  if (!documentContext) {
+    return normalized
+  }
+
+  const attrs = { ...metadata.defaultAttributes } as Record<string, string>
+  const ownMjClasses = splitAttributeTokens(normalized.explicitAttrs['mj-class'])
+  const inheritedMjClasses = splitAttributeTokens(options.inheritedMjClass)
+
+  mergeResolvedAttributes(attrs, documentContext.state.defaultAttributes['mj-all'])
+  mergeResolvedAttributes(attrs, documentContext.state.defaultAttributes[metadata.tagName])
+
+  for (const className of ownMjClasses) {
+    mergeResolvedAttributes(attrs, documentContext.state.classes[className])
+  }
+
+  for (const className of inheritedMjClasses) {
+    mergeResolvedAttributes(
+      attrs,
+      documentContext.state.classesDefault[`${className}.${metadata.tagName}`],
+    )
+  }
+
+  mergeResolvedAttributes(attrs, normalized.explicitAttrs, {
+    omitMjClass: true,
+  })
+
+  return {
+    attrs,
+    explicitAttrs: normalized.explicitAttrs,
+  }
+}
+
 function validateParentRelationship(
   metadata: VjmlComponentMetadata,
   parentTagName: string | null,
@@ -397,8 +487,9 @@ function validateChildRelationship(
 export function normalizeVjmlAttributes(
   rawAttrs: Record<string, unknown>,
   metadata: VjmlComponentMetadata,
+  options: VjmlAttributeResolutionOptions = {},
 ): VjmlNormalizedAttributesResult {
-  return normalizeAttributes(rawAttrs, metadata)
+  return resolveNormalizedAttributes(rawAttrs, metadata, options)
 }
 
 export function resolveVjmlComponentContent(
@@ -419,20 +510,29 @@ export function createVjmlComponent<TExtra = undefined>(
     inheritAttrs: false,
     setup(_props, setupContext: SetupContext) {
       const parentTagName = inject(VJML_COMPONENT_TAG_NAME_KEY, null)
+      const inheritedMjClass = inject(VJML_ACTIVE_MJ_CLASS_KEY, '')
       const documentContext = useVjmlDocumentContext()
       const bodyRenderContext = useVjmlBodyRenderContext()
       const headCollectionContext = useVjmlHeadCollectionContext()
       const validationReporter = useVjmlValidationReporter()
+      const initialAttributes = normalizeAttributes(
+        setupContext.attrs as Record<string, unknown>,
+        metadata,
+      )
+      const initialActiveMjClass = initialAttributes.explicitAttrs['mj-class'] ?? inheritedMjClass
 
       validateParentRelationship(metadata, parentTagName, validationReporter)
       validateChildRelationship(metadata, parentTagName, validationReporter)
 
       provide(VJML_COMPONENT_TAG_NAME_KEY, metadata.tagName)
+      provide(VJML_ACTIVE_MJ_CLASS_KEY, initialActiveMjClass)
 
       const extra = options.setup?.({
+        activeMjClass: initialActiveMjClass,
         bodyRenderContext,
         documentContext,
         headCollectionContext,
+        inheritedMjClass,
         metadata,
         parentTagName,
         slots: setupContext.slots,
@@ -441,21 +541,27 @@ export function createVjmlComponent<TExtra = undefined>(
 
       return () => {
         const rawAttrs = setupContext.attrs as Record<string, unknown>
-        const normalizedAttributes = normalizeAttributes(rawAttrs, metadata)
+        const normalizedAttributes = resolveNormalizedAttributes(rawAttrs, metadata, {
+          documentContext,
+          inheritedMjClass,
+        })
         const content = resolveComponentContent(
           rawAttrs,
           setupContext.slots,
           metadata,
           validationReporter,
         )
+        const activeMjClass = normalizedAttributes.explicitAttrs['mj-class'] ?? inheritedMjClass
 
         return options.render({
+          activeMjClass,
           attrs: normalizedAttributes.attrs,
           bodyRenderContext,
           content,
           documentContext,
           explicitAttrs: normalizedAttributes.explicitAttrs,
           headCollectionContext,
+          inheritedMjClass,
           metadata,
           parentTagName,
           rawAttrs,

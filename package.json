@@ -31,7 +31,9 @@
     "build": "npm run build:lib",
     "build:lib": "vite build && npm run build:types",
     "build:types": "vue-tsc -p tsconfig.lib.json",
-    "typecheck": "vue-tsc --noEmit -p tsconfig.app.json && vue-tsc --noEmit -p tsconfig.lib.json"
+    "typecheck": "vue-tsc --noEmit -p tsconfig.app.json && vue-tsc --noEmit -p tsconfig.lib.json",
+    "test": "vitest run",
+    "test:accordion": "vitest run test/components/accordion/accordion.test.ts"
   },
   "peerDependencies": {
     "vue": "^3.5.0"
@@ -40,8 +42,11 @@
     "@types/node": "^24.12.0",
     "@vitejs/plugin-vue": "^6.0.5",
     "@vue/tsconfig": "^0.9.0",
+    "jsdom": "^29.0.0",
+    "mjml": "^4.18.0",
     "typescript": "~5.9.3",
     "vite": "^8.0.0",
+    "vitest": "^4.1.0",
     "vue": "^3.5.30",
     "vue-tsc": "^3.2.5"
   }

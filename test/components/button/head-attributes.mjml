@@ -1,0 +1,27 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-font
+      href="https://fonts.googleapis.com/css?family=Lora:400,700"
+      name="Lora"
+    />
+    <mj-attributes>
+      <mj-button
+        background-color="#0f172a"
+        color="#f8fafc"
+        font-size="17px"
+        font-weight="700"
+        inner-padding="14px 24px"
+        text-transform="uppercase"
+      />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#eef2ff">
+    <mj-section background-color="#ffffff" padding="24px">
+      <mj-column>
+        <mj-button font-family="Lora, Georgia, serif" href="https://example.com/reset">
+          Reset password
+        </mj-button>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

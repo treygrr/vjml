@@ -3,12 +3,24 @@ import { h } from 'vue'
 import { requireVjmlComponentMetadata } from '../internal/componentMetadata'
 import { renderVjmlContentNodes } from '../internal/content'
 import { createVjmlComponent } from '../internal/factory'
+import { compactStyleRecord } from '../internal/layout'
 import {
   mergeVjmlInheritedAttributes,
   useVjmlAccordionElementContext,
 } from '../internal/interactive'
 
 const metadata = requireVjmlComponentMetadata('mj-accordion-text')
+
+function resolveAccordionTextFontFamily(
+  explicitAttrs: Readonly<Record<string, string>>,
+  inheritedAttrs: Readonly<Record<string, string>>,
+): string | undefined {
+  if (explicitAttrs['font-family'] !== undefined) {
+    return explicitAttrs['font-family']
+  }
+
+  return inheritedAttrs['font-family']
+}
 
 export default createVjmlComponent(metadata, {
   name: 'VjmlAccordionText',
@@ -20,6 +32,10 @@ export default createVjmlComponent(metadata, {
   render({ attrs, content, explicitAttrs }, extra) {
     const resolvedAttrs = mergeVjmlInheritedAttributes(
       attrs,
+      explicitAttrs,
+      extra.accordionElementContext.inheritedAttrs,
+    )
+    const fontFamily = resolveAccordionTextFontFamily(
       explicitAttrs,
       extra.accordionElementContext.inheritedAttrs,
     )
@@ -39,10 +55,10 @@ export default createVjmlComponent(metadata, {
           h('tr', [
             h('td', {
               class: resolvedAttrs['css-class'] || undefined,
-              style: {
+              style: compactStyleRecord({
                 'background': resolvedAttrs['background-color'],
                 'color': resolvedAttrs.color,
-                'font-family': resolvedAttrs['font-family'],
+                'font-family': fontFamily,
                 'font-size': resolvedAttrs['font-size'],
                 'font-weight': resolvedAttrs['font-weight'],
                 'letter-spacing': resolvedAttrs['letter-spacing'],
@@ -52,7 +68,7 @@ export default createVjmlComponent(metadata, {
                 'padding-left': resolvedAttrs['padding-left'],
                 'padding-right': resolvedAttrs['padding-right'],
                 'padding-top': resolvedAttrs['padding-top'],
-              },
+              }),
             }, renderVjmlContentNodes(content)),
           ]),
         ]),

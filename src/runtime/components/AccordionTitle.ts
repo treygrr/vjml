@@ -5,6 +5,7 @@ import { renderVjmlContentNodes } from '../internal/content'
 import { createVjmlComponent } from '../internal/factory'
 import { conditionalTag } from '../internal/helpers/conditional'
 import {
+  compactStyleRecord,
   createVjmlStaticHtml,
   renderHtmlAttributes,
 } from '../internal/layout'
@@ -14,6 +15,17 @@ import {
 } from '../internal/interactive'
 
 const metadata = requireVjmlComponentMetadata('mj-accordion-title')
+
+function resolveAccordionTitleFontFamily(
+  explicitAttrs: Readonly<Record<string, string>>,
+  inheritedAttrs: Readonly<Record<string, string>>,
+): string | undefined {
+  if (explicitAttrs['font-family'] !== undefined) {
+    return explicitAttrs['font-family']
+  }
+
+  return inheritedAttrs['font-family']
+}
 
 export default createVjmlComponent(metadata, {
   name: 'VjmlAccordionTitle',
@@ -28,12 +40,16 @@ export default createVjmlComponent(metadata, {
       explicitAttrs,
       extra.accordionElementContext.inheritedAttrs,
     )
+    const fontFamily = resolveAccordionTitleFontFamily(
+      explicitAttrs,
+      extra.accordionElementContext.inheritedAttrs,
+    )
     const titleCell = h('td', {
       class: resolvedAttrs['css-class'] || undefined,
-      style: {
+      style: compactStyleRecord({
         'background-color': resolvedAttrs['background-color'],
         'color': resolvedAttrs.color,
-        'font-family': resolvedAttrs['font-family'],
+        'font-family': fontFamily,
         'font-size': resolvedAttrs['font-size'],
         'font-weight': resolvedAttrs['font-weight'],
         'padding': resolvedAttrs.padding,
@@ -42,7 +58,7 @@ export default createVjmlComponent(metadata, {
         'padding-right': resolvedAttrs['padding-right'],
         'padding-top': resolvedAttrs['padding-top'],
         'width': '100%',
-      },
+      }),
     }, renderVjmlContentNodes(content))
     const iconCell = createVjmlStaticHtml(conditionalTag(
       `<td${renderHtmlAttributes({

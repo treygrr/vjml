@@ -1,0 +1,17 @@
+<mjml lang="en">
+  <mj-body>
+    <mj-section background-color="#f8fafc" padding="24px">
+      <mj-column>
+        <mj-button
+          background-color="#14532d"
+          border-radius="8px"
+          color="#ecfdf5"
+          font-weight="700"
+          inner-padding="10px 18px"
+        >
+          Saved without link
+        </mj-button>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

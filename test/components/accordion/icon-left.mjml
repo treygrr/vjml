@@ -1,0 +1,37 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-accordion border="1px solid #d8d8d8" padding="0px" />
+      <mj-accordion-element
+        icon-align="top"
+        icon-height="18px"
+        icon-position="left"
+        icon-unwrapped-url="https://static.mailjet.com/mjml-website/documentation/accordion-arrow-up.png"
+        icon-width="18px"
+        icon-wrapped-url="https://static.mailjet.com/mjml-website/documentation/accordion-arrow-down.png"
+      />
+      <mj-accordion-title background-color="#ffffff" color="#0f172a" font-size="16px" padding="14px" />
+      <mj-accordion-text background-color="#f8fafc" color="#334155" font-size="14px" padding="14px" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-accordion>
+          <mj-accordion-element>
+            <mj-accordion-title>Billing questions</mj-accordion-title>
+            <mj-accordion-text>
+              Review invoice timing, payment methods, and receipt access.
+            </mj-accordion-text>
+          </mj-accordion-element>
+          <mj-accordion-element>
+            <mj-accordion-title>Account changes</mj-accordion-title>
+            <mj-accordion-text>
+              Update your team seats, plan settings, and account details.
+            </mj-accordion-text>
+          </mj-accordion-element>
+        </mj-accordion>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

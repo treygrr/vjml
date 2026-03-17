@@ -1,0 +1,32 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-class
+        background-color="#2563eb"
+        border-radius="24px"
+        color="#eff6ff"
+        font-size="15px"
+        font-weight="700"
+        inner-padding="12px 20px"
+        name="primary-cta"
+      />
+    </mj-attributes>
+  </mj-head>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-button href="https://example.com/invoice" mj-class="primary-cta">
+          Download invoice
+        </mj-button>
+        <mj-button
+          background-color="#1d4ed8"
+          href="https://example.com/billing"
+          mj-class="primary-cta"
+          padding="12px 25px 0px"
+        >
+          View billing history
+        </mj-button>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

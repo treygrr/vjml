@@ -1,0 +1,9 @@
+<mjml lang="en">
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-button href="https://example.com/review">Review account</mj-button>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

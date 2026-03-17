@@ -1,0 +1,30 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-class name="faq-theme" border="none" padding="1px">
+        <mj-accordion-title background-color="#eef2ff" color="#1e3a8a" font-size="16px" padding="12px" />
+        <mj-accordion-text background-color="#ffffff" color="#334155" font-size="14px" padding="12px" />
+      </mj-class>
+    </mj-attributes>
+  </mj-head>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-accordion mj-class="faq-theme">
+          <mj-accordion-element>
+            <mj-accordion-title>Delivery windows</mj-accordion-title>
+            <mj-accordion-text>
+              Choose a weekday delivery window that best matches your schedule.
+            </mj-accordion-text>
+          </mj-accordion-element>
+          <mj-accordion-element>
+            <mj-accordion-title>Pickup lockers</mj-accordion-title>
+            <mj-accordion-text>
+              Switch to a local pickup locker if home delivery is unavailable.
+            </mj-accordion-text>
+          </mj-accordion-element>
+        </mj-accordion>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

@@ -12,6 +12,7 @@ import {
   hasNonEmptyAttribute,
   provideVjmlLayoutContext,
   renderHtmlAttributes,
+  renderHtmlStyle,
   suffixCssClasses,
   useVjmlLayoutContext,
   useVjmlSiblingContext,
@@ -61,7 +62,7 @@ export default createVjmlComponent(metadata, {
       siblingContext: useVjmlSiblingContext(),
     }
   },
-  render({ attrs, content }, extra) {
+  render({ activeMjClass, attrs, content, documentContext }, extra) {
     const fullWidth = attrs['full-width'] === 'full-width'
     const hasBorderRadius = hasNonEmptyAttribute(attrs['border-radius'])
     const inheritedGap = extra.layoutContext.gap
@@ -81,7 +82,10 @@ export default createVjmlComponent(metadata, {
         return [childVNode]
       }
 
-      const childAttrs = getNormalizedVNodeAttributes(entry.vnode)
+      const childAttrs = getNormalizedVNodeAttributes(entry.vnode, {
+        documentContext,
+        inheritedMjClass: activeMjClass,
+      })
 
       return [
         createVjmlStaticHtml(conditionalTag(
@@ -142,14 +146,14 @@ export default createVjmlComponent(metadata, {
       'div',
       {
         class: fullWidth ? undefined : attrs['css-class'] || undefined,
-        style: {
+        style: renderHtmlStyle({
           ...(fullWidth ? {} : backgroundStyle),
           'border-radius': attrs['border-radius'],
           'margin': '0px auto',
           'margin-top': hasInheritedGap ? inheritedGap : undefined,
           'max-width': extra.layoutContext.containerWidth,
           'overflow': hasBorderRadius ? 'hidden' : undefined,
-        },
+        }),
       },
       [
         hasNonEmptyAttribute(attrs['background-url'])

@@ -1,6 +1,7 @@
 import { h } from 'vue'
 
 import { requireVjmlComponentMetadata } from '../internal/componentMetadata'
+import type { VjmlDocumentContext } from '../internal/context'
 import { createVjmlComponent } from '../internal/factory'
 import {
   endNegationConditionalTag,
@@ -170,8 +171,15 @@ function getCarouselFallbackHtml(
   entry: ReturnType<typeof analyzeVjmlChildNodes>[number],
   containerWidth: string,
   inheritedAttrs: Readonly<Record<string, string>>,
+  options: {
+    activeMjClass: string
+    documentContext: VjmlDocumentContext | null
+  },
 ): string {
-  const childAttrs = getNormalizedVNodeAttributes(entry.vnode)
+  const childAttrs = getNormalizedVNodeAttributes(entry.vnode, {
+    documentContext: options.documentContext,
+    inheritedMjClass: options.activeMjClass,
+  })
   const borderRadius = childAttrs['border-radius'] ?? inheritedAttrs['border-radius']
   const imageWidth = Number.parseInt(containerWidth, 10)
   const imageHtml = `<img${renderHtmlAttributes({
@@ -219,7 +227,7 @@ export default createVjmlComponent(metadata, {
       layoutContext: useVjmlLayoutContext(),
     }
   },
-  render({ attrs, content }, extra) {
+  render({ activeMjClass, attrs, content, documentContext }, extra) {
     const childEntries = analyzeVjmlChildNodes(content.childNodes)
     const thumbnailsWidth = getThumbnailsWidth(
       attrs['tb-width'],
@@ -283,7 +291,10 @@ export default createVjmlComponent(metadata, {
       }, [
         ...(attrs.thumbnails === 'visible' || attrs.thumbnails === 'supported'
           ? childEntries.map((entry) => {
-              const childAttrs = getNormalizedVNodeAttributes(entry.vnode)
+              const childAttrs = getNormalizedVNodeAttributes(entry.vnode, {
+                documentContext,
+                inheritedMjClass: activeMjClass,
+              })
 
               return h('a', {
                 class: [
@@ -421,6 +432,10 @@ export default createVjmlComponent(metadata, {
           childEntries[0],
           extra.carouselContext.containerWidth,
           extra.carouselContext.inheritedAttrs,
+          {
+            activeMjClass,
+            documentContext,
+          },
         )
       : null
 

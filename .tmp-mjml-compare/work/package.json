@@ -1,0 +1,9 @@
+{
+  "name": "vjml-mjml-compare",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "jsdom": "^29.0.0",
+    "mjml": "^4.18.0"
+  }
+}

@@ -1,6 +1,7 @@
 import { h } from 'vue'
 
 import { requireVjmlComponentMetadata } from '../internal/componentMetadata'
+import type { VjmlDocumentContext } from '../internal/context'
 import { createVjmlComponent } from '../internal/factory'
 import { conditionalTag } from '../internal/helpers/conditional'
 import {
@@ -44,7 +45,13 @@ function getBackgroundRatio(attrs: Readonly<Record<string, string>>): number {
   return Math.round(backgroundHeight / backgroundWidth * 100)
 }
 
-function getHeroContentRows(childNodes: ReturnType<typeof analyzeVjmlChildNodes>) {
+function getHeroContentRows(
+  childNodes: ReturnType<typeof analyzeVjmlChildNodes>,
+  options: {
+    activeMjClass: string
+    documentContext: VjmlDocumentContext | null
+  },
+) {
   return childNodes.map((entry) => {
     const childVNode = withVjmlSiblingContext(entry.vnode, entry.siblingContext)
 
@@ -52,7 +59,10 @@ function getHeroContentRows(childNodes: ReturnType<typeof analyzeVjmlChildNodes>
       return childVNode
     }
 
-    const childAttrs = getNormalizedVNodeAttributes(entry.vnode)
+    const childAttrs = getNormalizedVNodeAttributes(entry.vnode, {
+      documentContext: options.documentContext,
+      inheritedMjClass: options.activeMjClass,
+    })
 
     return h('tr', [
       h('td', {
@@ -86,7 +96,7 @@ export default createVjmlComponent(metadata, {
       layoutState,
     }
   },
-  render({ attrs, content }, extra) {
+  render({ activeMjClass, attrs, content, documentContext }, extra) {
     const currentContainerWidth = getGroupContainerWidth(
       attrs,
       extra.layoutContext.containerWidth,
@@ -160,7 +170,10 @@ export default createVjmlComponent(metadata, {
                     width: '100%',
                   },
                 }, [
-                  h('tbody', getHeroContentRows(childEntries)),
+                  h('tbody', getHeroContentRows(childEntries, {
+                    activeMjClass,
+                    documentContext,
+                  })),
                 ]),
               ]),
             ]),

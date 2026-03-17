@@ -35,7 +35,7 @@ export default createVjmlComponent(metadata, {
       siblingContext: useVjmlSiblingContext(),
     }
   },
-  render({ attrs, bodyRenderContext, content }, extra) {
+  render({ activeMjClass, attrs, bodyRenderContext, content, documentContext }, extra) {
     const childEntries = analyzeVjmlChildNodes(content.childNodes)
     const groupWidth = getGroupContainerWidth(
       attrs,
@@ -90,7 +90,10 @@ export default createVjmlComponent(metadata, {
           return [childVNode]
         }
 
-        const childAttrs = getNormalizedVNodeAttributes(entry.vnode)
+        const childAttrs = getNormalizedVNodeAttributes(entry.vnode, {
+          documentContext,
+          inheritedMjClass: activeMjClass,
+        })
 
         return [
           createVjmlStaticHtml(conditionalTag(

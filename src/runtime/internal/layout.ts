@@ -12,7 +12,10 @@ import {
 
 import { getVjmlComponentMetadata } from '../../metadata'
 
-import { normalizeVjmlAttributes } from './factory'
+import {
+  normalizeVjmlAttributes,
+  type VjmlAttributeResolutionOptions,
+} from './factory'
 import type { VjmlParsedWidth } from './helpers/measurements'
 import { widthParser } from './helpers/measurements'
 import { borderParser, shorthandParser, type VjmlBoxSide } from './helpers/shorthand'
@@ -147,6 +150,14 @@ export function renderHtmlStyle(style: HtmlStyleValue): string {
     .join('')
 }
 
+export function compactStyleRecord(
+  style: Record<string, string | number | null | undefined>,
+): Record<string, string | number> {
+  return Object.fromEntries(
+    Object.entries(style).filter(([, value]) => !isNullish(value)),
+  ) as Record<string, string | number>
+}
+
 export function renderHtmlAttributes(
   attributes: Record<string, HtmlAttributeValue>,
 ): string {
@@ -221,7 +232,10 @@ export function analyzeVjmlChildNodes(
   })
 }
 
-export function getNormalizedVNodeAttributes(vnode: VNode): Record<string, string> {
+export function getNormalizedVNodeAttributes(
+  vnode: VNode,
+  options: VjmlAttributeResolutionOptions = {},
+): Record<string, string> {
   const tagName = getVjmlVNodeTagName(vnode)
 
   if (!tagName) {
@@ -237,6 +251,7 @@ export function getNormalizedVNodeAttributes(vnode: VNode): Record<string, strin
   return normalizeVjmlAttributes(
     getVjmlVNodeAttrs(vnode),
     metadata,
+    options,
   ).attrs
 }
 

@@ -4,6 +4,7 @@ import { requireVjmlComponentMetadata } from '../internal/componentMetadata'
 import { createVjmlComponent } from '../internal/factory'
 import {
   analyzeVjmlChildNodes,
+  compactStyleRecord,
   createVjmlLayoutState,
   getColumnClassName,
   getColumnContainerWidth,
@@ -41,7 +42,7 @@ export default createVjmlComponent(metadata, {
       siblingContext: useVjmlSiblingContext(),
     }
   },
-  render({ attrs, bodyRenderContext, content }, extra) {
+  render({ activeMjClass, attrs, bodyRenderContext, content, documentContext }, extra) {
     const childEntries = analyzeVjmlChildNodes(content.childNodes)
     const childContainerWidth = getColumnContainerWidth(
       attrs,
@@ -98,13 +99,16 @@ export default createVjmlComponent(metadata, {
           return childVNode
         }
 
-        const childAttrs = getNormalizedVNodeAttributes(entry.vnode)
+        const childAttrs = getNormalizedVNodeAttributes(entry.vnode, {
+          documentContext,
+          inheritedMjClass: activeMjClass,
+        })
 
         return h('tr', [
           h('td', {
             align: childAttrs.align || undefined,
             class: childAttrs['css-class'] || undefined,
-            style: {
+            style: compactStyleRecord({
               'background': childAttrs['container-background-color'],
               'font-size': '0px',
               'padding': childAttrs.padding,
@@ -113,7 +117,7 @@ export default createVjmlComponent(metadata, {
               'padding-right': childAttrs['padding-right'],
               'padding-top': childAttrs['padding-top'],
               'word-break': 'break-word',
-            },
+            }),
           }, [childVNode]),
         ])
       })),

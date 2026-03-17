@@ -5,6 +5,7 @@ import { conditionalTag } from '../internal/helpers/conditional'
 import { createVjmlComponent } from '../internal/factory'
 import {
   analyzeVjmlChildNodes,
+  compactStyleRecord,
   createVjmlLayoutState,
   createVjmlStaticHtml,
   getBoxWidths,
@@ -13,6 +14,7 @@ import {
   hasNonEmptyAttribute,
   provideVjmlLayoutContext,
   renderHtmlAttributes,
+  renderHtmlStyle,
   suffixCssClasses,
   useVjmlLayoutContext,
   useVjmlSiblingContext,
@@ -86,7 +88,7 @@ export default createVjmlComponent(metadata, {
       siblingContext: useVjmlSiblingContext(),
     }
   },
-  render({ attrs, content }, extra) {
+  render({ activeMjClass, attrs, content, documentContext }, extra) {
     const fullWidth = attrs['full-width'] === 'full-width'
     const hasBorderRadius = hasNonEmptyAttribute(attrs['border-radius'])
     const inheritedGap = extra.layoutContext.gap
@@ -108,7 +110,10 @@ export default createVjmlComponent(metadata, {
           return [childVNode]
         }
 
-        const childAttrs = getNormalizedVNodeAttributes(entry.vnode)
+        const childAttrs = getNormalizedVNodeAttributes(entry.vnode, {
+          documentContext,
+          inheritedMjClass: activeMjClass,
+        })
 
         return [
           createVjmlStaticHtml(conditionalTag(
@@ -148,7 +153,7 @@ export default createVjmlComponent(metadata, {
         h('tbody', [
           h('tr', [
             h('td', {
-              style: {
+              style: compactStyleRecord({
                 'border': attrs.border,
                 'border-bottom': attrs['border-bottom'],
                 'border-left': attrs['border-left'],
@@ -163,7 +168,7 @@ export default createVjmlComponent(metadata, {
                 'padding-right': attrs['padding-right'],
                 'padding-top': attrs['padding-top'],
                 'text-align': attrs['text-align'],
-              },
+              }),
             }, [
               createVjmlStaticHtml(conditionalTag(
                 '<table role="presentation" border="0" cellpadding="0" cellspacing="0">',
@@ -180,14 +185,14 @@ export default createVjmlComponent(metadata, {
       'div',
       {
         class: fullWidth ? undefined : attrs['css-class'] || undefined,
-        style: {
+        style: renderHtmlStyle({
           ...(fullWidth ? {} : backgroundStyle),
           'border-radius': attrs['border-radius'],
           'margin': '0px auto',
           'margin-top': hasInheritedGap ? inheritedGap : undefined,
           'max-width': extra.layoutContext.containerWidth,
           'overflow': hasBorderRadius ? 'hidden' : undefined,
-        },
+        }),
       },
       [
         hasNonEmptyAttribute(attrs['background-url'])

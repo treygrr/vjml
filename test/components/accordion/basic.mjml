@@ -1,0 +1,22 @@
+<mjml lang="en">
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-accordion>
+          <mj-accordion-element>
+            <mj-accordion-title>Shipping updates</mj-accordion-title>
+            <mj-accordion-text>
+              Track the latest status of your order without leaving your inbox.
+            </mj-accordion-text>
+          </mj-accordion-element>
+          <mj-accordion-element>
+            <mj-accordion-title>Returns</mj-accordion-title>
+            <mj-accordion-text>
+              Start a return within 30 days and print your label online.
+            </mj-accordion-text>
+          </mj-accordion-element>
+        </mj-accordion>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

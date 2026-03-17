@@ -1,21 +1,24 @@
 <template>
-  <Mjml lang="en">
-    <Body width="340px" background-color="#f7efe4">
-      <Section background-color="#fffdf8" padding="22px">
+  <mjml>
+    <Body>
+      <Section>
         <Column>
-          <Social align="left" icon-size="24px" mode="horizontal" padding="0px">
-            <SocialElement href="https://github.com" name="github">
-              GitHub
+          <Social font-size="15px" icon-size="30px" mode="horizontal">
+            <SocialElement name="facebook" href="https://mjml.io/">
+              Facebook
             </SocialElement>
-            <SocialElement href="https://linkedin.com" name="linkedin">
-              LinkedIn
+            <SocialElement name="google" href="https://mjml.io/">
+              Google
             </SocialElement>
-            <SocialElement href="https://x.com" name="x">
+            <SocialElement name="twitter" href="https://mjml.io/">
+              Twitter
+            </SocialElement>
+            <SocialElement name="x" href="https://mjml.io/">
               X
             </SocialElement>
           </Social>
         </Column>
       </Section>
     </Body>
-  </Mjml>
+  </mjml>
 </template>

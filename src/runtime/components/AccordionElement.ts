@@ -45,14 +45,14 @@ export default createVjmlComponent(metadata, {
     }, [
       h('td', {
         style: {
-          'background-color': resolvedAttrs['background-color'],
+          'background-color': attrs['background-color'],
           'padding': '0px',
         },
       }, [
         h('label', {
           class: 'mj-accordion-element',
           style: {
-            'font-family': resolvedAttrs['font-family'],
+            'font-family': attrs['font-family'],
             'font-size': '13px',
           },
         }, [
@@ -61,9 +61,9 @@ export default createVjmlComponent(metadata, {
             true,
           )),
           h('div', [
-            !hasTitle ? h(AccordionTitle) : null,
+            ...(!hasTitle ? [h(AccordionTitle)] : []),
             ...childNodes,
-            !hasText ? h(AccordionText) : null,
+            ...(!hasText ? [h(AccordionText)] : []),
           ]),
         ]),
       ]),

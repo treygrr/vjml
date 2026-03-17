@@ -2,7 +2,7 @@ import { h } from 'vue'
 
 import { requireVjmlComponentMetadata } from '../internal/componentMetadata'
 import { createVjmlComponent } from '../internal/factory'
-import { analyzeVjmlChildNodes } from '../internal/layout'
+import { analyzeVjmlChildNodes, renderHtmlStyle } from '../internal/layout'
 import {
   createVjmlAccordionContextState,
   provideVjmlAccordionContext,
@@ -69,13 +69,13 @@ export default createVjmlComponent(metadata, {
       cellpadding: '0',
       cellspacing: '0',
       class: 'mj-accordion',
-      style: {
+      style: renderHtmlStyle({
         'border': attrs.border,
         'border-bottom': 'none',
         'border-collapse': 'collapse',
         'font-family': attrs['font-family'],
         'width': '100%',
-      },
+      }),
     }, [
       h('tbody', childEntries.map(entry => entry.vnode)),
     ])

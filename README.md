@@ -21,7 +21,17 @@ This package now contains:
 - `npm run dev:playground` also starts the local playground explicitly.
 - `npm run build` builds the library from `src` into `dist` and emits declaration files.
 - `npm run build:lib` runs the library build directly.
+- `npm run test` runs the renderer parity test suite.
+- `npm run test:accordion` runs the first component parity suite against the accordion fixtures.
 - `npm run typecheck` validates both the playground and the library source.
+
+## Component parity tests
+
+The parity harness lives under `test/components`.
+
+- Each component gets its own folder.
+- Each variant is represented by a `.vue` fixture and a matching `.mjml` fixture.
+- The component test renders both sides, normalizes the generated HTML, and compares the results.
 
 ## Install the plugin
 

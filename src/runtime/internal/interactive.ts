@@ -159,7 +159,11 @@ export function mergeVjmlInheritedAttributes(
   const mergedAttrs = { ...attrs }
 
   for (const [attributeName, value] of Object.entries(inheritedAttrs)) {
-    if (value === undefined || explicitAttrs[attributeName] !== undefined) {
+    if (
+      value === undefined
+      || explicitAttrs[attributeName] !== undefined
+      || mergedAttrs[attributeName] !== undefined
+    ) {
       continue
     }
 
