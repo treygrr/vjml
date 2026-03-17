@@ -210,50 +210,6 @@ function splitCssValuePriority(
   ]
 }
 
-function getNormalizedCssDeclarations(
-  value: string,
-): Map<string, readonly [cssValue: string, priority: string]> {
-  const declarations = new Map<string, readonly [cssValue: string, priority: string]>()
-
-  for (const declaration of splitCssDeclarations(value)) {
-    const entry = splitCssDeclaration(declaration)
-
-    if (!entry) {
-      continue
-    }
-
-    const [name, cssValue] = entry
-
-    declarations.set(name, splitCssValuePriority(cssValue))
-  }
-
-  return declarations
-}
-
-function getNormalizedStylePropertyNames(value: string): string[] {
-  const propertyNames = new Set<string>()
-
-  for (const declaration of splitCssDeclarations(value)) {
-    const entry = splitCssDeclaration(declaration)
-
-    if (!entry) {
-      continue
-    }
-
-    const [propertyName] = entry
-    const expandedPropertyNames = STYLE_SHORTHAND_EXPANSIONS[propertyName]
-
-    if (expandedPropertyNames) {
-      expandedPropertyNames.forEach(name => propertyNames.add(name))
-      continue
-    }
-
-    propertyNames.add(propertyName)
-  }
-
-  return [...propertyNames].sort((left, right) => left.localeCompare(right))
-}
-
 function shouldOmitEmptyAttribute(name: string, value: string): boolean {
   return (name === 'class' || name === 'style') && value.length === 0
 }
@@ -334,39 +290,74 @@ function normalizeCommentData(value: string): string {
   return normalizeWhitespace(value).replace(/<[^>]+>/g, tagValue => normalizeHtmlTagInComment(tagValue))
 }
 
+function omitRedundantStyleDeclarations(
+  declarations: Map<string, readonly [cssValue: string, priority: string]>,
+): void {
+  const background = declarations.get('background')
+  const backgroundColor = declarations.get('background-color')
+
+  if (
+    background
+    && backgroundColor
+    && background[0] === backgroundColor[0]
+    && background[1] === backgroundColor[1]
+  ) {
+    declarations.delete('background-color')
+  }
+}
+
 function normalizeInlineStyle(value: string): string {
-  const element = document.createElement('div')
-  const normalizedDeclarations = getNormalizedCssDeclarations(value)
+  const normalizedDeclarations = new Map<string, readonly [cssValue: string, priority: string]>()
 
-  element.setAttribute('style', value)
+  for (const declaration of splitCssDeclarations(value)) {
+    const entry = splitCssDeclaration(declaration)
 
-  const properties = getNormalizedStylePropertyNames(value)
+    if (!entry) {
+      continue
+    }
 
-  return properties
-    .map((propertyName) => {
+    const [propertyName, rawCssValue] = entry
+    const [cssValue, priority] = splitCssValuePriority(rawCssValue)
+    const style = document.createElement('div').style
+
+    style.setProperty(propertyName, cssValue, priority)
+
+    const normalizedPropertyNames = STYLE_SHORTHAND_EXPANSIONS[propertyName] ?? [propertyName]
+
+    normalizedPropertyNames.forEach((normalizedPropertyName) => {
       const normalizedPropertyValue = normalizeWhitespace(
-        element.style.getPropertyValue(propertyName),
+        style.getPropertyValue(normalizedPropertyName),
       )
-      const normalizedPropertyPriority = element.style.getPropertyPriority(propertyName)
-      const fallbackDeclaration = normalizedDeclarations.get(propertyName)
+      const normalizedPropertyPriority = style.getPropertyPriority(normalizedPropertyName)
       const propertyValue = normalizedPropertyValue.length > 0
         ? normalizedPropertyValue
-        : (fallbackDeclaration?.[0] ?? '')
+        : (normalizedPropertyName === propertyName ? cssValue : '')
 
       if (
         propertyValue.length === 0
-        || shouldOmitStyleProperty(propertyName, propertyValue)
+        || shouldOmitStyleProperty(normalizedPropertyName, propertyValue)
       ) {
-        return null
+        return
       }
 
-      const priority = normalizedPropertyValue.length > 0
+      const normalizedPriority = normalizedPropertyValue.length > 0
         ? normalizedPropertyPriority
-        : (fallbackDeclaration?.[1] ?? '')
+        : priority
 
+      normalizedDeclarations.set(normalizedPropertyName, [
+        propertyValue,
+        normalizedPriority,
+      ])
+    })
+  }
+
+  omitRedundantStyleDeclarations(normalizedDeclarations)
+
+  return [...normalizedDeclarations.entries()]
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([propertyName, [propertyValue, priority]]) => {
       return `${propertyName}:${propertyValue}${priority ? ` !${priority}` : ''}`
     })
-    .filter((value): value is string => value !== null)
     .join(';')
 }
 

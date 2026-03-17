@@ -58,7 +58,7 @@ function isHtmlStyleAttributeValue(
   return Boolean(value)
     && typeof value === 'object'
     && !Array.isArray(value)
-    && Object.values(value).every((entry) => {
+    && Object.values(value as Record<string, unknown>).every((entry) => {
       return entry === null
         || entry === undefined
         || typeof entry === 'number'

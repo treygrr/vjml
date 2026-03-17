@@ -5,6 +5,7 @@ import { conditionalTag } from '../internal/helpers/conditional'
 import { createVjmlComponent } from '../internal/factory'
 import {
   analyzeVjmlChildNodes,
+  compactStyleRecord,
   createVjmlLayoutState,
   createVjmlStaticHtml,
   getBoxWidths,
@@ -12,7 +13,6 @@ import {
   hasNonEmptyAttribute,
   provideVjmlLayoutContext,
   renderHtmlAttributes,
-  renderHtmlStyle,
   suffixCssClasses,
   useVjmlLayoutContext,
   useVjmlSiblingContext,
@@ -146,7 +146,7 @@ export default createVjmlComponent(metadata, {
       'div',
       {
         class: fullWidth ? undefined : attrs['css-class'] || undefined,
-        style: renderHtmlStyle({
+        style: compactStyleRecord({
           ...(fullWidth ? {} : backgroundStyle),
           'border-radius': attrs['border-radius'],
           'margin': '0px auto',
