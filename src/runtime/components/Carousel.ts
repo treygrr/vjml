@@ -3,15 +3,15 @@ import { h } from 'vue'
 import { requireVjmlComponentMetadata } from '../internal/componentMetadata'
 import { createVjmlComponent } from '../internal/factory'
 import {
-  endConditionalTag,
   endNegationConditionalTag,
-  startMsoConditionalTag,
+  msoConditionalTag,
   startMsoNegationConditionalTag,
 } from '../internal/helpers/conditional'
 import {
   analyzeVjmlChildNodes,
   createVjmlStaticHtml,
   getNormalizedVNodeAttributes,
+  renderHtmlAttributes,
   useVjmlLayoutContext,
   withVjmlSiblingContext,
 } from '../internal/layout'
@@ -164,6 +164,45 @@ function getCarouselHeadStyle(
       }
     }
   `
+}
+
+function getCarouselFallbackHtml(
+  entry: ReturnType<typeof analyzeVjmlChildNodes>[number],
+  containerWidth: string,
+  inheritedAttrs: Readonly<Record<string, string>>,
+): string {
+  const childAttrs = getNormalizedVNodeAttributes(entry.vnode)
+  const borderRadius = childAttrs['border-radius'] ?? inheritedAttrs['border-radius']
+  const imageWidth = Number.parseInt(containerWidth, 10)
+  const imageHtml = `<img${renderHtmlAttributes({
+    alt: childAttrs.alt,
+    border: '0',
+    src: childAttrs.src,
+    title: childAttrs.title,
+    width: imageWidth,
+    style: {
+      'border-radius': borderRadius,
+      'display': 'block',
+      'height': 'auto',
+      'max-width': '100%',
+      'width': containerWidth,
+    },
+  })}>`
+  const contentHtml = childAttrs.href
+    ? `<a${renderHtmlAttributes({
+        href: childAttrs.href,
+        rel: childAttrs.rel,
+        target: childAttrs.target || '_blank',
+      })}>${imageHtml}</a>`
+    : imageHtml
+
+  return `<div${renderHtmlAttributes({
+    class: [
+      'mj-carousel-image',
+      `mj-carousel-image-${entry.siblingContext.index + 1}`,
+      childAttrs['css-class'],
+    ].filter(Boolean).join(' ') || undefined,
+  })}>${contentHtml}</div>`
 }
 
 export default createVjmlComponent(metadata, {
@@ -377,20 +416,20 @@ export default createVjmlComponent(metadata, {
         ]),
       ]),
     ])
-    const fallbackNode = childEntries[0]
-      ? withVjmlSiblingContext(childEntries[0].vnode, childEntries[0].siblingContext)
+    const fallbackHtml = childEntries[0]
+      ? getCarouselFallbackHtml(
+          childEntries[0],
+          extra.carouselContext.containerWidth,
+          extra.carouselContext.inheritedAttrs,
+        )
       : null
 
     return [
       createVjmlStaticHtml(startMsoNegationConditionalTag),
       browserMarkup,
       createVjmlStaticHtml(endNegationConditionalTag),
-      fallbackNode
-        ? createVjmlStaticHtml(startMsoConditionalTag)
-        : '',
-      fallbackNode,
-      fallbackNode
-        ? createVjmlStaticHtml(endConditionalTag)
+      fallbackHtml
+        ? createVjmlStaticHtml(msoConditionalTag(fallbackHtml))
         : '',
     ]
   },
