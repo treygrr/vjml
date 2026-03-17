@@ -1,0 +1,29 @@
+<mjml lang="en">
+  <mj-body background-color="#f5ede3" width="340px">
+    <mj-section background-color="#fffdf8" padding="20px">
+      <mj-column>
+        <mj-navbar
+          align="center"
+          hamburger="hamburger"
+          ico-align="center"
+          ico-color="#16353f"
+          ico-font-size="24px"
+          ico-line-height="24px"
+          ico-padding="8px"
+          ico-text-decoration="none"
+          padding="0px"
+        >
+          <mj-navbar-link color="#16353f" href="https://example.com/products">
+            Products
+          </mj-navbar-link>
+          <mj-navbar-link color="#16353f" href="https://example.com/pricing">
+            Pricing
+          </mj-navbar-link>
+          <mj-navbar-link color="#16353f" href="https://example.com/contact">
+            Contact
+          </mj-navbar-link>
+        </mj-navbar>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

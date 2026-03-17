@@ -1,0 +1,22 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-navbar align="left" padding="0px" />
+      <mj-navbar-link color="#173540" font-size="14px" letter-spacing="0.2px" text-transform="none" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section background-color="#fffdf8" padding="22px">
+      <mj-column>
+        <mj-navbar>
+          <mj-navbar-link href="https://example.com/account">
+            Account
+          </mj-navbar-link>
+          <mj-navbar-link color="#425d64" href="https://example.com/notifications">
+            Notifications
+          </mj-navbar-link>
+        </mj-navbar>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

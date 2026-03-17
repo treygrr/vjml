@@ -1,0 +1,16 @@
+<mjml lang="en">
+  <mj-body background-color="#f3ede4" width="340px">
+    <mj-section background-color="#fff8ef" padding="22px">
+      <mj-column>
+        <mj-navbar align="left" base-url="https://example.com/app" padding="0px">
+          <mj-navbar-link color="#28414c" href="/reports">
+            Reports
+          </mj-navbar-link>
+          <mj-navbar-link color="#28414c" href="/team/settings?mode=weekly" rel="nofollow">
+            Team settings
+          </mj-navbar-link>
+        </mj-navbar>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
