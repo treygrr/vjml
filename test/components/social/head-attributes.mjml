@@ -1,0 +1,22 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-social align="left" color="#173540" icon-size="24px" inner-padding="4px" padding="0px" />
+      <mj-social-element font-size="14px" line-height="20px" text-padding="0px 10px 0px 8px" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section background-color="#fffdf8" padding="20px">
+      <mj-column>
+        <mj-social>
+          <mj-social-element name="facebook" href="https://example.com/news">
+            Social defaults
+          </mj-social-element>
+          <mj-social-element color="#425d64" name="linkedin" href="https://example.com/news">
+            Explicit override
+          </mj-social-element>
+        </mj-social>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

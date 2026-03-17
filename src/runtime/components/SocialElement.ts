@@ -3,6 +3,7 @@ import { h } from 'vue'
 import { requireVjmlComponentMetadata } from '../internal/componentMetadata'
 import { renderVjmlContentNodes } from '../internal/content'
 import { createVjmlComponent } from '../internal/factory'
+import { compactStyleRecord } from '../internal/layout'
 import {
   mergeVjmlInheritedAttributes,
   useVjmlSocialContext,
@@ -119,6 +120,32 @@ function getSocialAttributes(attrs: Readonly<Record<string, string>>) {
   }
 }
 
+function resolveSocialElementInheritedAttrs(
+  attrs: Readonly<Record<string, string>>,
+  explicitAttrs: Readonly<Record<string, string>>,
+  inheritedAttrs: Readonly<Record<string, string>>,
+): Record<string, string> {
+  const resolvedAttrs = mergeVjmlInheritedAttributes(
+    attrs,
+    explicitAttrs,
+    inheritedAttrs,
+  )
+
+  for (const [attributeName, inheritedValue] of Object.entries(inheritedAttrs)) {
+    if (inheritedValue === undefined || explicitAttrs[attributeName] !== undefined) {
+      continue
+    }
+
+    const defaultValue = metadata.defaultAttributes[attributeName]
+
+    if (resolvedAttrs[attributeName] === defaultValue) {
+      resolvedAttrs[attributeName] = inheritedValue
+    }
+  }
+
+  return resolvedAttrs
+}
+
 export default createVjmlComponent(metadata, {
   name: 'VjmlSocialElement',
   setup() {
@@ -127,7 +154,7 @@ export default createVjmlComponent(metadata, {
     }
   },
   render({ attrs, content, explicitAttrs }, extra) {
-    const resolvedAttrs = mergeVjmlInheritedAttributes(
+    const resolvedAttrs = resolveSocialElementInheritedAttrs(
       attrs,
       explicitAttrs,
       extra.socialContext.inheritedAttrs,
@@ -136,14 +163,14 @@ export default createVjmlComponent(metadata, {
     const hasLink = Boolean(resolvedAttrs.href)
     const iconSize = socialAttrs['icon-size'] || resolvedAttrs['icon-size'] || '20px'
     const iconNode = h('td', {
-      style: {
+      style: compactStyleRecord({
         'padding': resolvedAttrs.padding,
         'padding-top': resolvedAttrs['padding-top'],
         'padding-right': resolvedAttrs['padding-right'],
         'padding-bottom': resolvedAttrs['padding-bottom'],
         'padding-left': resolvedAttrs['padding-left'],
         'vertical-align': resolvedAttrs['vertical-align'],
-      },
+      }),
     }, [
       h('table', {
         border: '0',

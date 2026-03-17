@@ -1,0 +1,23 @@
+<mjml lang="en">
+  <mj-body background-color="#f4efe7" width="340px">
+    <mj-section background-color="#fff8ef" padding="20px">
+      <mj-column>
+        <mj-social
+          align="left"
+          color="#173540"
+          icon-size="24px"
+          inner-padding="6px"
+          mode="vertical"
+          text-padding="0px 0px 0px 10px"
+        >
+          <mj-social-element name="instagram" href="https://example.com/gallery">
+            Instagram
+          </mj-social-element>
+          <mj-social-element icon-position="right" name="youtube" href="https://example.com/watch">
+            Watch now
+          </mj-social-element>
+        </mj-social>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
