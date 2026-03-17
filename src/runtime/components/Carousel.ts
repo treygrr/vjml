@@ -216,7 +216,7 @@ function getCarouselFallbackHtml(
 export default createVjmlComponent(metadata, {
   name: 'VjmlCarousel',
   setup({ bodyRenderContext }) {
-    const carouselId = createVjmlInteractiveId('mj-carousel')
+    const carouselId = createVjmlInteractiveId()
     const carouselContext = createVjmlCarouselContextState(carouselId)
 
     provideVjmlCarouselContext(carouselContext)

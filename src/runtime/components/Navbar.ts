@@ -4,7 +4,11 @@ import { requireVjmlComponentMetadata } from '../internal/componentMetadata'
 import { createVjmlComponent } from '../internal/factory'
 import { conditionalTag, msoConditionalTag } from '../internal/helpers/conditional'
 import { makeLowerBreakpoint } from '../internal/helpers/measurements'
-import { analyzeVjmlChildNodes, createVjmlStaticHtml } from '../internal/layout'
+import {
+  analyzeVjmlChildNodes,
+  createVjmlStaticHtml,
+  renderHtmlAttributes,
+} from '../internal/layout'
 import {
   createVjmlInteractiveId,
   createVjmlNavbarContextState,
@@ -12,6 +16,66 @@ import {
 } from '../internal/interactive'
 
 const metadata = requireVjmlComponentMetadata('mj-navbar')
+
+function renderHamburgerMarkup(
+  attrs: Readonly<Record<string, string>>,
+  hamburgerId: string,
+): string {
+  return [
+    msoConditionalTag(
+      `<input type="checkbox" id="${hamburgerId}" class="mj-menu-checkbox" style="display:none !important; max-height:0; visibility:hidden;" />`,
+      true,
+    ),
+    `<div${renderHtmlAttributes({
+      class: 'mj-menu-trigger',
+      style: {
+        'display': 'none',
+        'font-size': '0px',
+        'max-height': '0px',
+        'max-width': '0px',
+        'overflow': 'hidden',
+      },
+    })}>`,
+    `<label${renderHtmlAttributes({
+      align: attrs['ico-align'] || undefined,
+      class: 'mj-menu-label',
+      for: hamburgerId,
+      style: {
+        'display': 'block',
+        'cursor': 'pointer',
+        'mso-hide': 'all',
+        '-moz-user-select': 'none',
+        'user-select': 'none',
+        'color': attrs['ico-color'],
+        'font-size': attrs['ico-font-size'],
+        'font-family': attrs['ico-font-family'],
+        'text-transform': attrs['ico-text-transform'],
+        'text-decoration': attrs['ico-text-decoration'],
+        'line-height': attrs['ico-line-height'],
+        'padding': attrs['ico-padding'],
+        'padding-top': attrs['ico-padding-top'],
+        'padding-right': attrs['ico-padding-right'],
+        'padding-bottom': attrs['ico-padding-bottom'],
+        'padding-left': attrs['ico-padding-left'],
+      },
+    })}>`,
+    `<span${renderHtmlAttributes({
+      class: 'mj-menu-icon-open',
+      style: {
+        'mso-hide': 'all',
+      },
+    })}>${attrs['ico-open']}</span>`,
+    `<span${renderHtmlAttributes({
+      class: 'mj-menu-icon-close',
+      style: {
+        'display': 'none',
+        'mso-hide': 'all',
+      },
+    })}>${attrs['ico-close']}</span>`,
+    '</label>',
+    '</div>',
+  ].join('')
+}
 
 export default createVjmlComponent(metadata, {
   name: 'VjmlNavbar',
@@ -33,7 +97,7 @@ export default createVjmlComponent(metadata, {
     )
 
     const navbarContext = createVjmlNavbarContextState(
-      createVjmlInteractiveId('mj-navbar'),
+      createVjmlInteractiveId(),
     )
 
     provideVjmlNavbarContext(navbarContext)
@@ -49,66 +113,13 @@ export default createVjmlComponent(metadata, {
 
     return [
       attrs.hamburger === 'hamburger'
-        ? createVjmlStaticHtml(msoConditionalTag(
-            `<input type="checkbox" id="${extra.navbarContext.hamburgerId}" class="mj-menu-checkbox" style="display:none !important; max-height:0; visibility:hidden;" />`,
-            true,
+        ? createVjmlStaticHtml(renderHamburgerMarkup(
+            attrs,
+            extra.navbarContext.hamburgerId,
           ))
-        : '',
-      attrs.hamburger === 'hamburger'
-        ? h('div', {
-            class: 'mj-menu-trigger',
-            style: {
-              'display': 'none',
-              'font-size': '0px',
-              'max-height': '0px',
-              'max-width': '0px',
-              'overflow': 'hidden',
-            },
-          }, [
-            h('label', {
-              align: attrs['ico-align'] || undefined,
-              class: 'mj-menu-label',
-              for: extra.navbarContext.hamburgerId,
-              style: {
-                '-moz-user-select': 'none',
-                'color': attrs['ico-color'],
-                'cursor': 'pointer',
-                'display': 'block',
-                'font-family': attrs['ico-font-family'],
-                'font-size': attrs['ico-font-size'],
-                'line-height': attrs['ico-line-height'],
-                'mso-hide': 'all',
-                'padding': attrs['ico-padding'],
-                'padding-top': attrs['ico-padding-top'],
-                'padding-right': attrs['ico-padding-right'],
-                'padding-bottom': attrs['ico-padding-bottom'],
-                'padding-left': attrs['ico-padding-left'],
-                'text-decoration': attrs['ico-text-decoration'],
-                'text-transform': attrs['ico-text-transform'],
-                'userSelect': 'none',
-              },
-            }, [
-              h('span', {
-                class: 'mj-menu-icon-open',
-                style: {
-                  'mso-hide': 'all',
-                },
-                innerHTML: attrs['ico-open'],
-              }),
-              h('span', {
-                class: 'mj-menu-icon-close',
-                style: {
-                  'display': 'none',
-                  'mso-hide': 'all',
-                },
-                innerHTML: attrs['ico-close'],
-              }),
-            ]),
-          ])
         : null,
       h('div', {
         class: 'mj-inline-links',
-        style: '',
       }, [
         createVjmlStaticHtml(conditionalTag(
           `<table role="presentation" border="0" cellpadding="0" cellspacing="0" align="${attrs.align}"><tr>`,

@@ -173,6 +173,12 @@ export function mergeVjmlInheritedAttributes(
   return mergedAttrs
 }
 
-export function createVjmlInteractiveId(prefix: string): string {
-  return `${prefix}-${Math.random().toString(16).slice(2, 10)}`
+export function createVjmlInteractiveId(length = 16): string {
+  let id = ''
+
+  for (let index = 0; index < length; index += 1) {
+    id += Math.floor(Math.random() * 16).toString(16)
+  }
+
+  return id
 }

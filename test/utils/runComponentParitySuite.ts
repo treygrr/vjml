@@ -15,6 +15,47 @@ export interface ComponentParityVariant {
   name: string
 }
 
+function hashSeed(value: string): number {
+  let hash = 2166136261
+
+  for (const character of value) {
+    hash ^= character.charCodeAt(0)
+    hash = Math.imul(hash, 16777619)
+  }
+
+  return hash >>> 0
+}
+
+function createSeededRandom(seed: string): () => number {
+  let state = hashSeed(seed)
+
+  return () => {
+    state += 0x6D2B79F5
+
+    let mixed = Math.imul(state ^ (state >>> 15), 1 | state)
+
+    mixed ^= mixed + Math.imul(mixed ^ (mixed >>> 7), 61 | mixed)
+
+    return ((mixed ^ (mixed >>> 14)) >>> 0) / 4294967296
+  }
+}
+
+async function withDeterministicMathRandom<T>(
+  seed: string,
+  callback: () => T | Promise<T>,
+): Promise<T> {
+  const originalRandom = Math.random
+
+  Math.random = createSeededRandom(seed)
+
+  try {
+    return await callback()
+  }
+  finally {
+    Math.random = originalRandom
+  }
+}
+
 function ensureTrailingNewline(value: string): string {
   return value.endsWith('\n') ? value : `${value}\n`
 }
@@ -71,16 +112,22 @@ export function runComponentParitySuite(
 
   describe(`${componentName} HTML parity`, () => {
     it.each(variants)('$name matches official MJML output', async ({ component, mjml, name }) => {
-      const officialResult = mjml2html(mjml, {
-        filePath: variantDirectory,
-        keepComments: true,
-        minify: false,
-        validationLevel: 'strict',
+      const randomSeed = `${componentName}:${name}`
+      const officialResult = await withDeterministicMathRandom(randomSeed, () => {
+        return mjml2html(mjml, {
+          filePath: variantDirectory,
+          keepComments: true,
+          minify: false,
+          validationLevel: 'strict',
+        })
       })
 
       expect(officialResult.errors).toHaveLength(0)
 
-      const renderResult = await renderVjmlToHtml(component)
+      const renderResult = await withDeterministicMathRandom(
+        randomSeed,
+        () => renderVjmlToHtml(component),
+      )
       const renderErrors = renderResult.issues.filter(
         issue => issue.severity === 'error',
       )
