@@ -111,22 +111,26 @@ export default createVjmlComponent(metadata, {
 
     extra.navbarContext.baseUrl = attrs['base-url'] ?? null
 
+    const inlineLinksNode = h('div', {
+      class: 'mj-inline-links',
+    }, [
+      createVjmlStaticHtml(conditionalTag(
+        `<table role="presentation" border="0" cellpadding="0" cellspacing="0" align="${attrs.align}"><tr>`,
+      )),
+      ...childEntries.map(entry => entry.vnode),
+      createVjmlStaticHtml(conditionalTag('</tr></table>')),
+    ])
+
+    if (attrs.hamburger !== 'hamburger') {
+      return inlineLinksNode
+    }
+
     return [
-      attrs.hamburger === 'hamburger'
-        ? createVjmlStaticHtml(renderHamburgerMarkup(
-            attrs,
-            extra.navbarContext.hamburgerId,
-          ))
-        : null,
-      h('div', {
-        class: 'mj-inline-links',
-      }, [
-        createVjmlStaticHtml(conditionalTag(
-          `<table role="presentation" border="0" cellpadding="0" cellspacing="0" align="${attrs.align}"><tr>`,
-        )),
-        ...childEntries.map(entry => entry.vnode),
-        createVjmlStaticHtml(conditionalTag('</tr></table>')),
-      ]),
+      createVjmlStaticHtml(renderHamburgerMarkup(
+        attrs,
+        extra.navbarContext.hamburgerId,
+      )),
+      inlineLinksNode,
     ]
   },
 })
