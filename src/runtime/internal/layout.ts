@@ -31,6 +31,7 @@ export const DEFAULT_VJML_BODY_WIDTH = '600px'
 export interface VjmlLayoutContext {
   containerWidth: string
   gap: string
+  parentWidth: string
   preserveMobileWidth: boolean
 }
 
@@ -55,6 +56,7 @@ type HtmlAttributeValue = HtmlStyleValue | boolean | number | string | null | un
 const DEFAULT_LAYOUT_CONTEXT: VjmlLayoutContext = Object.freeze({
   containerWidth: DEFAULT_VJML_BODY_WIDTH,
   gap: '',
+  parentWidth: DEFAULT_VJML_BODY_WIDTH,
   preserveMobileWidth: false,
 })
 

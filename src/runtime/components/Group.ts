@@ -55,6 +55,7 @@ export default createVjmlComponent(metadata, {
 
     extra.layoutState.containerWidth = groupWidth
     extra.layoutState.gap = ''
+    extra.layoutState.parentWidth = extra.layoutContext.parentWidth
     extra.layoutState.preserveMobileWidth = true
 
     bodyRenderContext?.addMediaQuery(classInfo.className, classInfo.parsedWidth)

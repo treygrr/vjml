@@ -34,7 +34,7 @@ function range(length: number): number[] {
 
 function getThumbnailsWidth(
   explicitWidth: string | undefined,
-  containerWidth: string,
+  parentWidth: string,
   childrenLength: number,
 ): string {
   if (explicitWidth) {
@@ -45,7 +45,7 @@ function getThumbnailsWidth(
     return '0px'
   }
 
-  return `${Math.min(Number.parseInt(containerWidth, 10) / childrenLength, 110)}px`
+  return `${Math.min(Number.parseInt(parentWidth, 10) / childrenLength, 110)}px`
 }
 
 function getCarouselHeadStyle(
@@ -195,12 +195,16 @@ function getCarouselFallbackHtml(
       'max-width': '100%',
       'width': containerWidth,
     },
+  }, {
+    escapeAmpersand: false,
   })}>`
   const contentHtml = childAttrs.href
     ? `<a${renderHtmlAttributes({
         href: childAttrs.href,
         rel: childAttrs.rel,
-        target: childAttrs.target || '_blank',
+        target: '_blank',
+      }, {
+        escapeAmpersand: false,
       })}>${imageHtml}</a>`
     : imageHtml
 
@@ -211,6 +215,68 @@ function getCarouselFallbackHtml(
       childAttrs['css-class'],
     ].filter(Boolean).join(' ') || undefined,
   })}>${contentHtml}</div>`
+}
+
+function getCarouselRadioHtml(
+  carouselId: string,
+  index: number,
+): string {
+  return `<input${renderHtmlAttributes({
+    checked: index === 0 ? 'checked' : undefined,
+    class: [
+      'mj-carousel-radio',
+      `mj-carousel-${carouselId}-radio`,
+      `mj-carousel-${carouselId}-radio-${index + 1}`,
+    ].join(' '),
+    id: `mj-carousel-${carouselId}-radio-${index + 1}`,
+    name: `mj-carousel-radio-${carouselId}`,
+    style: {
+      'display': 'none',
+      'mso-hide': 'all',
+    },
+    type: 'radio',
+  })}>`
+}
+
+function getCarouselControlHtml(
+  carouselId: string,
+  direction: 'next' | 'previous',
+  iconSrc: string,
+  iconWidth: string,
+  childCount: number,
+): string {
+  return `<td${renderHtmlAttributes({
+    class: `mj-carousel-${carouselId}-icons-cell`,
+    style: {
+      'display': 'none',
+      'font-size': '0px',
+      'mso-hide': 'all',
+      'padding': '0px',
+    },
+  })}><div${renderHtmlAttributes({
+    class: `mj-carousel-${direction}-icons`,
+    style: {
+      'display': 'none',
+      'mso-hide': 'all',
+    },
+  })}>${range(childCount).map(index => {
+    return `<label${renderHtmlAttributes({
+      class: [
+        `mj-carousel-${direction}`,
+        `mj-carousel-${direction}-${index + 1}`,
+      ].join(' '),
+      for: `mj-carousel-${carouselId}-radio-${index + 1}`,
+    })}><img${renderHtmlAttributes({
+      alt: direction,
+      src: iconSrc,
+      style: {
+        'display': 'block',
+        'height': 'auto',
+        'width': iconWidth,
+      },
+      width: Number.parseInt(iconWidth, 10),
+    })}></label>`
+  }).join('')}</div></td>`
 }
 
 export default createVjmlComponent(metadata, {
@@ -231,7 +297,7 @@ export default createVjmlComponent(metadata, {
     const childEntries = analyzeVjmlChildNodes(content.childNodes)
     const thumbnailsWidth = getThumbnailsWidth(
       attrs['tb-width'],
-      extra.layoutContext.containerWidth,
+      extra.layoutContext.parentWidth,
       childEntries.length,
     )
 
@@ -254,7 +320,7 @@ export default createVjmlComponent(metadata, {
           ...attrs,
           'icon-width': attrs['icon-width'] ?? '44px',
           'tb-hover-border-color': attrs['tb-hover-border-color'] ?? '#fead0d',
-          'tb-selected-border-color': attrs['tb-selected-border-color'] ?? '#ccc',
+          'tb-selected-border-color': attrs['tb-selected-border-color'] ?? '#cccccc',
         },
       ),
     )
@@ -263,21 +329,12 @@ export default createVjmlComponent(metadata, {
       class: 'mj-carousel',
     }, [
       ...childEntries.map((entry) => {
-        return h('input', {
-          checked: entry.siblingContext.index === 0,
-          class: [
-            'mj-carousel-radio',
-            `mj-carousel-${extra.carouselContext.carouselId}-radio`,
-            `mj-carousel-${extra.carouselContext.carouselId}-radio-${entry.siblingContext.index + 1}`,
-          ].join(' '),
-          id: `mj-carousel-${extra.carouselContext.carouselId}-radio-${entry.siblingContext.index + 1}`,
-          name: `mj-carousel-radio-${extra.carouselContext.carouselId}`,
-          style: {
-            'display': 'none',
-            'mso-hide': 'all',
-          },
-          type: 'radio',
-        })
+        return createVjmlStaticHtml(
+          getCarouselRadioHtml(
+            extra.carouselContext.carouselId,
+            entry.siblingContext.index,
+          ),
+        )
       }),
       h('div', {
         class: `mj-carousel-content mj-carousel-${extra.carouselContext.carouselId}-content`,
@@ -345,40 +402,13 @@ export default createVjmlComponent(metadata, {
         }, [
           h('tbody', [
             h('tr', [
-              h('td', {
-                class: `mj-carousel-${extra.carouselContext.carouselId}-icons-cell`,
-                style: {
-                  'display': 'none',
-                  'font-size': '0px',
-                  'mso-hide': 'all',
-                  'padding': '0px',
-                },
-              }, [
-                h('div', {
-                  class: 'mj-carousel-previous-icons',
-                  style: {
-                    'display': 'none',
-                    'mso-hide': 'all',
-                  },
-                }, childEntries.map(entry => h('label', {
-                  class: [
-                    'mj-carousel-previous',
-                    `mj-carousel-previous-${entry.siblingContext.index + 1}`,
-                  ].join(' '),
-                  for: `mj-carousel-${extra.carouselContext.carouselId}-radio-${entry.siblingContext.index + 1}`,
-                }, [
-                  h('img', {
-                    alt: 'previous',
-                    src: attrs['left-icon'],
-                    style: {
-                      display: 'block',
-                      height: 'auto',
-                      width: attrs['icon-width'],
-                    },
-                    width: Number.parseInt(attrs['icon-width'] ?? '44px', 10),
-                  }),
-                ]))),
-              ]),
+              createVjmlStaticHtml(getCarouselControlHtml(
+                extra.carouselContext.carouselId,
+                'previous',
+                attrs['left-icon'] ?? 'https://i.imgur.com/xTh3hln.png',
+                attrs['icon-width'] ?? '44px',
+                childEntries.length,
+              )),
               h('td', {
                 style: {
                   padding: '0px',
@@ -388,40 +418,13 @@ export default createVjmlComponent(metadata, {
                   class: 'mj-carousel-images',
                 }, childEntries.map(entry => withVjmlSiblingContext(entry.vnode, entry.siblingContext))),
               ]),
-              h('td', {
-                class: `mj-carousel-${extra.carouselContext.carouselId}-icons-cell`,
-                style: {
-                  'display': 'none',
-                  'font-size': '0px',
-                  'mso-hide': 'all',
-                  'padding': '0px',
-                },
-              }, [
-                h('div', {
-                  class: 'mj-carousel-next-icons',
-                  style: {
-                    'display': 'none',
-                    'mso-hide': 'all',
-                  },
-                }, childEntries.map(entry => h('label', {
-                  class: [
-                    'mj-carousel-next',
-                    `mj-carousel-next-${entry.siblingContext.index + 1}`,
-                  ].join(' '),
-                  for: `mj-carousel-${extra.carouselContext.carouselId}-radio-${entry.siblingContext.index + 1}`,
-                }, [
-                  h('img', {
-                    alt: 'next',
-                    src: attrs['right-icon'],
-                    style: {
-                      display: 'block',
-                      height: 'auto',
-                      width: attrs['icon-width'],
-                    },
-                    width: Number.parseInt(attrs['icon-width'] ?? '44px', 10),
-                  }),
-                ]))),
-              ]),
+              createVjmlStaticHtml(getCarouselControlHtml(
+                extra.carouselContext.carouselId,
+                'next',
+                attrs['right-icon'] ?? 'https://i.imgur.com/os7o9kz.png',
+                attrs['icon-width'] ?? '44px',
+                childEntries.length,
+              )),
             ]),
           ]),
         ]),
@@ -439,13 +442,16 @@ export default createVjmlComponent(metadata, {
         )
       : null
 
-    return [
+    const renderedNodes = [
       createVjmlStaticHtml(startMsoNegationConditionalTag),
       browserMarkup,
       createVjmlStaticHtml(endNegationConditionalTag),
-      fallbackHtml
-        ? createVjmlStaticHtml(msoConditionalTag(fallbackHtml))
-        : '',
     ]
+
+    if (fallbackHtml) {
+      renderedNodes.push(createVjmlStaticHtml(msoConditionalTag(fallbackHtml)))
+    }
+
+    return renderedNodes
   },
 })

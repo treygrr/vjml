@@ -29,6 +29,7 @@ export default createVjmlComponent(metadata, {
     bodyRenderContext?.setBackgroundColor(attrs['background-color'] ?? '')
     extra.layoutState.containerWidth = attrs.width ?? '600px'
     extra.layoutState.gap = ''
+    extra.layoutState.parentWidth = attrs.width ?? '600px'
     extra.layoutState.preserveMobileWidth = false
 
     return h(

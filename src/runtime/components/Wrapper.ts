@@ -73,6 +73,7 @@ export default createVjmlComponent(metadata, {
 
     extra.layoutState.containerWidth = `${box}px`
     extra.layoutState.gap = attrs.gap ?? ''
+    extra.layoutState.parentWidth = extra.layoutContext.parentWidth
     extra.layoutState.preserveMobileWidth = false
 
     const wrappedChildren = childEntries.flatMap((entry) => {

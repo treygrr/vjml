@@ -1,12 +1,14 @@
-import { h } from 'vue'
-
 import { requireVjmlComponentMetadata } from '../internal/componentMetadata'
 import { createVjmlComponent } from '../internal/factory'
 import {
   mergeVjmlInheritedAttributes,
   useVjmlCarouselContext,
 } from '../internal/interactive'
-import { useVjmlSiblingContext } from '../internal/layout'
+import {
+  createVjmlStaticHtml,
+  renderHtmlAttributes,
+  useVjmlSiblingContext,
+} from '../internal/layout'
 
 const metadata = requireVjmlComponentMetadata('mj-carousel-image')
 
@@ -24,7 +26,7 @@ export default createVjmlComponent(metadata, {
       explicitAttrs,
       extra.carouselContext.inheritedAttrs,
     )
-    const imageNode = h('img', {
+    const imageHtml = `<img${renderHtmlAttributes({
       alt: resolvedAttrs.alt,
       border: '0',
       src: resolvedAttrs.src,
@@ -37,28 +39,29 @@ export default createVjmlComponent(metadata, {
       },
       title: resolvedAttrs.title,
       width: Number.parseInt(extra.carouselContext.containerWidth, 10),
-    })
+    })}>`
+    const contentHtml = resolvedAttrs.href
+      ? `<a${renderHtmlAttributes({
+          href: resolvedAttrs.href,
+          rel: resolvedAttrs.rel,
+          target: '_blank',
+        })}>${imageHtml}</a>`
+      : imageHtml
 
-    return h('div', {
-      class: [
-        'mj-carousel-image',
-        `mj-carousel-image-${extra.siblingContext.index + 1}`,
-        resolvedAttrs['css-class'],
-      ].filter(Boolean).join(' '),
-      style: extra.siblingContext.index === 0
-        ? undefined
-        : {
-            'display': 'none',
-            'mso-hide': 'all',
-          },
-    }, [
-      resolvedAttrs.href
-        ? h('a', {
-            href: resolvedAttrs.href,
-            rel: resolvedAttrs.rel,
-            target: resolvedAttrs.target || '_blank',
-          }, [imageNode])
-        : imageNode,
-    ])
+    return createVjmlStaticHtml(
+      `<div${renderHtmlAttributes({
+        class: [
+          'mj-carousel-image',
+          `mj-carousel-image-${extra.siblingContext.index + 1}`,
+          resolvedAttrs['css-class'],
+        ].filter(Boolean).join(' ') || undefined,
+        style: extra.siblingContext.index === 0
+          ? undefined
+          : {
+              'display': 'none',
+              'mso-hide': 'all',
+            },
+      })}>${contentHtml}</div>`,
+    )
   },
 })

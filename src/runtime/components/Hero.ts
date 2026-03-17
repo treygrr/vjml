@@ -146,6 +146,7 @@ export default createVjmlComponent(metadata, {
 
     extra.layoutState.containerWidth = currentContainerWidth
     extra.layoutState.gap = ''
+    extra.layoutState.parentWidth = extra.layoutContext.parentWidth
     extra.layoutState.preserveMobileWidth = false
 
     const contentNode = [
