@@ -1,0 +1,286 @@
+import { h } from 'vue'
+
+import { requireVjmlComponentMetadata } from '../internal/componentMetadata'
+import { createVjmlComponent } from '../internal/factory'
+import { conditionalTag } from '../internal/helpers/conditional'
+import {
+  analyzeVjmlChildNodes,
+  createVjmlLayoutState,
+  createVjmlStaticHtml,
+  getGroupContainerWidth,
+  getNormalizedVNodeAttributes,
+  getShorthandAttrValue,
+  provideVjmlLayoutContext,
+  renderHtmlAttributes,
+  useVjmlLayoutContext,
+  withVjmlSiblingContext,
+} from '../internal/layout'
+
+const metadata = requireVjmlComponentMetadata('mj-hero')
+
+function buildHeroBackground(attrs: Readonly<Record<string, string>>): string {
+  return [
+    attrs['background-color'],
+    attrs['background-url'] ? `url('${attrs['background-url']}')` : null,
+    attrs['background-url'] ? 'no-repeat' : null,
+    attrs['background-url']
+      ? `${attrs['background-position'] ?? 'center center'} / cover`
+      : null,
+  ].filter(Boolean).join(' ')
+}
+
+function getBackgroundRatio(attrs: Readonly<Record<string, string>>): number {
+  const backgroundHeight = Number.parseInt(attrs['background-height'] ?? '', 10)
+  const backgroundWidth = Number.parseInt(attrs['background-width'] ?? '', 10)
+
+  if (
+    Number.isNaN(backgroundHeight)
+    || Number.isNaN(backgroundWidth)
+    || backgroundWidth <= 0
+  ) {
+    return 0
+  }
+
+  return Math.round(backgroundHeight / backgroundWidth * 100)
+}
+
+function getHeroContentRows(childNodes: ReturnType<typeof analyzeVjmlChildNodes>) {
+  return childNodes.map((entry) => {
+    const childVNode = withVjmlSiblingContext(entry.vnode, entry.siblingContext)
+
+    if (entry.rawElement) {
+      return childVNode
+    }
+
+    const childAttrs = getNormalizedVNodeAttributes(entry.vnode)
+
+    return h('tr', [
+      h('td', {
+        align: childAttrs.align || undefined,
+        background: childAttrs['container-background-color'] || undefined,
+        class: childAttrs['css-class'] || undefined,
+        style: {
+          'background': childAttrs['container-background-color'],
+          'font-size': '0px',
+          'padding': childAttrs.padding,
+          'padding-top': childAttrs['padding-top'],
+          'padding-right': childAttrs['padding-right'],
+          'padding-bottom': childAttrs['padding-bottom'],
+          'padding-left': childAttrs['padding-left'],
+          'word-break': 'break-word',
+        },
+      }, [childVNode]),
+    ])
+  })
+}
+
+export default createVjmlComponent(metadata, {
+  name: 'VjmlHero',
+  setup() {
+    const layoutState = createVjmlLayoutState()
+
+    provideVjmlLayoutContext(layoutState)
+
+    return {
+      layoutContext: useVjmlLayoutContext(),
+      layoutState,
+    }
+  },
+  render({ attrs, content }, extra) {
+    const currentContainerWidth = getGroupContainerWidth(
+      attrs,
+      extra.layoutContext.containerWidth,
+      1,
+    )
+    const heroBackground = buildHeroBackground(attrs)
+    const childEntries = analyzeVjmlChildNodes(content.childNodes)
+    const backgroundRatio = getBackgroundRatio(attrs)
+    const backgroundWidth = attrs['background-width'] || currentContainerWidth
+    const fixedHeight = Math.max(
+      0,
+      Number.parseInt(attrs.height ?? '0', 10)
+      - getShorthandAttrValue(attrs, 'padding', 'top')
+      - getShorthandAttrValue(attrs, 'padding', 'bottom'),
+    )
+
+    extra.layoutState.containerWidth = currentContainerWidth
+    extra.layoutState.gap = ''
+    extra.layoutState.preserveMobileWidth = false
+
+    const contentNode = [
+      createVjmlStaticHtml(conditionalTag(
+        `<table${renderHtmlAttributes({
+          align: attrs.align,
+          border: '0',
+          cellpadding: '0',
+          cellspacing: '0',
+          style: `width:${currentContainerWidth};`,
+          width: currentContainerWidth.replace(/px$/, ''),
+        })}><tr><td${renderHtmlAttributes({
+          style: {
+            'background-color': attrs['inner-background-color'],
+            'padding': attrs['inner-padding'],
+            'padding-top': attrs['inner-padding-top'],
+            'padding-left': attrs['inner-padding-left'],
+            'padding-right': attrs['inner-padding-right'],
+            'padding-bottom': attrs['inner-padding-bottom'],
+          },
+        })}>`,
+      )),
+      h('div', {
+        align: attrs.align || undefined,
+        class: 'mj-hero-content',
+        style: {
+          'background-color': attrs['inner-background-color'],
+          'float': attrs.align,
+          'margin': '0px auto',
+          'width': attrs.width,
+        },
+      }, [
+        h('table', {
+          border: '0',
+          cellpadding: '0',
+          cellspacing: '0',
+          role: 'presentation',
+          style: {
+            margin: '0px',
+            width: '100%',
+          },
+        }, [
+          h('tbody', [
+            h('tr', [
+              h('td', [
+                h('table', {
+                  border: '0',
+                  cellpadding: '0',
+                  cellspacing: '0',
+                  role: 'presentation',
+                  style: {
+                    margin: '0px',
+                    width: '100%',
+                  },
+                }, [
+                  h('tbody', getHeroContentRows(childEntries)),
+                ]),
+              ]),
+            ]),
+          ]),
+        ]),
+      ]),
+      createVjmlStaticHtml(conditionalTag('</td></tr></table>')),
+    ]
+
+    const modeCells = attrs.mode === 'fluid-height'
+      ? [
+          h('td', {
+            style: {
+              'mso-padding-bottom-alt': '0',
+              'padding-bottom': `${backgroundRatio}%`,
+              'width': '0.01%',
+            },
+          }),
+          h('td', {
+            background: attrs['background-url'] || undefined,
+            style: {
+              'background': heroBackground,
+              'background-position': attrs['background-position'],
+              'background-repeat': 'no-repeat',
+              'border-radius': attrs['border-radius'],
+              'padding': attrs.padding,
+              'padding-top': attrs['padding-top'],
+              'padding-left': attrs['padding-left'],
+              'padding-right': attrs['padding-right'],
+              'padding-bottom': attrs['padding-bottom'],
+              'vertical-align': attrs['vertical-align'],
+            },
+          }, contentNode),
+          h('td', {
+            style: {
+              'mso-padding-bottom-alt': '0',
+              'padding-bottom': `${backgroundRatio}%`,
+              'width': '0.01%',
+            },
+          }),
+        ]
+      : [
+          h('td', {
+            background: attrs['background-url'] || undefined,
+            height: fixedHeight || undefined,
+            style: {
+              'background': heroBackground,
+              'background-position': attrs['background-position'],
+              'background-repeat': 'no-repeat',
+              'border-radius': attrs['border-radius'],
+              'height': fixedHeight ? `${fixedHeight}px` : undefined,
+              'padding': attrs.padding,
+              'padding-top': attrs['padding-top'],
+              'padding-left': attrs['padding-left'],
+              'padding-right': attrs['padding-right'],
+              'padding-bottom': attrs['padding-bottom'],
+              'vertical-align': attrs['vertical-align'],
+            },
+          }, contentNode),
+        ]
+
+    return [
+      createVjmlStaticHtml(conditionalTag(
+        `<table${renderHtmlAttributes({
+          align: 'center',
+          border: '0',
+          cellpadding: '0',
+          cellspacing: '0',
+          role: 'presentation',
+          style: {
+            width: currentContainerWidth,
+          },
+          width: Number.parseInt(currentContainerWidth, 10),
+        })}><tr><td${renderHtmlAttributes({
+          style: {
+            'font-size': 0,
+            'line-height': 0,
+            'mso-line-height-rule': 'exactly',
+          },
+        })}><v:image${renderHtmlAttributes({
+          'src': attrs['background-url'],
+          'style': {
+            'border': '0',
+            'height': attrs['background-height'],
+            'mso-position-horizontal': 'center',
+            'position': 'absolute',
+            'top': 0,
+            'width': backgroundWidth,
+            'z-index': '-3',
+          },
+          'xmlns:v': 'urn:schemas-microsoft-com:vml',
+        })} />`,
+      )),
+      h('div', {
+        align: attrs.align || undefined,
+        class: attrs['css-class'] || undefined,
+        style: {
+          'margin': '0 auto',
+          'max-width': currentContainerWidth,
+        },
+      }, [
+        h('table', {
+          border: '0',
+          cellpadding: '0',
+          cellspacing: '0',
+          role: 'presentation',
+          style: {
+            width: '100%',
+          },
+        }, [
+          h('tbody', [
+            h('tr', {
+              style: {
+                'vertical-align': 'top',
+              },
+            }, modeCells),
+          ]),
+        ]),
+      ]),
+      createVjmlStaticHtml(conditionalTag('</td></tr></table>')),
+    ]
+  },
+})
