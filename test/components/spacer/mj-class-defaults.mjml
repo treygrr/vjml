@@ -1,0 +1,34 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-class
+        container-background-color="#fff2e7"
+        height="22px"
+        name="copy-gap"
+        padding="8px 0px"
+      />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section background-color="#fffdf8" padding="20px">
+      <mj-column>
+        <mj-text color="#173540" font-size="15px" font-weight="700" line-height="22px">
+          Class-backed spacer
+        </mj-text>
+
+        <mj-spacer mj-class="copy-gap" />
+
+        <mj-text color="#425d64" font-size="14px" line-height="22px">
+          The first spacer uses only the shared class defaults.
+        </mj-text>
+
+        <mj-spacer
+          container-background-color="#fbe8d7"
+          height="32px"
+          mj-class="copy-gap"
+          padding="12px 0px 4px"
+        />
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

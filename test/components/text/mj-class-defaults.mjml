@@ -1,0 +1,32 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-class
+        color="#425d64"
+        font-size="14px"
+        line-height="22px"
+        name="body-copy"
+        padding="0px"
+      />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section background-color="#fffdf8" padding="20px">
+      <mj-column>
+        <mj-text mj-class="body-copy">
+          Class-backed copy should inherit the shared typography defaults.
+        </mj-text>
+
+        <mj-text
+          color="#173540"
+          font-weight="700"
+          line-height="24px"
+          mj-class="body-copy"
+          padding-top="12px"
+        >
+          Explicit values should override the merged text class defaults.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

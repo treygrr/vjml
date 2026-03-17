@@ -1,0 +1,30 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-column background-color="#fff8ef" padding="12px" vertical-align="middle" />
+      <mj-text color="#173540" font-size="14px" line-height="20px" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#f3efe8" width="340px">
+    <mj-section padding="14px">
+      <mj-column width="50%">
+        <mj-text font-weight="700">
+          Inherited defaults
+        </mj-text>
+        <mj-spacer height="8px" />
+        <mj-text>
+          Column background and padding come from head attributes.
+        </mj-text>
+      </mj-column>
+      <mj-column background-color="#f1e2d1" padding="16px 12px" width="50%">
+        <mj-text font-weight="700">
+          Explicit override
+        </mj-text>
+        <mj-spacer height="8px" />
+        <mj-text>
+          Direct column attributes should override the inherited background and spacing.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

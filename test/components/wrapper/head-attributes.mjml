@@ -1,0 +1,27 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-wrapper background-color="#fff7ed" padding="12px 0px" />
+      <mj-section background-color="#ffffff" padding="16px" />
+      <mj-text color="#173540" font-size="14px" line-height="22px" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-wrapper>
+      <mj-section>
+        <mj-column>
+          <mj-text font-weight="700">
+            Wrapper defaults
+          </mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-section background-color="#fdf2e8">
+        <mj-column>
+          <mj-text>
+            Wrapper and section defaults from head attributes should apply before explicit overrides.
+          </mj-text>
+        </mj-column>
+      </mj-section>
+    </mj-wrapper>
+  </mj-body>
+</mjml>

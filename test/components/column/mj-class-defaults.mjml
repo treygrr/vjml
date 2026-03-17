@@ -1,0 +1,35 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-class
+        background-color="#16353f"
+        border-radius="18px"
+        name="feature-column"
+        padding="16px"
+        vertical-align="middle"
+      />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section padding="16px">
+      <mj-column mj-class="feature-column" width="50%">
+        <mj-text color="#fff5e8" font-size="16px" font-weight="700" line-height="24px">
+          Class-backed column
+        </mj-text>
+        <mj-spacer height="8px" />
+        <mj-text color="#d9e3df" font-size="14px" line-height="22px">
+          This column relies on the shared class defaults.
+        </mj-text>
+      </mj-column>
+      <mj-column background-color="#31566b" mj-class="feature-column" padding="10px 16px 16px" width="50%">
+        <mj-text color="#fff5e8" font-size="16px" font-weight="700" line-height="24px">
+          Override after merge
+        </mj-text>
+        <mj-spacer height="8px" />
+        <mj-text color="#d9e3df" font-size="14px" line-height="22px">
+          Explicit column values should still win after the class is applied.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

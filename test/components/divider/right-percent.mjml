@@ -1,0 +1,24 @@
+<mjml lang="en">
+  <mj-body background-color="#f4efe7" width="340px">
+    <mj-section background-color="#fff8ef" padding="20px">
+      <mj-column>
+        <mj-text color="#173540" font-size="15px" line-height="24px">
+          A right-aligned divider should respect percent widths after padding is removed.
+        </mj-text>
+
+        <mj-divider
+          align="right"
+          border-color="#173540"
+          border-style="dashed"
+          border-width="3px"
+          padding="18px 32px 10px 12px"
+          width="55%"
+        />
+
+        <mj-text color="#425d64" font-size="14px" line-height="22px">
+          Outlook should receive a pixel width equivalent for the percentage rule.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

@@ -1,0 +1,22 @@
+<mjml lang="en">
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section background-color="#fffdf8" padding="20px">
+      <mj-column>
+        <mj-text color="#173540" font-size="15px" font-weight="700" line-height="22px">
+          Decorated spacer
+        </mj-text>
+
+        <mj-spacer
+          border-top="1px solid #db7636"
+          container-background-color="#fff2e7"
+          height="24px"
+          padding="12px 0px"
+        />
+
+        <mj-text color="#425d64" font-size="14px" line-height="22px">
+          Borders, padding, and container background should wrap the spacer cleanly.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

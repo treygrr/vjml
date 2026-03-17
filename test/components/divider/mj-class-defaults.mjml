@@ -1,0 +1,38 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-class
+        align="center"
+        border-color="#db7636"
+        border-style="dotted"
+        border-width="2px"
+        name="section-rule"
+        padding="16px 0px"
+        width="72%"
+      />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section background-color="#fffdf8" padding="20px">
+      <mj-column>
+        <mj-text color="#173540" font-size="15px" font-weight="700" line-height="22px">
+          Class-backed divider
+        </mj-text>
+
+        <mj-divider mj-class="section-rule" />
+
+        <mj-text color="#425d64" font-size="14px" line-height="22px">
+          The first divider uses the shared class defaults without extra attributes.
+        </mj-text>
+
+        <mj-divider
+          align="right"
+          border-color="#173540"
+          mj-class="section-rule"
+          padding="20px 0px 0px"
+          width="48%"
+        />
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

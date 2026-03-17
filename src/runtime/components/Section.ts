@@ -91,7 +91,8 @@ export default createVjmlComponent(metadata, {
     const fullWidth = attrs['full-width'] === 'full-width'
     const hasBorderRadius = hasNonEmptyAttribute(attrs['border-radius'])
     const inheritedGap = extra.layoutContext.gap
-    const hasInheritedGap = inheritedGap.length > 0 && !extra.siblingContext.first
+    const hasInheritedGap = inheritedGap.length > 0
+    const hasInheritedGapOffset = hasInheritedGap && !extra.siblingContext.first
     const backgroundStyle = buildBackgroundStyle(attrs)
     const { box } = getBoxWidths(extra.layoutContext.containerWidth, attrs)
     const childEntries = analyzeVjmlChildNodes(content.childNodes)
@@ -188,7 +189,7 @@ export default createVjmlComponent(metadata, {
           ...(fullWidth ? {} : backgroundStyle),
           'border-radius': attrs['border-radius'],
           'margin': '0px auto',
-          'margin-top': hasInheritedGap ? inheritedGap : undefined,
+          'margin-top': hasInheritedGapOffset ? inheritedGap : undefined,
           'max-width': extra.layoutContext.containerWidth,
           'overflow': hasBorderRadius ? 'hidden' : undefined,
         }),
@@ -215,7 +216,7 @@ export default createVjmlComponent(metadata, {
         class: suffixCssClasses(attrs['css-class'], 'outlook') || undefined,
         role: 'presentation',
         style: {
-          'padding-top': hasInheritedGap ? inheritedGap : undefined,
+          'padding-top': hasInheritedGapOffset ? inheritedGap : undefined,
           'width': extra.layoutContext.containerWidth,
         },
         width: Number.parseInt(extra.layoutContext.containerWidth, 10),

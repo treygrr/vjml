@@ -63,7 +63,7 @@ export default createVjmlComponent(metadata, {
       cellpadding: '0',
       cellspacing: '0',
       role: 'presentation',
-      style: {
+      style: compactStyleRecord({
         ...(hasColumnGutter(attrs)
           ? {
               'background-color': attrs['inner-background-color'],
@@ -89,7 +89,7 @@ export default createVjmlComponent(metadata, {
         )
           ? 'separate'
           : undefined,
-      },
+      }),
       width: '100%',
     }, [
       h('tbody', childEntries.map((entry) => {
@@ -161,10 +161,13 @@ export default createVjmlComponent(metadata, {
             h('tbody', [
               h('tr', [
                 h('td', {
-                  style: {
+                  style: compactStyleRecord({
                     'background-color': attrs['background-color'],
                     'border': attrs.border,
                     'border-bottom': attrs['border-bottom'],
+                    'border-collapse': hasNonEmptyAttribute(attrs['border-radius'])
+                      ? 'separate'
+                      : undefined,
                     'border-left': attrs['border-left'],
                     'border-radius': attrs['border-radius'],
                     'border-right': attrs['border-right'],
@@ -174,7 +177,8 @@ export default createVjmlComponent(metadata, {
                     'padding-left': attrs['padding-left'],
                     'padding-right': attrs['padding-right'],
                     'padding-top': attrs['padding-top'],
-                  },
+                    'vertical-align': attrs['vertical-align'],
+                  }),
                 }, [columnContent]),
               ]),
             ]),

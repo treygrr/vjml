@@ -1,0 +1,21 @@
+<mjml lang="en">
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section background-color="#fffdf8" padding="20px">
+      <mj-column>
+        <mj-text
+          align="center"
+          background-color="#fff2e7"
+          color="#173540"
+          container-background-color="#fbe8d7"
+          font-size="18px"
+          font-weight="700"
+          height="80px"
+          line-height="24px"
+          padding="16px 18px"
+        >
+          Pinned headline
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

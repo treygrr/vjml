@@ -1,0 +1,24 @@
+<mjml lang="en">
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section background-color="#fffdf8" padding="20px">
+      <mj-column>
+        <mj-text color="#173540" font-size="15px" font-weight="700" line-height="22px">
+          Fixed-width divider
+        </mj-text>
+
+        <mj-divider
+          align="left"
+          border-color="#31566b"
+          border-width="1px"
+          container-background-color="#fbe8d7"
+          padding="14px 24px 18px 0px"
+          width="120px"
+        />
+
+        <mj-text color="#425d64" font-size="14px" line-height="22px">
+          Pixel widths should flow through unchanged and keep the left alignment margin.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

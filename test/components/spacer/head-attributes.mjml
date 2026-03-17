@@ -1,0 +1,28 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-spacer height="18px" padding="6px 0px" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section background-color="#fffdf8" padding="20px">
+      <mj-column>
+        <mj-text color="#173540" font-size="15px" font-weight="700" line-height="22px">
+          Shared spacer defaults
+        </mj-text>
+
+        <mj-spacer />
+
+        <mj-text color="#425d64" font-size="14px" line-height="22px">
+          Head attributes should provide the base spacer height and padding.
+        </mj-text>
+
+        <mj-spacer height="30px" padding-top="14px" />
+
+        <mj-text color="#425d64" font-size="14px" line-height="22px">
+          Explicit spacer values should still override the inherited defaults.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

@@ -1,0 +1,23 @@
+<mjml lang="en">
+  <mj-body background-color="#eef3f8" width="340px">
+    <mj-section background-color="#ffffff" padding="20px">
+      <mj-column vertical-align="middle" width="200px">
+        <mj-text color="#173540" font-size="18px" font-weight="700" line-height="24px">
+          Primary summary
+        </mj-text>
+      </mj-column>
+      <mj-column vertical-align="middle" width="100px">
+        <mj-button
+          align="right"
+          background-color="#16353f"
+          color="#fffaf2"
+          href="https://example.com/open"
+          inner-padding="10px 14px"
+          padding="0px"
+        >
+          Open
+        </mj-button>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

@@ -1,0 +1,27 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-class background-color="#fff2e7" border-radius="20px" name="card-wrap" padding="16px 0px" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-wrapper mj-class="card-wrap">
+      <mj-section background-color="#fffdf8">
+        <mj-column>
+          <mj-text color="#173540" font-size="16px" font-weight="700" line-height="24px">
+            Class-backed wrapper
+          </mj-text>
+        </mj-column>
+      </mj-section>
+    </mj-wrapper>
+    <mj-wrapper background-color="#fbe8d7" mj-class="card-wrap" padding="8px 0px 16px">
+      <mj-section background-color="#fff8ef">
+        <mj-column>
+          <mj-text color="#173540" font-size="14px" line-height="22px">
+            Explicit wrapper values should override the shared class defaults.
+          </mj-text>
+        </mj-column>
+      </mj-section>
+    </mj-wrapper>
+  </mj-body>
+</mjml>

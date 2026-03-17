@@ -67,7 +67,7 @@ export default createVjmlComponent(metadata, {
         },
       }),
       createVjmlStaticHtml(conditionalTag(
-        `<table align="${attrs.align}" border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-top:${[attrs['border-style'], attrs['border-width'], attrs['border-color']].join(' ')};font-size:1px;margin:${margin};width:${getOutlookWidth(width, extra.layoutContext.containerWidth, attrs)};" width="${getOutlookWidth(width, extra.layoutContext.containerWidth, attrs)}"><tr><td style="height:0;line-height:0;">&nbsp;</td></tr></table>`,
+        `<table align="${attrs.align}" border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-top:${[attrs['border-style'], attrs['border-width'], attrs['border-color']].join(' ')};font-size:1px;margin:${margin};width:${getOutlookWidth(width, extra.layoutContext.containerWidth, attrs)};" width="${getOutlookWidth(width, extra.layoutContext.containerWidth, attrs)}"><tr><td style="height:0;line-height:0;"> &nbsp; </td></tr></table>`,
       )),
     ]
   },

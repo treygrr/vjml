@@ -1,0 +1,23 @@
+<mjml lang="en">
+  <mj-body background-color="#f5efe7" width="340px">
+    <mj-section padding="16px">
+      <mj-column
+        background-color="#ece3d7"
+        border="1px solid #d2c5b6"
+        border-radius="18px"
+        inner-background-color="#fffaf2"
+        inner-border="1px solid #eadfce"
+        inner-border-radius="12px"
+        padding="14px"
+      >
+        <mj-text color="#173540" font-size="17px" font-weight="700" line-height="24px">
+          Padded card column
+        </mj-text>
+        <mj-spacer height="8px" />
+        <mj-text color="#4e5d63" font-size="14px" line-height="22px">
+          Padding on the column should create an outer shell and an inner content table.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

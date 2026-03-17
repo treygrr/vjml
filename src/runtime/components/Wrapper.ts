@@ -115,7 +115,7 @@ export default createVjmlComponent(metadata, {
       h('tbody', [
         h('tr', [
           h('td', {
-            style: {
+            style: compactStyleRecord({
               'border': attrs.border,
               'border-bottom': attrs['border-bottom'],
               'border-left': attrs['border-left'],
@@ -130,7 +130,7 @@ export default createVjmlComponent(metadata, {
               'padding-right': attrs['padding-right'],
               'padding-top': attrs['padding-top'],
               'text-align': attrs['text-align'],
-            },
+            }),
           }, [
             createVjmlStaticHtml(conditionalTag(
               '<table role="presentation" border="0" cellpadding="0" cellspacing="0">',

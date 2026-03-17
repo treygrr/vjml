@@ -1,0 +1,17 @@
+<mjml lang="en">
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section background-color="#fffdf8" padding="22px">
+      <mj-column>
+        <mj-text color="#173540" font-size="16px" font-weight="700">
+          Above the divider
+        </mj-text>
+
+        <mj-divider border-color="#db7636" border-width="2px" padding="16px 0px" />
+
+        <mj-text color="#425d64" font-size="14px" line-height="22px">
+          Below the divider
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

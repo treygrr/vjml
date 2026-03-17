@@ -1,0 +1,17 @@
+<mjml lang="en">
+  <mj-body background-color="#f4efe7" width="340px">
+    <mj-section background-color="#fff8ef" padding="20px">
+      <mj-column>
+        <mj-text color="#173540" font-size="15px" line-height="22px">
+          This spacer relies on the component default height.
+        </mj-text>
+
+        <mj-spacer />
+
+        <mj-text color="#425d64" font-size="14px" line-height="22px">
+          The default should match MJML without any explicit attributes.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
