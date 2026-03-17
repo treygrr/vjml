@@ -1,0 +1,15 @@
+<mjml lang="en">
+  <mj-body background-color="#eef3f8" width="340px">
+    <mj-section background-color="#16353f" full-width="full-width" padding="24px 0px">
+      <mj-column>
+        <mj-text color="#fff5e8" font-size="18px" font-weight="700" line-height="24px">
+          Full width announcement
+        </mj-text>
+        <mj-spacer height="10px" />
+        <mj-text color="#d9e3df" font-size="14px" line-height="22px">
+          This section spans the body background while keeping the content constrained.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

@@ -1,0 +1,24 @@
+<mjml lang="en">
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section padding="16px">
+      <mj-column background-color="#16353f" width="50%">
+        <mj-text color="#fff5e8" font-size="18px" font-weight="700" line-height="24px">
+          Left column
+        </mj-text>
+        <mj-spacer height="10px" />
+        <mj-text color="#e4ece8" font-size="14px" line-height="22px">
+          Columns split a section into sibling cells.
+        </mj-text>
+      </mj-column>
+      <mj-column background-color="#f2dfcf" width="50%">
+        <mj-text color="#173540" font-size="18px" font-weight="700" line-height="24px">
+          Right column
+        </mj-text>
+        <mj-spacer height="10px" />
+        <mj-text color="#425d64" font-size="14px" line-height="22px">
+          Use them for multi-column summaries and comparison blocks.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

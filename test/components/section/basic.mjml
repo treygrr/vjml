@@ -1,0 +1,15 @@
+<mjml lang="en">
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section background-color="#16353f" padding="24px">
+      <mj-column>
+        <mj-text color="#fff5e8" font-size="18px" font-weight="700" line-height="24px">
+          Section as a layout row
+        </mj-text>
+        <mj-spacer height="10px" />
+        <mj-text color="#d9e3df" font-size="14px" line-height="22px">
+          Sections create horizontal bands in the email and usually contain one or more columns.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

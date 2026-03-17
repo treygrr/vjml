@@ -1,0 +1,31 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-class background-color="#fff8ef" name="card-row" padding="20px" text-align="left" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section mj-class="card-row">
+      <mj-column>
+        <mj-text color="#173540" font-size="16px" font-weight="700" line-height="24px">
+          Default section class
+        </mj-text>
+        <mj-spacer height="10px" />
+        <mj-text color="#425d64" font-size="14px" line-height="22px">
+          The first section relies entirely on its class defaults.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#f1e2d1" mj-class="card-row" padding="12px 20px 20px">
+      <mj-column>
+        <mj-text color="#173540" font-size="16px" font-weight="700" line-height="24px">
+          Override after class merge
+        </mj-text>
+        <mj-spacer height="10px" />
+        <mj-text color="#425d64" font-size="14px" line-height="22px">
+          Explicit section attributes should win after the class defaults are applied.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

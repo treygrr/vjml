@@ -1,0 +1,22 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-section background-color="#ffffff" padding="18px 20px" text-align="left" />
+      <mj-column background-color="#efe7db" />
+      <mj-text color="#173540" font-size="15px" line-height="22px" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#f3efe8" width="340px">
+    <mj-section>
+      <mj-column>
+        <mj-text font-weight="700">
+          Shared section defaults
+        </mj-text>
+        <mj-spacer height="8px" />
+        <mj-text>
+          Attribute inheritance should apply the row background, padding, and left alignment.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
