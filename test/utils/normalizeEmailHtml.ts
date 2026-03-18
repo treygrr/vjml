@@ -361,6 +361,38 @@ function normalizeInlineStyle(value: string): string {
     .join(';')
 }
 
+function normalizeEmailRootAriaLabel(documentNode: Document): void {
+  const titleText = normalizeWhitespace(documentNode.querySelector('title')?.textContent ?? '')
+
+  if (titleText.length === 0) {
+    return
+  }
+
+  const emailRoot = documentNode.querySelector('div[role="article"][aria-roledescription="email"]')
+
+  if (!emailRoot) {
+    return
+  }
+
+  const allowedAttributeNames = new Set([
+    'aria-label',
+    'aria-roledescription',
+    'class',
+    'dir',
+    'lang',
+    'role',
+    'style',
+  ])
+
+  Array.from(emailRoot.attributes).forEach((attribute) => {
+    if (!allowedAttributeNames.has(attribute.name.toLowerCase())) {
+      emailRoot.removeAttribute(attribute.name)
+    }
+  })
+
+  emailRoot.setAttribute('aria-label', titleText)
+}
+
 function serializeNode(node: Node, parentTagName = ''): string {
   if (node.nodeType === Node.ELEMENT_NODE) {
     const element = node as Element
@@ -410,6 +442,8 @@ export function normalizeEmailHtml(value: string): string {
     value.replace(/^\s*<!doctype html>\s*/i, ''),
     'text/html',
   )
+
+  normalizeEmailRootAriaLabel(documentNode)
 
   return `<!doctype html>${serializeNode(documentNode.documentElement)}`
 }
