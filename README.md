@@ -115,7 +115,7 @@ Inside a setup context, `useVjmlRenderer()` is also available from `vjml` and me
 ## Important entries
 
 - `src/index.ts` exports the plugin, components, metadata, and shared utilities.
-- `src/runtime/components` contains the VJML component implementations.
+- `src/runtime/components` contains the copied VJML component implementations.
 - `src/runtime/internal` contains the browser render pipeline and document/context helpers.
 - `src/metadata.ts` and `src/metadata.generated.ts` provide component metadata used by validation and serialization.
 - `playground/App.vue` is the development catalog that imports and exercises the library.
