@@ -15,7 +15,8 @@
     "better-sqlite3": "^12.5.0",
     "nuxt": "^4.4.2",
     "tailwindcss": "^4.2.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vue-router": "^5.0.3"
   },
   "devDependencies": {
     "@iconify-json/lucide": "^1.2.98"
