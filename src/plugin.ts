@@ -11,7 +11,9 @@ import {
   type VjmlRuntimeConfigInput,
 } from './vjml'
 
-export interface VjmlPluginOptions extends VjmlRuntimeConfigInput {}
+export interface VjmlPluginOptions extends VjmlRuntimeConfigInput {
+  includeUnprefixedAliases?: boolean
+}
 
 type VjmlRuntimeComponentExportName = keyof typeof VJML_RUNTIME_COMPONENT_EXPORTS
 
@@ -50,7 +52,11 @@ export const VjmlPlugin: Plugin<VjmlPluginOptions> = {
     const config = resolveVjmlPluginConfig(options)
 
     app.provide(VJML_RUNTIME_CONFIG_KEY, config)
-    registerVjmlComponents(app, config.prefix)
+    registerVjmlComponents(
+      app,
+      config.prefix,
+      options.includeUnprefixedAliases ?? false,
+    )
     app.config.globalProperties.$vjml = config
   },
 }

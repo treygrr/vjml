@@ -42,6 +42,7 @@ import VjmlPlugin from 'vjml'
 
 createApp(App)
 	.use(VjmlPlugin, {
+		includeUnprefixedAliases: true,
 		prefix: 'VJ',
 		render: {
 			validation: 'warn',
@@ -49,6 +50,8 @@ createApp(App)
 	})
 	.mount('#app')
 ```
+
+Set `includeUnprefixedAliases: true` when you want both `VJText`-style prefixed names and bare aliases such as `Text` or `Mjml` available from the plugin.
 
 You can also import components directly:
 

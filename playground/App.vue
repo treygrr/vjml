@@ -1,80 +1,53 @@
-<script setup lang="ts">
-import { VjmlRenderFrame, toVjmlComponentName, useVjml } from 'vjml'
-import {
-  catalogSections,
-  importSnippet,
-  installSnippet,
-  renderSnippet,
-} from './catalog/examples'
-
-const config = useVjml()
-</script>
-
 <template>
-  <main class="shell">
-    <section class="panel setup-grid">
-      <article class="setup-card">
-        <p class="panel-label">Import Catalog</p>
-        <h2>Everything exported by the main entry</h2>
-        <pre><code>{{ importSnippet }}</code></pre>
-      </article>
+	<main class="shell">
+		<section class="panel catalog-section">
+			<div class="section-copy">
+				<p class="panel-label">Playground</p>
+				<h1>Welcome to the VJML playground</h1>
+				<p class="section-description">
+					This page keeps the setup intentionally small. The preview below is rendered entirely through the plugin, and it mixes bare tags like <code>&lt;Mjml&gt;</code> with prefixed aliases like <code>&lt;VJText&gt;</code> and <code>&lt;VJButton&gt;</code>.
+				</p>
+			</div>
 
-      <article class="setup-card">
-        <p class="panel-label">Plugin Install</p>
-        <h2>Register prefixed globals</h2>
-        <pre><code>{{ installSnippet }}</code></pre>
-      </article>
+			<div class="example-preview">
+				<Mjml lang="en">
+					<Body width="340px" background-color="#f6efe7">
+						<Section background-color="#fffaf2" padding="24px">
+							<Column>
+								<Text color="#db7636" font-size="12px" font-weight="700" letter-spacing="0.18em" text-transform="uppercase">
+									Plugin check
+								</Text>
 
-      <article class="setup-card">
-        <p class="panel-label">Renderer Usage</p>
-        <h2>Render a Vue email component to HTML</h2>
-        <pre><code>{{ renderSnippet }}</code></pre>
-      </article>
-    </section>
+								<Spacer height="10px" />
 
-    <nav class="section-nav panel" aria-label="Component sections">
-      <a
-        v-for="section in catalogSections"
-        :key="section.id"
-        class="section-link"
-        :href="`#${section.id}`"
-      >
-        <span>{{ section.title }}</span>
-        <strong>{{ section.examples.length }}</strong>
-      </a>
-    </nav>
+								<VJText color="#173540" font-size="22px" font-weight="700" line-height="28px">
+									Welcome to the preview workspace
+								</VJText>
 
-    <section
-      v-for="section in catalogSections"
-      :id="section.id"
-      :key="section.id"
-      class="panel catalog-section"
-    >
-      <div class="section-copy">
-        <p class="panel-label">{{ section.title }}</p>
-        <h2>{{ section.title }}</h2>
-        <p class="section-description">{{ section.description }}</p>
-      </div>
+								<Spacer height="10px" />
 
-      <div class="catalog-grid">
-        <article v-for="example in section.examples" :key="example.id" class="catalog-card">
-          <div class="card-top">
-            <div>
-              <p class="component-tag">{{ example.tag }}</p>
-              <h3>{{ example.name }}</h3>
-            </div>
-            <span class="component-global">&lt;{{ toVjmlComponentName(example.tag, config.prefix) }}&gt;</span>
-          </div>
+								<Text color="#425d64" font-size="14px" line-height="22px">
+									The plugin is configured to register both unprefixed and <code>VJ</code>-prefixed component aliases, so the playground can verify both paths in one place.
+								</Text>
 
-          <p class="component-summary">{{ example.summary }}</p>
+								<Spacer height="16px" />
 
-          <div class="example-preview">
-            <VjmlRenderFrame :component="example.component" />
-          </div>
-
-          <pre><code>{{ example.source }}</code></pre>
-        </article>
-      </div>
-    </section>
-  </main>
+								<VJButton
+									align="left"
+									background-color="#16353f"
+									border-radius="999px"
+									color="#fffaf2"
+									href="https://example.com/docs"
+									inner-padding="10px 16px"
+								>
+									Open documentation
+								</VJButton>
+							</Column>
+						</Section>
+					</Body>
+				</Mjml>
+			</div>
+		</section>
+	</main>
 </template>
+

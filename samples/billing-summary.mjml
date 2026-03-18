@@ -1,0 +1,38 @@
+<mjml lang='en'>
+  <mj-head>
+    <mj-title>Billing summary</mj-title>
+    <mj-raw>
+      <meta name='x-billing-state' content='due-soon' />
+      <style type='text/css'>.invoice-note div { color: #db7636; font-weight: 700; }</style>
+    </mj-raw>
+  </mj-head>
+  <mj-body background-color='#f7efe4' width='340px'>
+    <mj-section background-color='#fffdf8' padding='22px'>
+      <mj-column>
+        <mj-text color='#173540' font-size='20px' font-weight='700' line-height='26px'>
+          Billing summary
+        </mj-text>
+        <mj-spacer height='10px' />
+        <mj-table cellpadding='6' cellspacing='0' color='#173540' font-size='14px' padding='0px' role='presentation' width='100%'>
+          <tr><td><strong>Plan</strong></td><td>Pro annual</td></tr>
+          <tr><td><strong>Status</strong></td><td>Active</td></tr>
+          <tr><td><strong>Renewal</strong></td><td>May 27</td></tr>
+          <tr><td><strong>Seats</strong></td><td>12</td></tr>
+        </mj-table>
+        <mj-divider border-color='#d9c5ad' border-width='1px' padding='14px 0px' />
+        <mj-text css-class='invoice-note'>Payment method expires in 7 days.</mj-text>
+        <mj-spacer height='10px' />
+        <mj-button
+          align='left'
+          background-color='#16353f'
+          border-radius='999px'
+          color='#fffaf2'
+          href='https://example.com/billing'
+          inner-padding='10px 16px'
+        >
+          Update billing
+        </mj-button>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

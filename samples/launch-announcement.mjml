@@ -1,0 +1,59 @@
+<mjml lang='en'>
+  <mj-head>
+    <mj-title>Launch week update</mj-title>
+    <mj-preview>The new preview workspace is live with email-safe rendering.</mj-preview>
+    <mj-font name='Lora' href='https://fonts.googleapis.com/css?family=Lora:400,700' />
+    <mj-style inline='inline'>
+      div[role='article'] {
+        border: 2px solid #d1b18d !important;
+      }
+    </mj-style>
+  </mj-head>
+  <mj-body background-color='#f6efe7' width='340px'>
+    <mj-hero
+      background-color='#16353f'
+      background-height='240px'
+      background-url='https://dummyimage.com/960x420/16353f/fffaf2.png&text=Launch+Week'
+      background-width='340px'
+      inner-padding='22px'
+      mode='fluid-height'
+      padding='0px'
+      vertical-align='top'
+    >
+      <mj-text color='#fff5e8' font-family='Lora, Georgia, serif' font-size='26px' font-weight='700' line-height='32px'>
+        Launch week is live
+      </mj-text>
+      <mj-spacer height='10px' />
+      <mj-text color='#e8d9ca' font-size='14px' line-height='22px'>
+        Preview the ported component library in a real email shell and compare the HTML against official MJML.
+      </mj-text>
+      <mj-spacer height='14px' />
+      <mj-button
+        align='left'
+        background-color='#db7636'
+        border-radius='999px'
+        color='#fffaf2'
+        href='https://example.com/workspace'
+        inner-padding='10px 16px'
+      >
+        Open workspace
+      </mj-button>
+    </mj-hero>
+    <mj-section background-color='#fff9f1' padding='18px 22px 24px'>
+      <mj-column>
+        <mj-text color='#173540' font-size='15px' font-weight='700' line-height='22px'>
+          Follow the rollout
+        </mj-text>
+        <mj-spacer height='8px' />
+        <mj-social align='left' icon-size='20px' mode='horizontal' padding='0px'>
+          <mj-social-element name='github' href='https://example.com/github'>
+            GitHub
+          </mj-social-element>
+          <mj-social-element name='linkedin' href='https://example.com/changelog'>
+            Changelog
+          </mj-social-element>
+        </mj-social>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

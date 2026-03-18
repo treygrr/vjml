@@ -1,0 +1,45 @@
+<mjml lang='en'>
+  <mj-raw position='file-start'><!-- support-template-start --></mj-raw>
+  <mj-head>
+    <mj-preview>Answers to the most common setup questions.</mj-preview>
+  </mj-head>
+  <mj-body background-color='#f4ede4' width='340px'>
+    <mj-section background-color='#fff9f1' padding='22px'>
+      <mj-column>
+        <mj-text color='#173540' font-size='22px' font-weight='700' line-height='28px'>
+          Support checklist
+        </mj-text>
+        <mj-spacer height='8px' />
+        <mj-text color='#425d64' font-size='14px' line-height='22px'>
+          Start with the quick answers below, then open the full guide for the remaining edge cases.
+        </mj-text>
+        <mj-spacer height='14px' />
+        <mj-accordion>
+          <mj-accordion-element>
+            <mj-accordion-title>Where do parity snapshots get written?</mj-accordion-title>
+            <mj-accordion-text>
+              Each sample writes raw and normalized MJML and VJML output into the samples snapshots folder.
+            </mj-accordion-text>
+          </mj-accordion-element>
+          <mj-accordion-element>
+            <mj-accordion-title>How do I preview the rendered email?</mj-accordion-title>
+            <mj-accordion-text>
+              Use the playground for visual checks and the parity suite for exact HTML comparison.
+            </mj-accordion-text>
+          </mj-accordion-element>
+        </mj-accordion>
+        <mj-spacer height='14px' />
+        <mj-button
+          align='left'
+          background-color='#db7636'
+          border-radius='999px'
+          color='#fffaf2'
+          href='https://example.com/help'
+          inner-padding='10px 16px'
+        >
+          Open help center
+        </mj-button>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

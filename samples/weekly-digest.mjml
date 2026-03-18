@@ -1,0 +1,57 @@
+<mjml lang='en'>
+  <mj-head>
+    <mj-attributes>
+      <mj-all color='#425d64' font-size='14px' line-height='22px' />
+      <mj-navbar align='left' padding='0px' />
+      <mj-navbar-link color='#173540' padding='12px 8px' text-transform='none' />
+      <mj-class name='eyebrow' color='#db7636' font-size='12px' font-weight='700' letter-spacing='0.18em' text-transform='uppercase' />
+      <mj-class name='card-title' color='#173540' font-size='18px' font-weight='700' line-height='24px' />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color='#f7efe4' width='340px'>
+    <mj-wrapper background-color='#fffaf2' padding='16px 0'>
+      <mj-section padding='0px 22px 10px'>
+        <mj-column>
+          <mj-navbar>
+            <mj-navbar-link href='https://example.com/overview'>Overview</mj-navbar-link>
+            <mj-navbar-link href='https://example.com/issues'>Issues</mj-navbar-link>
+            <mj-navbar-link href='https://example.com/usage'>Usage</mj-navbar-link>
+          </mj-navbar>
+        </mj-column>
+      </mj-section>
+      <mj-section padding='0px 22px 18px'>
+        <mj-group>
+          <mj-column width='50%' padding='0px 8px 0px 0px'>
+            <mj-text mj-class='eyebrow'>Feature</mj-text>
+            <mj-text mj-class='card-title'>Rendered previews</mj-text>
+            <mj-spacer height='8px' />
+            <mj-image alt='Preview frame' padding='0px' src='https://dummyimage.com/240x140/16353f/fffaf2.png&text=Preview' width='140px' />
+          </mj-column>
+          <mj-column width='50%' padding='0px 0px 0px 8px'>
+            <mj-text mj-class='eyebrow'>Update</mj-text>
+            <mj-text mj-class='card-title'>Test snapshots</mj-text>
+            <mj-spacer height='8px' />
+            <mj-image alt='Snapshot diff' padding='0px' src='https://dummyimage.com/240x140/db7636/fffaf2.png&text=Snapshots' width='140px' />
+          </mj-column>
+        </mj-group>
+      </mj-section>
+      <mj-section background-color='#fff5ea' padding='14px 22px 22px'>
+        <mj-column>
+          <mj-text mj-class='eyebrow'>Ship faster</mj-text>
+          <mj-text mj-class='card-title'>Reusable layout primitives are now parity-tested in the browser.</mj-text>
+          <mj-spacer height='10px' />
+          <mj-button
+            align='left'
+            background-color='#16353f'
+            border-radius='999px'
+            color='#fffaf2'
+            href='https://example.com/changelog'
+            inner-padding='10px 16px'
+          >
+            See changelog
+          </mj-button>
+        </mj-column>
+      </mj-section>
+    </mj-wrapper>
+  </mj-body>
+</mjml>

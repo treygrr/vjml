@@ -5,6 +5,7 @@ import VjmlPlugin from 'vjml'
 
 createApp(App)
 	.use(VjmlPlugin, {
+		includeUnprefixedAliases: true,
 		prefix: 'VJ',
 		render: {
 			validation: 'warn',
