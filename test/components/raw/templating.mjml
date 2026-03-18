@@ -1,0 +1,19 @@
+<mjml lang="en">
+  <mj-body background-color="#f7efe5" width="340px">
+    <mj-raw>
+      <!-- htmlmin:ignore -->
+      {% if customer.score < 5 %}
+      <!-- htmlmin:ignore -->
+    </mj-raw>
+    <mj-section background-color="#fff8ef" padding="22px">
+      <mj-column>
+        <mj-text color="#173540" font-size="18px" font-weight="700" line-height="24px">
+          Templating wrapper
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-raw>
+      {% endif %}
+    </mj-raw>
+  </mj-body>
+</mjml>

@@ -1,0 +1,16 @@
+<mjml lang="en">
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-raw>
+      <div style="max-width:340px;margin:0 auto 12px;padding:14px;border-radius:16px;background:#173540;color:#fffaf2;font-weight:700;line-height:22px;">
+        <span style="color:#fffaf2">Injected raw HTML</span>
+      </div>
+    </mj-raw>
+    <mj-section background-color="#fffdf8" padding="22px">
+      <mj-column>
+        <mj-text color="#425d64" font-size="14px" line-height="22px">
+          Use Raw for markup you want to pass through without component wrapping.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

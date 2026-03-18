@@ -230,6 +230,12 @@ export function collectVjmlHeadFromVNodes(
         }
         continue
       }
+      case 'mj-raw':
+        headCollectionContext.add(
+          'headRaw',
+          getResolvedVNodeContent(vnode, getVjmlVNodeTextContent(vnode)),
+        )
+        continue
       case 'mj-preview':
         headCollectionContext.add(
           'preview',
