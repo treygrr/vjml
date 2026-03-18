@@ -29,7 +29,7 @@ The docs are organized around the parts you will actually reach for when buildin
 - getting started with the plugin and direct imports
 - rendering to browser previews or raw HTML
 - global styling, fonts, selectors, and head content
-- grouped pages for the main non-leaf components
+- individual reference pages for every component in the sidebar
 - full sample emails you can inspect in Vue and MJML form
 
 ## Featured sample

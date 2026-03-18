@@ -109,40 +109,50 @@ const source = computed(() => {
 </script>
 
 <template>
-  <article class="sample-showcase">
-    <header class="sample-header">
-      <h3>{{ sample.title }}</h3>
-      <p class="sample-copy">{{ sample.description }}</p>
+  <UCard class="not-prose overflow-hidden border-0 shadow-lg shadow-slate-950/5 ring-1 ring-slate-200/80">
+    <template #header>
+      <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div class="space-y-2">
+          <div class="flex flex-wrap gap-2">
+            <UBadge color="primary" variant="subtle">Sample</UBadge>
+            <UBadge color="neutral" variant="soft">{{ sample.title }}</UBadge>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold tracking-tight text-slate-900">{{ sample.title }}</h3>
+            <p class="mt-2 max-w-3xl text-sm leading-6 text-slate-600">{{ sample.description }}</p>
+          </div>
+        </div>
 
-      <div class="sample-tabs">
-        <button
-          class="sample-tab"
-          :class="{ '-active': activeTab === 'preview' }"
-          type="button"
-          @click="activeTab = 'preview'"
-        >
-          Preview
-        </button>
-        <button
-          class="sample-tab"
-          :class="{ '-active': activeTab === 'vue' }"
-          type="button"
-          @click="activeTab = 'vue'"
-        >
-          Vue
-        </button>
-        <button
-          class="sample-tab"
-          :class="{ '-active': activeTab === 'mjml' }"
-          type="button"
-          @click="activeTab = 'mjml'"
-        >
-          MJML
-        </button>
+        <div class="flex flex-wrap gap-2">
+          <UButton
+            :color="activeTab === 'preview' ? 'primary' : 'neutral'"
+            :variant="activeTab === 'preview' ? 'solid' : 'soft'"
+            size="sm"
+            @click="activeTab = 'preview'"
+          >
+            Preview
+          </UButton>
+          <UButton
+            :color="activeTab === 'vue' ? 'primary' : 'neutral'"
+            :variant="activeTab === 'vue' ? 'solid' : 'soft'"
+            size="sm"
+            @click="activeTab = 'vue'"
+          >
+            Vue
+          </UButton>
+          <UButton
+            :color="activeTab === 'mjml' ? 'primary' : 'neutral'"
+            :variant="activeTab === 'mjml' ? 'solid' : 'soft'"
+            size="sm"
+            @click="activeTab = 'mjml'"
+          >
+            MJML
+          </UButton>
+        </div>
       </div>
-    </header>
+    </template>
 
-    <div class="sample-panel" v-if="activeTab === 'preview'">
+    <div v-if="activeTab === 'preview'" class="rounded-3xl border border-slate-200/80 bg-linear-to-b from-white to-orange-50/60 p-4">
       <div class="sample-preview-frame">
         <VjmlRenderFrame
           :component="sample.component"
@@ -152,8 +162,8 @@ const source = computed(() => {
       </div>
     </div>
 
-    <div class="sample-panel" v-else>
+    <div v-else>
       <pre class="sample-code"><code>{{ source }}</code></pre>
     </div>
-  </article>
+  </UCard>
 </template>

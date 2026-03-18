@@ -42,12 +42,14 @@
     "vue": "^3.5.0"
   },
   "devDependencies": {
+    "@nuxt/ui": "^4.5.1",
     "@types/mjml": "^4.7.4",
     "@types/node": "^24.12.0",
     "@vitejs/plugin-vue": "^6.0.5",
     "@vue/tsconfig": "^0.9.0",
     "jsdom": "^29.0.0",
     "mjml": "^4.18.0",
+    "tailwindcss": "^4.2.1",
     "typescript": "~5.9.3",
     "vite": "^8.0.0",
     "vitepress": "^1.6.4",

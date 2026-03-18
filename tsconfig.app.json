@@ -5,6 +5,9 @@
     "types": ["vite/client"],
     "baseUrl": ".",
     "paths": {
+      "@samples/*": ["./test/samples/*"],
+      "@src/*": ["./src/*"],
+      "#build/ui/*": ["./node_modules/.nuxt-ui/ui/*"],
       "vjml": ["./src/index.ts"]
     },
 
@@ -17,6 +20,10 @@
     "noUncheckedSideEffectImports": true
   },
   "include": [
+    "auto-imports.d.ts",
+    "components.d.ts",
+    "docs/.vitepress/theme/**/*.ts",
+    "docs/.vitepress/theme/**/*.vue",
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
