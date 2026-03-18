@@ -5,7 +5,7 @@ import viteConfig from './vite.config'
 export default mergeConfig(viteConfig, defineConfig({
   test: {
     environment: 'jsdom',
-    include: ['test/**/*.test.ts', 'samples/**/*.test.ts'],
+    include: ['test/**/*.test.ts'],
     restoreMocks: true,
   },
 }))

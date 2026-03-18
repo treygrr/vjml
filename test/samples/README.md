@@ -8,4 +8,4 @@ Five end-to-end email fixtures live here as paired `.mjml` and `.vue` files.
 - `billing-summary`: head `mj-raw`, table output, divider, and summary CTA.
 - `support-update`: root `file-start` raw content, preview text, accordion content, and CTA.
 
-Run `vitest run samples/parity.test.ts` to generate parity snapshots under `samples/snapshots`.
+Run `vitest run test/samples/parity.test.ts` to generate parity snapshots under `test/samples/snapshots`.

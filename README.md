@@ -14,6 +14,7 @@ This package now contains:
 ## Repository layout
 
 - `src` contains the publishable component library and is the only code compiled into `dist`.
+- `test` contains the component parity suites, shared test utilities, and end-to-end sample email fixtures.
 - `playground` contains the local development app used for previewing and testing the library.
 - The playground imports the library through the local `vjml` source alias, so it exercises the same public entry surface a consumer would use.
 

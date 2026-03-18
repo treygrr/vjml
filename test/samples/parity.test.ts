@@ -1,5 +1,5 @@
-import type { ComponentParityVariant } from '../test/utils/runComponentParitySuite'
-import { runComponentParitySuite } from '../test/utils/runComponentParitySuite'
+import type { ComponentParityVariant } from '../utils/runComponentParitySuite'
+import { runComponentParitySuite } from '../utils/runComponentParitySuite'
 
 import billingSummaryComponent from './billing-summary.vue'
 import billingSummaryMjml from './billing-summary.mjml?raw'
@@ -40,4 +40,4 @@ const sampleVariants: ComponentParityVariant[] = [
   },
 ]
 
-runComponentParitySuite('samples', 'samples', sampleVariants)
+runComponentParitySuite('samples', 'test/samples', sampleVariants)
