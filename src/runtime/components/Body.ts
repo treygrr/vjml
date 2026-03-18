@@ -4,6 +4,7 @@ import { getVjmlComponentMetadata } from '../../metadata'
 
 import { createVjmlComponent } from '../internal/factory'
 import {
+  createVjmlStaticHtml,
   createVjmlLayoutState,
   provideVjmlLayoutContext,
 } from '../internal/layout'
@@ -32,20 +33,30 @@ export default createVjmlComponent(metadata, {
     extra.layoutState.parentWidth = attrs.width ?? '600px'
     extra.layoutState.preserveMobileWidth = false
 
-    return h(
-      'div',
-      {
-        'aria-label': documentContext?.state.title || undefined,
-        'aria-roledescription': 'email',
-        'class': attrs['css-class'] || undefined,
-        'dir': documentContext?.state.dir || undefined,
-        'lang': documentContext?.state.lang || undefined,
-        'role': 'article',
-        'style': attrs['background-color']
-          ? { backgroundColor: attrs['background-color'] }
-          : undefined,
-      },
-      content.childNodes,
-    )
+    const bodyWrapperAttributes = [
+      documentContext?.state.title
+        ? ` aria-label="${documentContext.state.title}"`
+        : '',
+      ' aria-roledescription="email"',
+      attrs['css-class']
+        ? ` class="${attrs['css-class']}"`
+        : '',
+      documentContext?.state.dir
+        ? ` dir="${documentContext.state.dir}"`
+        : '',
+      documentContext?.state.lang
+        ? ` lang="${documentContext.state.lang}"`
+        : '',
+      ' role="article"',
+      attrs['background-color']
+        ? ` style="background-color:${attrs['background-color']};"`
+        : '',
+    ].join('')
+
+    return [
+      createVjmlStaticHtml(`<div${bodyWrapperAttributes}>`),
+      ...content.childNodes,
+      createVjmlStaticHtml('</div>'),
+    ]
   },
 })
