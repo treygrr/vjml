@@ -71,7 +71,7 @@ function formatValue(value: unknown): string {
         </div>
       </dl>
 
-      <ComponentExamplePanel :tag="tag" />
+      <ComponentExamplePanel :key="tag" :tag="tag" />
     </section>
 
     <section class="space-y-6 border-t border-default pt-6" aria-labelledby="component-placement-rules">

@@ -60,8 +60,14 @@ const fixtureByTag: Record<string, ExampleFixture> = {
 }
 
 const componentModules = import.meta.glob('../../../test/components/**/*.vue')
-const vjmlSourceModules = import.meta.glob('../../../test/components/**/*.vue?raw')
-const mjmlSourceModules = import.meta.glob('../../../test/components/**/*.mjml?raw')
+const vjmlSourceModules = import.meta.glob('../../../test/components/**/*.vue', {
+  import: 'default',
+  query: '?raw',
+})
+const mjmlSourceModules = import.meta.glob('../../../test/components/**/*.mjml', {
+  import: 'default',
+  query: '?raw',
+})
 
 const sourceTab = ref<SourceTab>('vjml')
 const previewComponent = shallowRef<Component | null>(null)
@@ -101,16 +107,8 @@ function toDefaultExport<T>(value: T | { default: T }): T {
   return (value as { default?: T }).default ?? (value as T)
 }
 
-function toVueComponentKey(fixturePath: string) {
-  return `../../../test/components/${fixturePath}.vue`
-}
-
-function toVjmlSourceKey(fixturePath: string) {
-  return `../../../test/components/${fixturePath}.vue?raw`
-}
-
-function toMjmlSourceKey(fixturePath: string) {
-  return `../../../test/components/${fixturePath}.mjml?raw`
+function toFixtureKey(fixturePath: string, extension: 'vue' | 'mjml') {
+  return `../../../test/components/${fixturePath}.${extension}`
 }
 
 async function loadExampleFixture() {
@@ -128,9 +126,9 @@ async function loadExampleFixture() {
     return
   }
 
-  const componentLoader = componentModules[toVueComponentKey(fixture.fixturePath)]
-  const vjmlLoader = vjmlSourceModules[toVjmlSourceKey(fixture.fixturePath)]
-  const mjmlLoader = mjmlSourceModules[toMjmlSourceKey(fixture.fixturePath)]
+  const componentLoader = componentModules[toFixtureKey(fixture.fixturePath, 'vue')]
+  const vjmlLoader = vjmlSourceModules[toFixtureKey(fixture.fixturePath, 'vue')]
+  const mjmlLoader = mjmlSourceModules[toFixtureKey(fixture.fixturePath, 'mjml')]
 
   if (!componentLoader || !vjmlLoader || !mjmlLoader) {
     previewComponent.value = null
