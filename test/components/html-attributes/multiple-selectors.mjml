@@ -1,0 +1,26 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-html-attributes>
+      <mj-selector path=".headline div">
+        <mj-html-attribute name="data-role">headline</mj-html-attribute>
+      </mj-selector>
+      <mj-selector path=".detail div">
+        <mj-html-attribute name="data-role">detail</mj-html-attribute>
+        <mj-html-attribute name="data-track">secondary-copy</mj-html-attribute>
+      </mj-selector>
+    </mj-html-attributes>
+  </mj-head>
+  <mj-body background-color="#f4ede4" width="340px">
+    <mj-section background-color="#fff9f1" padding="22px">
+      <mj-column>
+        <mj-text css-class="headline" color="#173540" font-size="18px" font-weight="700" line-height="24px">
+          Multiple selector paths
+        </mj-text>
+        <mj-spacer height="8px" />
+        <mj-text css-class="detail" color="#425d64" font-size="14px" line-height="22px">
+          Different selectors can stamp different attribute payloads onto different rendered nodes in the same message.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

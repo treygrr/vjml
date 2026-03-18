@@ -1,0 +1,25 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-html-attributes>
+      <mj-selector path="div[role='article']">
+        <mj-html-attribute name="data-campaign">spring-brief</mj-html-attribute>
+      </mj-selector>
+      <mj-selector path=".body-note div">
+        <mj-html-attribute name="data-scope">inner-copy</mj-html-attribute>
+      </mj-selector>
+    </mj-html-attributes>
+  </mj-head>
+  <mj-body background-color="#f3ede5" width="340px">
+    <mj-section background-color="#fff8f0" padding="22px">
+      <mj-column>
+        <mj-text color="#173540" font-size="18px" font-weight="700" line-height="24px">
+          Root article selector
+        </mj-text>
+        <mj-spacer height="8px" />
+        <mj-text css-class="body-note" color="#425d64" font-size="14px" line-height="22px">
+          Selectors can target the body wrapper as well as inner rendered descendants.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

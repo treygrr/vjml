@@ -1,0 +1,23 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-html-attributes>
+      <mj-selector path=".summary div">
+        <mj-html-attribute name="aria-label">Primary &quot;summary&quot;</mj-html-attribute>
+        <mj-html-attribute name="data-state">ready</mj-html-attribute>
+      </mj-selector>
+    </mj-html-attributes>
+  </mj-head>
+  <mj-body background-color="#f6efe7" width="340px">
+    <mj-section background-color="#fff8ef" padding="22px">
+      <mj-column>
+        <mj-text css-class="summary" color="#173540" font-size="17px" font-weight="700" line-height="24px">
+          Multiple attributes
+        </mj-text>
+        <mj-spacer height="8px" />
+        <mj-text color="#425d64" font-size="14px" line-height="22px">
+          A single selector can attach multiple HTML attributes to the same rendered node.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

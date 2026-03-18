@@ -1,0 +1,23 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-all color="#6b7280" font-size="14px" line-height="22px" />
+      <mj-text color="#173540" font-size="15px" />
+      <mj-class name="accent" color="#db7636" font-weight="700" />
+      <mj-class name="caps" letter-spacing="0.12em" text-transform="uppercase" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body width="340px" background-color="#f4ede4">
+    <mj-section background-color="#fff9f1" padding="22px">
+      <mj-column>
+        <mj-text mj-class="accent">
+          Class values override tag and global defaults.
+        </mj-text>
+        <mj-spacer height="8px" />
+        <mj-text color="#31566b" font-size="16px" mj-class="accent caps">
+          Explicit values still win while other class attributes merge in.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

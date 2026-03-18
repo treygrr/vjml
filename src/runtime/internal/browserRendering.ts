@@ -199,16 +199,6 @@ function collectDocumentContextIssues(
     )
   }
 
-  if (documentState.inlineStyle.length > 0) {
-    issues.push(
-      createValidationIssue(
-        'inline-style-not-implemented',
-        'Inline head styles are collected, but the current pipeline does not yet inline CSS into the rendered document.',
-        'warning',
-      ),
-    )
-  }
-
   return issues
 }
 

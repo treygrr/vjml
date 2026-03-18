@@ -1,0 +1,20 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-all color="#425d64" font-size="15px" line-height="22px" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body width="340px" background-color="#f7efe4">
+    <mj-section background-color="#fffdf8" padding="22px">
+      <mj-column>
+        <mj-text>
+          All applies shared defaults.
+        </mj-text>
+        <mj-spacer height="8px" />
+        <mj-text>
+          This body copy inherits the font size, color, and line height declared by the All component.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

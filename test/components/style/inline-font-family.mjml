@@ -1,0 +1,26 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-font
+      href="https://fonts.googleapis.com/css?family=Lora:400,700"
+      name="Lora"
+    />
+    <mj-style inline="inline">
+      .custom-font div {
+        font-family:Lora, Georgia, serif !important;
+      }
+    </mj-style>
+  </mj-head>
+  <mj-body width="340px" background-color="#f3ede5">
+    <mj-section background-color="#fff8f0" padding="22px">
+      <mj-column>
+        <mj-text css-class="custom-font" color="#173540" font-size="18px" font-weight="700" line-height="24px">
+          Inline font family
+        </mj-text>
+        <mj-spacer height="8px" />
+        <mj-text color="#425d64" font-size="14px" line-height="22px">
+          Font imports should still be emitted when the custom family only appears in inline stylesheet rules.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

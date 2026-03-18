@@ -1,0 +1,26 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-all color="#425d64" font-size="14px" line-height="22px" />
+      <mj-text color="#173540" font-weight="700" />
+      <mj-button
+        background-color="#16353f"
+        color="#fff8ef"
+        inner-padding="10px 18px"
+      />
+    </mj-attributes>
+  </mj-head>
+  <mj-body width="340px" background-color="#f6efe7">
+    <mj-section background-color="#fff8ef" padding="22px">
+      <mj-column>
+        <mj-text>
+          Tag defaults stay scoped.
+        </mj-text>
+        <mj-spacer height="8px" />
+        <mj-button href="https://example.com/review">
+          Review plan
+        </mj-button>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

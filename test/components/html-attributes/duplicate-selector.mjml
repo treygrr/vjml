@@ -1,0 +1,25 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-html-attributes>
+      <mj-selector path=".merge-target div">
+        <mj-html-attribute name="data-first">alpha</mj-html-attribute>
+      </mj-selector>
+      <mj-selector path=".merge-target div">
+        <mj-html-attribute name="data-second">beta</mj-html-attribute>
+      </mj-selector>
+    </mj-html-attributes>
+  </mj-head>
+  <mj-body background-color="#f5eee6" width="340px">
+    <mj-section background-color="#fffaf5" padding="22px">
+      <mj-column>
+        <mj-text css-class="merge-target" color="#173540" font-size="17px" font-weight="700" line-height="24px">
+          Duplicate selector merge
+        </mj-text>
+        <mj-spacer height="8px" />
+        <mj-text color="#425d64" font-size="14px" line-height="22px">
+          Later selector nodes targeting the same path should merge additional attributes instead of overwriting the whole bucket.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

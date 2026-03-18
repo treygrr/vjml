@@ -1,0 +1,31 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-class
+        name="eyebrow"
+        color="#db7636"
+        font-size="12px"
+        font-weight="700"
+        letter-spacing="0.16em"
+        text-transform="uppercase"
+      />
+    </mj-attributes>
+  </mj-head>
+  <mj-body width="340px" background-color="#f7efe4">
+    <mj-section background-color="#fffdf8" padding="22px">
+      <mj-column>
+        <mj-text color="#173540" font-size="18px" font-weight="700" line-height="24px">
+          Named class presets
+        </mj-text>
+        <mj-spacer height="8px" />
+        <mj-text color="#425d64" font-size="14px" line-height="22px">
+          Define a reusable class in Attributes, then reference it with mj-class on matching components.
+        </mj-text>
+        <mj-spacer height="8px" />
+        <mj-text mj-class="eyebrow">
+          Priority update
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

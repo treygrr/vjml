@@ -1,0 +1,32 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-class
+        name="feature-column"
+        background-color="#16353f"
+        padding="16px"
+        vertical-align="middle"
+      >
+        <mj-text color="#fff5e8" font-size="15px" line-height="22px" />
+        <mj-button
+          background-color="#f3c49a"
+          color="#25404a"
+          inner-padding="9px 15px"
+        />
+      </mj-class>
+    </mj-attributes>
+  </mj-head>
+  <mj-body width="340px" background-color="#f5eee6">
+    <mj-section background-color="#fffaf5" padding="22px">
+      <mj-column mj-class="feature-column">
+        <mj-text>
+          Class child defaults can style descendants inside the matching container.
+        </mj-text>
+        <mj-spacer height="10px" />
+        <mj-button href="https://example.com/explore">
+          Explore
+        </mj-button>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

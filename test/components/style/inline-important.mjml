@@ -1,0 +1,23 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-style inline="inline">
+      .blue-text div {
+        color:#2563eb !important;
+        font-weight:700 !important;
+      }
+    </mj-style>
+  </mj-head>
+  <mj-body width="340px" background-color="#f6efe7">
+    <mj-section background-color="#fff8ef" padding="22px">
+      <mj-column>
+        <mj-text css-class="blue-text" color="#173540" font-size="17px" line-height="24px">
+          Inline style override
+        </mj-text>
+        <mj-spacer height="8px" />
+        <mj-text color="#425d64" font-size="14px" line-height="22px">
+          Important inline styles should override the component's authored inline declarations.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

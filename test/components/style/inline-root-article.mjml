@@ -1,0 +1,22 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-style inline="inline">
+      div[role='article'] {
+        border:2px dashed #d1b18d !important;
+      }
+    </mj-style>
+  </mj-head>
+  <mj-body width="340px" background-color="#f4ede4">
+    <mj-section background-color="#fff9f1" padding="22px">
+      <mj-column>
+        <mj-text color="#173540" font-size="18px" font-weight="700" line-height="24px">
+          Root article inline selector
+        </mj-text>
+        <mj-spacer height="8px" />
+        <mj-text color="#425d64" font-size="14px" line-height="22px">
+          Inline styles should be applied after the document shell exists so global wrappers can be targeted.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

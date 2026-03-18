@@ -50,6 +50,19 @@ function getNormalizedVNodeAttrs(
   return normalizeVjmlAttributes(getVjmlVNodeAttrs(vnode), metadata).attrs
 }
 
+function getNormalizedVNodeExplicitAttrs(
+  tagName: string,
+  vnode: VNode,
+): Record<string, string> {
+  const metadata = getVjmlComponentMetadata(tagName)
+
+  if (!metadata) {
+    return {}
+  }
+
+  return normalizeVjmlAttributes(getVjmlVNodeAttrs(vnode), metadata).explicitAttrs
+}
+
 function getResolvedVNodeContent(vnode: VNode, fallbackText: string): string {
   const props = getVjmlVNodeAttrs(vnode)
 
@@ -91,7 +104,7 @@ function collectAttributesNode(
     reportUnexpectedChild('mj-attributes', childTagName, validationReporter)
 
     if (childTagName === 'mj-class') {
-      const classAttrs = getNormalizedVNodeAttrs(childTagName, childVNode)
+      const classAttrs = getNormalizedVNodeExplicitAttrs(childTagName, childVNode)
       const className = classAttrs.name
 
       if (!className) {
@@ -108,7 +121,7 @@ function collectAttributesNode(
           continue
         }
 
-        const classDefaultAttrs = getNormalizedVNodeAttrs(
+        const classDefaultAttrs = getNormalizedVNodeExplicitAttrs(
           classDefaultTagName,
           classDefaultVNode,
         )
@@ -123,7 +136,7 @@ function collectAttributesNode(
       continue
     }
 
-    const attrs = getNormalizedVNodeAttrs(childTagName, childVNode)
+    const attrs = getNormalizedVNodeExplicitAttrs(childTagName, childVNode)
     headCollectionContext.add('defaultAttributes', childTagName, attrs)
   }
 }

@@ -1,0 +1,22 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-html-attributes>
+      <mj-selector path=".attr-target div">
+        <mj-html-attribute name="data-id">42</mj-html-attribute>
+      </mj-selector>
+    </mj-html-attributes>
+  </mj-head>
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section background-color="#fffdf8" padding="22px">
+      <mj-column>
+        <mj-text css-class="attr-target" color="#173540" font-size="18px" font-weight="700" line-height="24px">
+          Selector-driven attributes
+        </mj-text>
+        <mj-spacer height="8px" />
+        <mj-text color="#425d64" font-size="14px" line-height="22px">
+          Basic selectors can apply custom data attributes to rendered descendants.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
