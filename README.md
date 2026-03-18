@@ -1,6 +1,6 @@
 # vjml
 
-![Test coverage: 100%](https://img.shields.io/badge/test%20coverage-100%25-brightgreen)
+[![CI](https://github.com/treygrr/vjml/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/treygrr/vjml/actions/workflows/ci.yml)
 
 VJML is a Vue-only MJML-style email component library for standard Vue apps. It provides a plugin for global component registration, typed component exports, and browser-side render helpers for turning Vue email components into email-safe HTML.
 
