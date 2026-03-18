@@ -9,7 +9,7 @@ import {
 } from 'vue'
 import { VjmlRenderFrame, getVjmlComponentMetadata } from 'vjml'
 
-type SourceTab = 'vjml' | 'mjml'
+type ExampleTab = 'preview' | 'vjml' | 'mjml'
 
 type ExampleFixture = {
   fixturePath: string
@@ -69,14 +69,34 @@ const mjmlSourceModules = import.meta.glob('../../../test/components/**/*.mjml',
   query: '?raw',
 })
 
-const sourceTab = ref<SourceTab>('vjml')
+const activeTab = ref<ExampleTab>('preview')
 const previewComponent = shallowRef<Component | null>(null)
 const vjmlSource = ref('')
 const mjmlSource = ref('')
 const loadError = ref('')
 const isLoading = ref(false)
+const copyState = ref<'idle' | 'copied' | 'error'>('idle')
+
+const tabOptions = [
+  {
+    value: 'preview',
+    label: 'Preview',
+  },
+  {
+    value: 'vjml',
+    label: 'VJML',
+  },
+  {
+    value: 'mjml',
+    label: 'MJML',
+  },
+] as const satisfies ReadonlyArray<{
+  value: ExampleTab
+  label: string
+}>
 
 let loadVersion = 0
+let copyResetTimer: ReturnType<typeof setTimeout> | null = null
 
 const exampleFixture = computed(() => {
   return fixtureByTag[props.tag] ?? null
@@ -87,7 +107,7 @@ const componentTitle = computed(() => {
 })
 
 const activeSource = computed(() => {
-  return sourceTab.value === 'vjml' ? vjmlSource.value : mjmlSource.value
+  return activeTab.value === 'mjml' ? mjmlSource.value : vjmlSource.value
 })
 
 const activeFilename = computed(() => {
@@ -95,8 +115,48 @@ const activeFilename = computed(() => {
     return ''
   }
 
+  if (activeTab.value === 'preview') {
+    return 'Live preview'
+  }
+
   const baseName = exampleFixture.value.fixturePath.split('/').pop() ?? 'basic'
-  return `${baseName}.${sourceTab.value === 'vjml' ? 'vue' : 'mjml'}`
+  return `${baseName}.${activeTab.value === 'vjml' ? 'vue' : 'mjml'}`
+})
+
+const activePanelTitle = computed(() => {
+  return activeTab.value === 'preview' ? 'Preview' : 'Source'
+})
+
+const activePanelDescription = computed(() => {
+  if (activeTab.value === 'preview') {
+    return `${componentTitle.value} rendered through the browser preview pipeline.`
+  }
+
+  return activeFilename.value
+})
+
+const showCopyButton = computed(() => {
+  return activeTab.value !== 'preview' && activeSource.value.length > 0
+})
+
+const copyButtonLabel = computed(() => {
+  if (copyState.value === 'copied') {
+    return 'Copied'
+  }
+
+  if (copyState.value === 'error') {
+    return 'Copy failed'
+  }
+
+  return 'Copy'
+})
+
+const copyButtonIcon = computed(() => {
+  if (copyState.value === 'copied') {
+    return 'i-lucide-check'
+  }
+
+  return 'i-lucide-copy'
 })
 
 const previewHeight = computed(() => {
@@ -111,11 +171,63 @@ function toFixtureKey(fixturePath: string, extension: 'vue' | 'mjml') {
   return `../../../test/components/${fixturePath}.${extension}`
 }
 
+function resetCopyState() {
+  copyState.value = 'idle'
+
+  if (copyResetTimer) {
+    clearTimeout(copyResetTimer)
+    copyResetTimer = null
+  }
+}
+
+async function writeTextToClipboard(value: string) {
+  if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(value)
+    return true
+  }
+
+  if (typeof document === 'undefined') {
+    return false
+  }
+
+  const textArea = document.createElement('textarea')
+  textArea.value = value
+  textArea.setAttribute('readonly', '')
+  textArea.style.position = 'absolute'
+  textArea.style.left = '-9999px'
+  document.body.appendChild(textArea)
+  textArea.select()
+
+  try {
+    return document.execCommand('copy')
+  }
+  finally {
+    document.body.removeChild(textArea)
+  }
+}
+
+async function copyActiveSource() {
+  resetCopyState()
+
+  try {
+    const didCopy = await writeTextToClipboard(activeSource.value)
+    copyState.value = didCopy ? 'copied' : 'error'
+  }
+  catch {
+    copyState.value = 'error'
+  }
+
+  copyResetTimer = setTimeout(() => {
+    copyState.value = 'idle'
+    copyResetTimer = null
+  }, 2000)
+}
+
 async function loadExampleFixture() {
   const fixture = exampleFixture.value
   const currentLoadVersion = ++loadVersion
 
-  sourceTab.value = 'vjml'
+  activeTab.value = 'preview'
   loadError.value = ''
 
   if (!fixture) {
@@ -183,6 +295,10 @@ watch(
     immediate: true,
   },
 )
+
+watch(activeTab, () => {
+  resetCopyState()
+})
 </script>
 
 <template>
@@ -204,22 +320,42 @@ watch(
       :description="loadError"
     />
 
-    <div v-else class="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
-      <div class="overflow-hidden rounded-lg border border-default bg-default">
-        <div class="border-b border-default px-4 py-3">
-          <p class="text-sm font-medium">Preview</p>
-          <p class="text-sm">{{ componentTitle }} rendered through the browser preview pipeline.</p>
+    <div v-else class="overflow-hidden rounded-lg border border-default bg-default">
+      <div class="flex flex-wrap items-start justify-between gap-3 border-b border-default px-4 py-3">
+        <div class="space-y-1">
+          <p class="text-sm font-medium">{{ activePanelTitle }}</p>
+          <p class="text-sm">{{ activePanelDescription }}</p>
         </div>
 
-        <ClientOnly>
+        <div class="flex flex-wrap gap-2" role="tablist" aria-label="Example views">
+          <UButton
+            v-for="tab in tabOptions"
+            :key="tab.value"
+            color="neutral"
+            :variant="activeTab === tab.value ? 'soft' : 'ghost'"
+            :label="tab.label"
+            role="tab"
+            :aria-selected="activeTab === tab.value"
+            @click="activeTab = tab.value"
+          />
+        </div>
+      </div>
+
+      <div class="p-4">
+        <div v-if="isLoading" class="space-y-3">
+          <USkeleton class="h-5 w-24" />
+          <USkeleton class="h-80 w-full" />
+        </div>
+
+        <ClientOnly v-else-if="activeTab === 'preview'">
           <template #fallback>
-            <div class="space-y-3 p-4">
+            <div class="space-y-3">
               <USkeleton class="h-6 w-32" />
               <USkeleton class="h-80 w-full" />
             </div>
           </template>
 
-          <div v-if="previewComponent" class="p-4">
+          <div v-if="previewComponent" id="component-example-preview">
             <VjmlRenderFrame
               :component="previewComponent"
               :height="previewHeight"
@@ -227,42 +363,28 @@ watch(
             />
           </div>
 
-          <div v-else class="p-4">
+          <div v-else>
             <USkeleton class="h-80 w-full" />
           </div>
         </ClientOnly>
-      </div>
 
-      <div class="overflow-hidden rounded-lg border border-default bg-default">
-        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-default px-4 py-3">
-          <div class="space-y-1">
-            <p class="text-sm font-medium">Source</p>
-            <p class="text-sm">{{ activeFilename }}</p>
-          </div>
-
-          <div class="flex flex-wrap gap-2">
+        <div v-else class="relative">
+          <div class="absolute right-3 top-3 z-10">
             <UButton
+              v-if="showCopyButton"
               color="neutral"
-              :variant="sourceTab === 'vjml' ? 'soft' : 'ghost'"
-              label="VJML"
-              @click="sourceTab = 'vjml'"
-            />
-            <UButton
-              color="neutral"
-              :variant="sourceTab === 'mjml' ? 'soft' : 'ghost'"
-              label="MJML"
-              @click="sourceTab = 'mjml'"
+              variant="outline"
+              size="xs"
+              :label="copyButtonLabel"
+              :leading-icon="copyButtonIcon"
+              @click="void copyActiveSource()"
             />
           </div>
-        </div>
 
-        <div class="p-4">
-          <div v-if="isLoading" class="space-y-3">
-            <USkeleton class="h-5 w-24" />
-            <USkeleton class="h-80 w-full" />
-          </div>
-
-          <pre v-else class="max-h-144 overflow-auto rounded-md border border-default bg-elevated/50 p-4 text-xs"><code>{{ activeSource }}</code></pre>
+          <pre
+            :id="`component-example-${activeTab}`"
+            class="max-h-144 overflow-auto rounded-md border border-default bg-elevated/50 p-4 pr-24 text-xs"
+          ><code>{{ activeSource }}</code></pre>
         </div>
       </div>
     </div>
