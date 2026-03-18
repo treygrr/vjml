@@ -35,7 +35,8 @@ Run `npm install` from the repository root. The root package manages both the pu
 - `npm run build:website` runs only the Nuxt docs build.
 - `npm run test` runs the renderer parity test suite.
 - `npm run test:accordion` runs the first component parity suite against the accordion fixtures.
-- `npm run typecheck` validates the playground, library source, and website workspace.
+- `npm run typecheck` validates the playground and library source.
+- `npm run typecheck:website` runs the Nuxt workspace typecheck from the repository root.
 
 ## Component parity tests
 
