@@ -2,6 +2,10 @@
 
 This workspace contains the Nuxt 4 documentation site for `vjml`.
 
+## GitHub Pages
+
+GitHub Pages deployment is handled by `.github/workflows/nuxtjs.yml` from the repository root. The workflow installs from the root workspace, builds the website with the Nuxt `github_pages` preset, and uploads `website/.output/public` as the Pages artifact.
+
 ## Setup
 
 Install dependencies from the repository root:
