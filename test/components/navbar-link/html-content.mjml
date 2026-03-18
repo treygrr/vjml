@@ -1,0 +1,13 @@
+<mjml lang="en">
+  <mj-body background-color="#f6efe7" width="340px">
+    <mj-section background-color="#fffaf2" padding="22px">
+      <mj-column>
+        <mj-navbar align="left" padding="0px">
+          <mj-navbar-link color="#173540" href="https://example.com/docs" text-transform="none">
+            <span>Read <strong>the guide</strong></span>
+          </mj-navbar-link>
+        </mj-navbar>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

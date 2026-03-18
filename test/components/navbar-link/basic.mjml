@@ -1,0 +1,13 @@
+<mjml lang="en">
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section background-color="#fffdf8" padding="22px">
+      <mj-column>
+        <mj-navbar align="left" padding="0px">
+          <mj-navbar-link color="#16353f" href="https://example.com/overview">
+            Overview
+          </mj-navbar-link>
+        </mj-navbar>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

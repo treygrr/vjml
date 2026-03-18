@@ -1,0 +1,15 @@
+<mjml lang="en">
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section background-color="#fffdf8" padding="22px">
+      <mj-column>
+        <mj-text color="#173540" font-size="18px" font-weight="700" line-height="24px">
+          Hello from VJML
+        </mj-text>
+        <mj-spacer height="10px" />
+        <mj-text color="#425d64" font-size="14px" line-height="22px">
+          A full email tree starts with Mjml and a single Body. Everything else composes underneath it.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

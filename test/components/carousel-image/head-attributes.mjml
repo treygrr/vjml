@@ -1,0 +1,18 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-carousel border-radius="14px" icon-width="36px" padding="0px" tb-border="3px solid #d8c1a3" tb-border-radius="14px" thumbnails="visible" />
+      <mj-carousel-image border-radius="14px" target="_self" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#f5eee5" width="340px">
+    <mj-section background-color="#fffaf4" padding="20px">
+      <mj-column>
+        <mj-carousel>
+          <mj-carousel-image alt="Head defaults slide one" href="https://example.com/account/overview" src="https://dummyimage.com/600x220/16353f/fffaf2.png&text=Overview" />
+          <mj-carousel-image alt="Head defaults slide two" href="https://example.com/account/preferences" src="https://dummyimage.com/600x220/9a6a41/fffaf2.png&text=Preferences" target="_blank" />
+        </mj-carousel>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

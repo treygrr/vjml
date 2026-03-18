@@ -1,0 +1,16 @@
+<mjml lang="en">
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section background-color="#fffdf8" padding="22px">
+      <mj-column>
+        <mj-navbar align="left" base-url="https://example.com/account" padding="0px">
+          <mj-navbar-link color="#173540" href="/billing" rel="nofollow">
+            Billing
+          </mj-navbar-link>
+          <mj-navbar-link color="#425d64" href="/notifications" target="_self">
+            Notifications
+          </mj-navbar-link>
+        </mj-navbar>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

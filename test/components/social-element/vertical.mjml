@@ -1,0 +1,16 @@
+<mjml lang="en">
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section background-color="#fffdf8" padding="20px">
+      <mj-column>
+        <mj-social align="left" icon-size="24px" mode="vertical">
+          <mj-social-element name="linkedin" href="https://example.com/profile">
+            LinkedIn
+          </mj-social-element>
+          <mj-social-element name="x" href="https://example.com/post">
+            Updates
+          </mj-social-element>
+        </mj-social>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

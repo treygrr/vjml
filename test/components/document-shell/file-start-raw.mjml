@@ -1,0 +1,12 @@
+<mjml lang="en">
+  <mj-raw position="file-start"><!-- file-start-marker --><% if (featureFlag) { %></mj-raw>
+  <mj-body background-color="#f6efe6" width="340px">
+    <mj-section background-color="#fff9f1" padding="22px">
+      <mj-column>
+        <mj-text color="#173540" font-size="18px" font-weight="700" line-height="24px">
+          File start raw fragment
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

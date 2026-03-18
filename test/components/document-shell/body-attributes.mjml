@@ -1,0 +1,15 @@
+<mjml dir="rtl" lang="ar">
+  <mj-body background-color="#ede3d7" css-class="body-shell" width="340px">
+    <mj-section background-color="#16353f" padding="24px">
+      <mj-column>
+        <mj-text color="#fff5e8" font-size="18px" font-weight="700" line-height="24px">
+          Body controls the canvas
+        </mj-text>
+        <mj-spacer height="10px" />
+        <mj-text color="#d9e3df" font-size="14px" line-height="22px">
+          Set the global width and background at the email body level, then compose sections inside it.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

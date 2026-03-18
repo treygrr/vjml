@@ -1,0 +1,17 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-raw>
+      <meta name="x-raw-token" content="head-fragment" />
+      <style type="text/css">.raw-head-flag { letter-spacing: 0.4px; }</style>
+    </mj-raw>
+  </mj-head>
+  <mj-body background-color="#f5efe7" width="340px">
+    <mj-section background-color="#fff9f3" padding="22px">
+      <mj-column>
+        <mj-text css-class="raw-head-flag" color="#173540" font-size="18px" font-weight="700" line-height="24px">
+          Head raw fragment
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
