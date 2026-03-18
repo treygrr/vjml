@@ -15,22 +15,27 @@ It includes:
 
 - `src` contains the publishable component library and is the only code compiled into `dist`.
 - `test` contains the component parity suites, shared test utilities, and end-to-end sample email fixtures.
-- `docs` contains the VitePress documentation site for local docs work and GitHub Pages deployment.
+- `website` contains the Nuxt documentation site and is managed as a workspace from the repository root.
 - `playground` contains the local development app used for previewing and testing the library.
 - The playground imports the library through the local `vjml` source alias, so it exercises the same public entry surface a consumer would use.
+
+Run `npm install` from the repository root. The root package manages both the publishable library and the `website` workspace.
 
 ## Scripts
 
 - `npm run dev` starts the local playground.
 - `npm run dev:playground` also starts the local playground explicitly.
-- `npm run docs:dev` starts the VitePress docs site.
-- `npm run docs:build` builds the static docs output.
+- `npm run dev:website` starts the Nuxt docs site from the root workspace.
+- `npm run docs:dev` is an alias for `npm run dev:website`.
+- `npm run docs:build` builds the docs site from the root workspace.
+- `npm run docs:generate` generates the static docs output from the root workspace.
 - `npm run docs:preview` previews the built docs site locally.
-- `npm run build` builds the library from `src` into `dist` and emits declaration files.
+- `npm run build` builds both the library and the website from the repository root.
 - `npm run build:lib` runs the library build directly.
+- `npm run build:website` runs only the Nuxt docs build.
 - `npm run test` runs the renderer parity test suite.
 - `npm run test:accordion` runs the first component parity suite against the accordion fixtures.
-- `npm run typecheck` validates both the playground and the library source.
+- `npm run typecheck` validates the playground, library source, and website workspace.
 
 ## Component parity tests
 

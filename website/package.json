@@ -1,0 +1,23 @@
+{
+  "name": "@vjml/website",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "typecheck": "nuxt typecheck"
+  },
+  "dependencies": {
+    "@nuxt/content": "^3.12.0",
+    "@nuxt/ui": "^4.5.1",
+    "better-sqlite3": "^12.5.0",
+    "nuxt": "^4.4.2",
+    "tailwindcss": "^4.2.2",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@iconify-json/lucide": "^1.2.98"
+  }
+}

@@ -26,3 +26,6 @@ docs/.vitepress/dist
 *.njsproj
 *.sln
 *.sw?
+
+# Nested repo backups
+.git-backups/
