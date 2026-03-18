@@ -1,5 +1,7 @@
 # vjml
 
+![Test coverage: 100%](https://img.shields.io/badge/test%20coverage-100%25-brightgreen)
+
 Plain Vue port of the `vue-mjml` component runtime.
 
 This package now contains:
