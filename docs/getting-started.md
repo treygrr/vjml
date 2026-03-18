@@ -2,6 +2,46 @@
 
 VJML lets you author MJML-style email templates as Vue components. The library ships a Vue plugin, direct component exports, and browser-side render helpers.
 
+<div class="not-prose grid gap-4 md:grid-cols-3">
+  <UCard>
+    <template #header>
+      <div class="flex items-center gap-2">
+        <UIcon name="i-lucide-download" class="size-5 text-primary" />
+        <span class="font-semibold">Install</span>
+      </div>
+    </template>
+    <p>Start with a standard Vue app plus the library package. Nothing Nuxt-specific is required.</p>
+  </UCard>
+
+  <UCard>
+    <template #header>
+      <div class="flex items-center gap-2">
+        <UIcon name="i-lucide-plug" class="size-5 text-primary" />
+        <span class="font-semibold">Register</span>
+      </div>
+    </template>
+    <p>Use the plugin when you want global aliases and a shared runtime configuration for previews and rendering.</p>
+  </UCard>
+
+  <UCard>
+    <template #header>
+      <div class="flex items-center gap-2">
+        <UIcon name="i-lucide-component" class="size-5 text-primary" />
+        <span class="font-semibold">Render</span>
+      </div>
+    </template>
+    <p>Choose between direct component imports, iframe previews, or raw HTML rendering depending on your integration path.</p>
+  </UCard>
+</div>
+
+<UAlert
+  class="not-prose mt-6"
+  color="primary"
+  variant="subtle"
+  title="Choose a starting path"
+  description="If you are building a design surface or docs site, start with the plugin plus VjmlRenderFrame. If you only need email HTML once per request, jump straight to renderVjmlToHtml()."
+/>
+
 ## Install
 
 ```bash
@@ -63,6 +103,28 @@ import { Body, Button, Column, Mjml, Section, Text } from 'vjml'
 
 ## Next steps
 
-1. Read [Rendering](/rendering) to wire previews and HTML output.
-2. Read [Styling](/styling) for fonts, global CSS, and selector-based head rules.
-3. Browse [Samples](/samples) to see complete end-to-end emails.
+<div class="not-prose grid gap-4 md:grid-cols-3">
+  <UCard>
+    <template #header><span class="font-semibold">Rendering guide</span></template>
+    <p>Wire up previews, reusable renderer instances, and direct HTML output paths.</p>
+    <template #footer>
+      <UButton label="Read rendering" color="neutral" variant="outline" block href="./rendering" />
+    </template>
+  </UCard>
+
+  <UCard>
+    <template #header><span class="font-semibold">Styling guide</span></template>
+    <p>See how fonts, selectors, inline rules, and raw head content fit into the final document shell.</p>
+    <template #footer>
+      <UButton label="Read styling" color="neutral" variant="outline" block href="./styling" />
+    </template>
+  </UCard>
+
+  <UCard>
+    <template #header><span class="font-semibold">Samples</span></template>
+    <p>Inspect the full fixture set with Vue source, MJML source, and live browser previews.</p>
+    <template #footer>
+      <UButton label="Browse samples" color="neutral" variant="outline" block href="./samples" />
+    </template>
+  </UCard>
+</div>

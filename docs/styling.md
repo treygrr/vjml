@@ -2,6 +2,29 @@
 
 VJML supports the same main head-level styling tools you would expect from MJML: fonts, head styles, inline styles, selector-based attributes, and raw head content.
 
+<div class="not-prose grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+  <UCard>
+    <template #header><span class="font-semibold">Head styles</span></template>
+    <p>Collect fonts, preview text, titles, and stylesheet rules before the final document shell is written.</p>
+  </UCard>
+  <UCard>
+    <template #header><span class="font-semibold">Defaults and classes</span></template>
+    <p>Prefer MJML-native defaults through Attributes, All, and Class before reaching for CSS selectors.</p>
+  </UCard>
+  <UCard>
+    <template #header><span class="font-semibold">Literal head markup</span></template>
+    <p>Use HtmlAttributes, selectors, and Raw when you need exact HTML attributes or raw fragments in the final head.</p>
+  </UCard>
+</div>
+
+<UAlert
+  class="not-prose mt-6"
+  color="warning"
+  variant="subtle"
+  title="Keep docs CSS out of email output"
+  description="The outer docs application and the rendered email live in different styling worlds. Import email CSS as raw text and pass it through Style instead of relying on the docs app stylesheet."
+/>
+
 ## Use the head for global styling
 
 Use `Head` to collect styles and metadata before the email shell is finalized.
@@ -122,3 +145,18 @@ const headRaw = `
   </Head>
 </template>
 ```
+
+<div class="not-prose grid gap-4 md:grid-cols-2 xl:grid-cols-3 mt-6">
+  <UCard>
+    <template #header><span class="font-semibold">When to use Style</span></template>
+    <p>Use Style for selectors and reusable CSS rules that belong to the email document itself.</p>
+  </UCard>
+  <UCard>
+    <template #header><span class="font-semibold">When to use Attributes</span></template>
+    <p>Use Attributes, All, and Class when the goal is consistent component defaults instead of free-form CSS.</p>
+  </UCard>
+  <UCard>
+    <template #header><span class="font-semibold">When to use Raw</span></template>
+    <p>Use Raw only when the final head markup must be emitted literally, such as custom meta tags or unsupported fragments.</p>
+  </UCard>
+</div>

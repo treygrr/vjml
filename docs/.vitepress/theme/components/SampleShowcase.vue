@@ -95,6 +95,30 @@ watch(
 
 const sample = computed(() => sampleRegistry[props.name])
 
+const activeTabLabel = computed(() => {
+  if (activeTab.value === 'mjml') {
+    return 'MJML source'
+  }
+
+  if (activeTab.value === 'vue') {
+    return 'Vue source'
+  }
+
+  return 'Browser preview'
+})
+
+const activePathLabel = computed(() => {
+  if (activeTab.value === 'mjml') {
+    return `test/samples/${props.name}.mjml`
+  }
+
+  if (activeTab.value === 'vue') {
+    return `test/samples/${props.name}.vue`
+  }
+
+  return 'Rendered with VjmlRenderFrame'
+})
+
 const source = computed(() => {
   if (activeTab.value === 'mjml') {
     return sample.value.mjmlSource
@@ -109,13 +133,14 @@ const source = computed(() => {
 </script>
 
 <template>
-  <UCard class="not-prose">
+  <UCard class="not-prose overflow-hidden" :ui="{ body: 'p-0' }">
     <template #header>
       <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div class="space-y-2">
           <div class="flex flex-wrap gap-2">
             <UBadge>Sample</UBadge>
             <UBadge color="neutral" variant="subtle">{{ sample.title }}</UBadge>
+            <UBadge color="neutral" variant="subtle">Paired parity fixture</UBadge>
           </div>
           <div>
             <h3 class="text-xl font-semibold">{{ sample.title }}</h3>
@@ -149,7 +174,18 @@ const source = computed(() => {
       </div>
     </template>
 
-    <div v-if="activeTab === 'preview'">
+    <div class="flex items-center justify-between gap-3 border-y border-default bg-elevated/30 px-4 py-3 text-sm">
+      <div class="flex flex-wrap gap-2">
+        <UBadge color="neutral" variant="subtle">{{ activeTabLabel }}</UBadge>
+        <UBadge color="neutral" variant="subtle">{{ activePathLabel }}</UBadge>
+      </div>
+      <div class="hidden md:flex flex-wrap gap-2">
+        <UBadge color="neutral" variant="subtle">Preview + source</UBadge>
+        <UBadge color="neutral" variant="subtle">Vue and MJML sidecars</UBadge>
+      </div>
+    </div>
+
+    <div v-if="activeTab === 'preview'" class="bg-default p-4">
       <VjmlRenderFrame
         :component="sample.component"
         :height="sample.height"
@@ -157,8 +193,16 @@ const source = computed(() => {
       />
     </div>
 
-    <div v-else class="overflow-x-auto">
-      <pre><code>{{ source }}</code></pre>
+    <div v-else class="overflow-x-auto bg-default p-4">
+      <pre class="m-0"><code>{{ source }}</code></pre>
     </div>
+
+    <template #footer>
+      <div class="flex flex-wrap gap-2">
+        <UBadge color="neutral" variant="subtle">Rendered in browser</UBadge>
+        <UBadge color="neutral" variant="subtle">Snapshot-backed sample</UBadge>
+        <UBadge color="neutral" variant="subtle">Designed for parity checks</UBadge>
+      </div>
+    </template>
   </UCard>
 </template>

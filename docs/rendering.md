@@ -2,6 +2,33 @@
 
 VJML supports both interactive previews and direct HTML generation in the browser.
 
+<div class="not-prose grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+  <UCard>
+    <template #header><span class="font-semibold">Iframe preview</span></template>
+    <p>Use VjmlRenderFrame when you want the simplest embedded browser preview.</p>
+  </UCard>
+  <UCard>
+    <template #header><span class="font-semibold">Reusable renderer</span></template>
+    <p>Create one renderer instance when multiple renders share the same runtime options.</p>
+  </UCard>
+  <UCard>
+    <template #header><span class="font-semibold">One-off HTML</span></template>
+    <p>Call renderVjmlToHtml() for the shortest path from component to final HTML.</p>
+  </UCard>
+  <UCard>
+    <template #header><span class="font-semibold">Debug tree</span></template>
+    <p>Inspect the normalized tree and collected document state when output is surprising.</p>
+  </UCard>
+</div>
+
+<UAlert
+  class="not-prose mt-6"
+  color="neutral"
+  variant="subtle"
+  title="Browser-only previews"
+  description="RenderFrame and live browser previews depend on client APIs. In static docs or SSR-like shells, wrap those previews in ClientOnly and keep server-side output paths separate."
+/>
+
 ## Preview a component in an iframe
 
 `VjmlRenderFrame` is the easiest way to embed a rendered email into an app or docs page.
@@ -74,3 +101,20 @@ console.log(debug.tree)
 ## Docs-specific note
 
 If you embed live previews inside a static docs site, wrap them in `ClientOnly`. The renderer relies on browser APIs when the preview actually runs.
+
+<div class="not-prose grid gap-4 md:grid-cols-2 xl:grid-cols-3 mt-6">
+  <UCard>
+    <template #header><span class="font-semibold">Preview during authoring</span></template>
+    <p>Use an iframe in docs or a local app whenever designers and developers need to inspect final browser output quickly.</p>
+  </UCard>
+
+  <UCard>
+    <template #header><span class="font-semibold">Render for delivery</span></template>
+    <p>Use createVjmlRenderer() or renderVjmlToHtml() when your application needs the actual email HTML payload.</p>
+  </UCard>
+
+  <UCard>
+    <template #header><span class="font-semibold">Diagnose mismatches</span></template>
+    <p>Use debug trees when parity snapshots and browser renders diverge, especially around head output and layout wrappers.</p>
+  </UCard>
+</div>

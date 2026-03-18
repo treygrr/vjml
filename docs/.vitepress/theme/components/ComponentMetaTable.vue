@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import type { TableColumn } from '@nuxt/ui'
 
 import { getVjmlComponentMetadata } from '@src/metadata'
 
@@ -46,11 +47,48 @@ const attributeRows = computed(() => {
 
   return Object.entries(metadata.value.allowedAttributes).map(([name, type]) => {
     return {
-      defaultValue: metadata.value?.defaultAttributes?.[name],
-      name,
+      attribute: name,
+      default: formatValue(metadata.value?.defaultAttributes?.[name]),
       type,
     }
   })
+})
+
+const attributeColumns: TableColumn<(typeof attributeRows.value)[number]>[] = [
+  {
+    accessorKey: 'attribute',
+    header: 'Attribute',
+  },
+  {
+    accessorKey: 'type',
+    header: 'Type',
+  },
+  {
+    accessorKey: 'default',
+    header: 'Default',
+  },
+]
+
+const serializationNote = computed(() => {
+  if (!metadata.value) {
+    return ''
+  }
+
+  const notes: string[] = []
+
+  if (metadata.value.rawElement) {
+    notes.push('This component renders a raw element and may preserve literal content.')
+  }
+
+  if (metadata.value.serialization.preservesRawContent) {
+    notes.push('Renderer output preserves raw content during serialization.')
+  }
+
+  if (metadata.value.serialization.allowsArbitraryAttributes) {
+    notes.push('Arbitrary HTML attributes are allowed on the rendered tag.')
+  }
+
+  return notes.join(' ')
 })
 </script>
 
@@ -70,6 +108,34 @@ const attributeRows = computed(() => {
         </p>
       </div>
     </template>
+
+    <div class="grid gap-4 md:grid-cols-3">
+      <UCard>
+        <template #header>
+          <h4 class="font-semibold">Allowed attributes</h4>
+        </template>
+        <p class="text-2xl font-semibold text-highlighted">{{ attributeRows.length }}</p>
+        <p class="text-sm text-muted">Validated against the same metadata used by docs generation and runtime checks.</p>
+      </UCard>
+
+      <UCard>
+        <template #header>
+          <h4 class="font-semibold">Allowed parents</h4>
+        </template>
+        <p class="text-2xl font-semibold text-highlighted">{{ metadata.allowedParentTagNames.length || 1 }}</p>
+        <p class="text-sm text-muted">Root-only components report a single root context instead of a parent tag list.</p>
+      </UCard>
+
+      <UCard>
+        <template #header>
+          <h4 class="font-semibold">Child model</h4>
+        </template>
+        <p class="text-2xl font-semibold text-highlighted">
+          {{ metadata.supportsAnyChildTag ? 'Any' : metadata.allowedChildTagNames.length }}
+        </p>
+        <p class="text-sm text-muted">Quick summary of whether the component expects specific child tags or accepts arbitrary content.</p>
+      </UCard>
+    </div>
 
     <div class="grid gap-4 lg:grid-cols-2">
       <UCard>
@@ -143,23 +209,17 @@ const attributeRows = computed(() => {
       </UCard>
     </div>
 
+    <UAlert
+      v-if="serializationNote"
+      class="mt-6"
+      color="neutral"
+      variant="subtle"
+      title="Serialization notes"
+      :description="serializationNote"
+    />
+
     <div v-if="attributeRows.length > 0" class="mt-6 overflow-x-auto">
-      <table class="min-w-full text-sm">
-        <thead>
-          <tr>
-            <th class="px-4 py-3 text-left font-semibold">Attribute</th>
-            <th class="px-4 py-3 text-left font-semibold">Type</th>
-            <th class="px-4 py-3 text-left font-semibold">Default</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="row in attributeRows" :key="row.name">
-            <td class="px-4 py-3 align-top"><code>{{ row.name }}</code></td>
-            <td class="px-4 py-3 align-top"><code>{{ row.type }}</code></td>
-            <td class="px-4 py-3 align-top"><code>{{ formatValue(row.defaultValue) }}</code></td>
-          </tr>
-        </tbody>
-      </table>
+      <UTable :data="attributeRows" :columns="attributeColumns" />
     </div>
   </UCard>
 
