@@ -2,9 +2,9 @@
 
 ![Test coverage: 100%](https://img.shields.io/badge/test%20coverage-100%25-brightgreen)
 
-Plain Vue port of the `vue-mjml` component runtime.
+VJML is a Vue-only MJML-style email component library for standard Vue apps. It provides a plugin for global component registration, typed component exports, and browser-side render helpers for turning Vue email components into email-safe HTML.
 
-This package now contains:
+It includes:
 
 - the copied MJML-style runtime components
 - plugin-based global registration for Vue apps
