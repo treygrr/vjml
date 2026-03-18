@@ -28,6 +28,9 @@
   "scripts": {
     "dev": "vite",
     "dev:playground": "vite",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs",
     "build": "npm run build:lib",
     "build:lib": "vite build && npm run build:types",
     "build:types": "vue-tsc -p tsconfig.lib.json",
