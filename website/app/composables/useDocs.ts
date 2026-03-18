@@ -10,6 +10,7 @@ const TOP_LEVEL_NAV_ORDER = [
   '/docs/getting-started',
   '/docs/rendering',
   '/docs/styling',
+  '/docs/contributing',
   COMPONENT_DOCS_GROUP_ROUTE,
 ] as const
 

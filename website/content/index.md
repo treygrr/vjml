@@ -14,10 +14,11 @@ The docs are organized around the parts you will actually reach for when buildin
 - getting started with the plugin and direct imports
 - rendering to browser previews or raw HTML
 - global styling, fonts, selectors, and head content
+- contributing workflow, verification, and GitHub pull request expectations
 - individual reference pages for every component in the sidebar
 - component categories grouped for faster tag lookup
 
-<div class="not-prose grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+<div class="not-prose grid gap-4 md:grid-cols-2 xl:grid-cols-5">
   <UCard>
     <template #header>
       <div class="flex items-center gap-2">
@@ -67,6 +68,19 @@ The docs are organized around the parts you will actually reach for when buildin
     <p>Browse every VJML tag with generated metadata, parent and child rules, defaults, and attribute coverage.</p>
     <template #footer>
       <UButton label="Browse reference" color="neutral" variant="outline" block href="./components/" />
+    </template>
+  </UCard>
+
+  <UCard>
+    <template #header>
+      <div class="flex items-center gap-2">
+        <UIcon name="i-lucide-git-pull-request" class="size-5 text-primary" />
+        <span class="font-semibold">Contributing</span>
+      </div>
+    </template>
+    <p>Follow the repo workflow for coverage, verification, docs updates, and GitHub pull requests.</p>
+    <template #footer>
+      <UButton label="Review policy" color="neutral" variant="outline" block href="./contributing" />
     </template>
   </UCard>
 </div>
