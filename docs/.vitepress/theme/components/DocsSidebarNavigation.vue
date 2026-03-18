@@ -4,6 +4,12 @@ import { computed, ref, watch } from 'vue'
 import { useData, withBase } from 'vitepress'
 import { useSidebar } from 'vitepress/theme'
 
+const props = withDefaults(defineProps<{
+  collapsed?: boolean
+}>(), {
+  collapsed: false,
+})
+
 interface SidebarItem {
   items?: SidebarItem[]
   link?: string
@@ -12,8 +18,9 @@ interface SidebarItem {
 
 interface SidebarNavigationItem {
   active?: boolean
-  href?: string
+  labelIcon?: string
   label: string
+  to?: string
   value: string
 }
 
@@ -29,6 +36,20 @@ interface SidebarNavigationGroup {
   id: string
   items: SidebarNavigationItem[]
   label: string
+}
+
+const ICONS_BY_LABEL: Record<string, string> = {
+  Components: 'i-lucide-box',
+  Content: 'i-lucide-square-stack',
+  Guide: 'i-lucide-compass',
+  'Getting Started': 'i-lucide-rocket',
+  'Head and Global': 'i-lucide-globe',
+  Interactive: 'i-lucide-sparkles',
+  Layout: 'i-lucide-panels-top-left',
+  Overview: 'i-lucide-layout-dashboard',
+  Rendering: 'i-lucide-monitor-play',
+  Samples: 'i-lucide-gallery-vertical-end',
+  Styling: 'i-lucide-paintbrush',
 }
 
 const HASH_RE = /#.*$/
@@ -80,10 +101,15 @@ function normalizeLink(url: string): string {
 function toNavigationItem(item: SidebarItem, value: string): SidebarNavigationItem {
   return {
     active: isActiveLink(page.value.relativePath, item.link),
-    href: item.link ? normalizeLink(item.link) : undefined,
+    labelIcon: item.link?.startsWith('/components/') ? 'i-lucide-file-text' : undefined,
     label: item.text ?? 'Untitled',
+    to: item.link ? normalizeLink(item.link) : undefined,
     value,
   }
+}
+
+function getItemIcon(label: string, fallback = 'i-lucide-file-text'): string {
+  return ICONS_BY_LABEL[label] ?? fallback
 }
 
 const navigationSections = computed<SidebarNavigationSection[]>(() => {
@@ -145,91 +171,100 @@ function isGroupOpen(group: SidebarNavigationGroup): boolean {
   return openGroups.value[group.id] ?? group.hasActiveItem
 }
 
-function setGroupOpen(groupId: string, open: boolean): void {
-  openGroups.value = {
-    ...openGroups.value,
-    [groupId]: open,
-  }
+function getSectionOpenValues(section: SidebarNavigationSection): string[] {
+  return section.groups
+    .filter(group => isGroupOpen(group))
+    .map(group => group.id)
 }
+
+function setSectionOpenValues(sectionId: string, value: string | string[] | undefined): void {
+  const section = navigationSections.value.find(candidate => candidate.id === sectionId)
+
+  if (!section) {
+    return
+  }
+
+  const nextOpenValues = new Set(Array.isArray(value) ? value : value ? [value] : [])
+  const nextOpenGroups = { ...openGroups.value }
+
+  for (const group of section.groups) {
+    nextOpenGroups[group.id] = nextOpenValues.has(group.id)
+  }
+
+  openGroups.value = nextOpenGroups
+}
+
+function toMenuItems(section: SidebarNavigationSection): NavigationMenuItem[] {
+  const items: NavigationMenuItem[] = []
+
+  if (!props.collapsed) {
+    items.push({
+      label: section.label,
+      type: 'label',
+      value: `${section.id}-label`,
+    })
+  }
+
+  for (const item of section.items) {
+    items.push({
+      active: item.active,
+      icon: item.labelIcon ?? getItemIcon(item.label, 'i-lucide-file-text'),
+      label: item.label,
+      to: item.to,
+      value: item.value,
+    })
+  }
+
+  for (const group of section.groups) {
+    items.push({
+      active: group.hasActiveItem,
+      children: group.items.map(item => ({
+        active: item.active,
+        icon: item.labelIcon ?? 'i-lucide-file-text',
+        label: item.label,
+        to: item.to,
+        value: item.value,
+      })),
+      icon: getItemIcon(group.label),
+      label: group.label,
+      type: 'trigger',
+      value: group.id,
+    })
+  }
+
+  return items
+}
+
+const navigationMenuUi = computed(() => {
+  return {
+    item: 'w-full',
+    label: 'px-2.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-highlighted',
+    list: 'w-full',
+    root: 'w-full',
+    content: 'rounded-lg border border-default bg-default shadow-lg',
+    link: props.collapsed ? 'justify-center' : 'justify-start',
+  }
+})
 </script>
 
 <template>
   <div v-if="navigationSections.length > 0" class="DocsSidebarNavigation">
-    <section
+    <UNavigationMenu
       v-for="section in navigationSections"
       :key="section.id"
-      class="DocsSidebarSection"
-      :aria-labelledby="`${section.id}-label`"
-    >
-      <UCard variant="subtle" :ui="{ root: 'overflow-hidden', header: 'px-4 py-3.5', body: 'p-2' }">
-        <template #header>
-          <div class="flex items-center justify-between gap-3">
-            <h2
-              :id="`${section.id}-label`"
-              class="text-[11px] font-bold uppercase tracking-[0.18em] text-highlighted"
-            >
-              {{ section.label }}
-            </h2>
-
-            <div class="h-px flex-1 bg-border" />
-          </div>
-        </template>
-
-        <UNavigationMenu
-          v-if="section.items.length > 0"
-          class="DocsSidebarMenu"
-          :items="section.items as NavigationMenuItem[]"
-          orientation="vertical"
-          highlight
-        />
-
-        <div v-if="section.groups.length > 0" class="space-y-2">
-          <UCollapsible
-            v-for="group in section.groups"
-            :key="group.id"
-            class="DocsSidebarGroup"
-            :open="isGroupOpen(group)"
-            :unmount-on-hide="false"
-            @update:open="setGroupOpen(group.id, $event)"
-          >
-            <template #default="{ open }">
-              <div class="px-1">
-                <h3 :id="`${group.id}-label`">
-                  <UButton
-                    color="neutral"
-                    variant="ghost"
-                    :label="group.label"
-                    trailing-icon="i-lucide-chevron-down"
-                    block
-                    class="group w-full justify-between rounded-xl px-3 py-2.5"
-                    :class="open ? 'bg-default shadow-sm ring ring-default' : 'hover:bg-default/70'"
-                    :ui="{
-                      base: 'justify-between rounded-xl',
-                      label: 'text-sm font-semibold text-highlighted',
-                      trailingIcon: [
-                        'text-dimmed transition-transform duration-200',
-                        open ? 'rotate-180' : ''
-                      ]
-                    }"
-                  />
-                </h3>
-              </div>
-            </template>
-
-            <template #content>
-              <div :aria-labelledby="`${group.id}-label`" class="px-1 pb-1.5">
-                <UNavigationMenu
-                  class="DocsSidebarMenu DocsSidebarMenuNested"
-                  :items="group.items as NavigationMenuItem[]"
-                  orientation="vertical"
-                  highlight
-                />
-              </div>
-            </template>
-          </UCollapsible>
-        </div>
-      </UCard>
-    </section>
+      :collapsed="collapsed"
+      :items="toMenuItems(section)"
+      :model-value="getSectionOpenValues(section)"
+      :popover="collapsed"
+      :tooltip="collapsed"
+      :ui="navigationMenuUi"
+      class="w-full"
+      color="neutral"
+      highlight
+      orientation="vertical"
+      type="multiple"
+      @update:model-value="setSectionOpenValues(section.id, $event)"
+    />
   </div>
 </template>
 
@@ -237,29 +272,6 @@ function setGroupOpen(groupId: string, open: boolean): void {
 .DocsSidebarNavigation {
   display: flex;
   flex-direction: column;
-	gap: 1rem;
-}
-
-.DocsSidebarSection {
-	position: relative;
-}
-
-.DocsSidebarMenu {
-	border-radius: 1rem;
-	background: color-mix(in oklab, var(--ui-bg) 85%, var(--ui-bg-elevated) 15%);
-	padding: 0.375rem;
-}
-
-.DocsSidebarMenuNested {
-	border-radius: 0.875rem;
-	background: color-mix(in oklab, var(--ui-bg) 75%, var(--ui-bg-elevated) 25%);
-	padding: 0.375rem;
-}
-
-.DocsSidebarGroup {
-	border-radius: 1rem;
-	background: color-mix(in oklab, var(--ui-bg-elevated) 55%, transparent);
-	padding-top: 0.25rem;
-	padding-bottom: 0.25rem;
+	gap: 0.75rem;
 }
 </style>

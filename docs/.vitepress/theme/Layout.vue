@@ -26,6 +26,19 @@ const pageTitle = computed(() => {
   return page.value.title || site.value.title
 })
 
+function openSearch(): void {
+  if (typeof window === 'undefined') {
+    return
+  }
+
+  window.dispatchEvent(new KeyboardEvent('keydown', {
+    bubbles: true,
+    ctrlKey: true,
+    key: 'k',
+    metaKey: true,
+  }))
+}
+
 const slots = useSlots()
 const heroImageSlotExists = computed(() => !!slots['home-hero-image'])
 
@@ -42,55 +55,85 @@ provide('hero-image-slot-exists', heroImageSlotExists)
           v-if="hasSidebar"
           id="docs-sidebar"
           v-model:open="isSidebarOpen"
+          collapsible
           resizable
           :default-size="18"
           :min-size="14"
           :max-size="22"
           :ui="{
-            root: 'bg-default/95 supports-[backdrop-filter]:bg-default/85 backdrop-blur',
+            root: 'border-r border-default bg-default',
             body: 'gap-4 px-3 py-4',
-            header: 'border-b border-default bg-elevated/30 px-3 py-4',
-            footer: 'border-t border-default bg-elevated/15 px-3 py-3'
+            header: 'px-3 py-3',
+            footer: 'border-t border-default px-3 py-3'
           }"
         >
-          <template #header>
-            <div class="space-y-3">
+          <template #header="{ collapsed }">
+            <div class="flex items-center justify-center">
               <UButton
                 color="neutral"
-                variant="soft"
-                class="w-full justify-start rounded-xl"
+                variant="ghost"
+                class="w-full"
                 icon="i-lucide-book-open"
-                label="VJML Docs"
-                block
+                :label="collapsed ? undefined : 'VJML Docs'"
+                :block="!collapsed"
+                :square="collapsed"
+                :ui="{
+                  base: collapsed ? 'justify-center' : 'justify-start',
+                  label: 'font-semibold'
+                }"
                 :href="withBase('/')"
               />
             </div>
           </template>
 
-          <template #default>
-            <slot name="sidebar-nav-before" />
-            <DocsSidebarNavigation />
-            <slot name="sidebar-nav-after" />
+          <template #default="{ collapsed }">
+            <div class="flex min-h-full flex-1 flex-col gap-4">
+              <UButton
+                :label="collapsed ? undefined : 'Search...'"
+                icon="i-lucide-search"
+                color="neutral"
+                variant="outline"
+                class="w-full"
+                block
+                :square="collapsed"
+                @click="openSearch"
+              >
+                <template v-if="!collapsed" #trailing>
+                  <div class="ms-auto flex items-center gap-0.5">
+                    <UKbd value="meta" variant="subtle" />
+                    <UKbd value="K" variant="subtle" />
+                  </div>
+                </template>
+              </UButton>
+
+              <slot name="sidebar-nav-before" />
+              <DocsSidebarNavigation :collapsed="collapsed" class="min-h-0 flex-1" />
+              <slot name="sidebar-nav-after" />
+            </div>
           </template>
 
-          <template #footer>
-            <div class="flex flex-col gap-2">
+          <template #footer="{ collapsed }">
+            <div class="flex flex-col gap-1">
               <UButton
                 color="neutral"
                 variant="ghost"
-                class="w-full justify-start rounded-xl"
+                class="w-full"
                 icon="i-lucide-gallery-vertical-end"
-                label="Browse samples"
-                block
+                :label="collapsed ? undefined : 'Browse samples'"
+                :block="!collapsed"
+                :square="collapsed"
+                :ui="{ base: collapsed ? 'justify-center' : 'justify-start' }"
                 :href="withBase('/samples')"
               />
               <UButton
                 color="neutral"
                 variant="ghost"
-                class="w-full justify-start rounded-xl"
+                class="w-full"
                 icon="i-simple-icons-github"
-                label="Project repository"
-                block
+                :label="collapsed ? undefined : 'Project repository'"
+                :block="!collapsed"
+                :square="collapsed"
+                :ui="{ base: collapsed ? 'justify-center' : 'justify-start' }"
                 href="https://github.com/gilbertrogers/vjml"
                 target="_blank"
               />
@@ -114,7 +157,12 @@ provide('hero-image-slot-exists', heroImageSlotExists)
               </template>
 
               <template #right>
-                <div class="hidden md:flex min-w-0 flex-1 max-w-md items-center">
+                <div
+                  :class="[
+                    'hidden md:flex min-w-0 flex-1 max-w-md items-center',
+                    hasSidebar ? 'xl:hidden' : ''
+                  ]"
+                >
                   <VPNavBarSearch />
                 </div>
                 <VPNavBarAppearance />
@@ -163,13 +211,3 @@ provide('hero-image-slot-exists', heroImageSlotExists)
     <Content v-else />
   </UApp>
 </template>
-
-<style scoped>
-.Layout {
-  min-height: 100vh;
-}
-
-.docs-content-shell {
-  min-height: 100%;
-}
-</style>
