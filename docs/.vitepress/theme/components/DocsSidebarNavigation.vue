@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useData, withBase } from 'vitepress'
 import { useSidebar } from 'vitepress/theme'
 
@@ -25,6 +25,7 @@ interface SidebarNavigationSection {
 }
 
 interface SidebarNavigationGroup {
+  hasActiveItem: boolean
   id: string
   items: SidebarNavigationItem[]
   label: string
@@ -37,6 +38,7 @@ const EXTERNAL_URL_RE = /^(?:[a-z]+:|\/\/)/i
 
 const { page, site } = useData()
 const { sidebarGroups } = useSidebar()
+const openGroups = ref<Record<string, boolean>>({})
 
 function normalizePath(path: string): string {
   return decodeURI(path)
@@ -93,6 +95,7 @@ const navigationSections = computed<SidebarNavigationSection[]>(() => {
     for (const [itemIndex, item] of (groupItem.items ?? []).entries()) {
       if (item.items?.length) {
         nestedGroups.push({
+          hasActiveItem: item.items.some(child => isActiveLink(page.value.relativePath, child.link)),
           id: `section-${index}-group-${itemIndex}`,
           items: item.items.map((child, childIndex) => {
             return toNavigationItem(child, `section-${index}-group-${itemIndex}-${childIndex}`)
@@ -114,6 +117,40 @@ const navigationSections = computed<SidebarNavigationSection[]>(() => {
     }
   })
 })
+
+watch(
+  navigationSections,
+  (sections) => {
+    const nextOpenGroups = { ...openGroups.value }
+
+    for (const section of sections) {
+      for (const group of section.groups) {
+        if (group.hasActiveItem) {
+          nextOpenGroups[group.id] = true
+          continue
+        }
+
+        if (!(group.id in nextOpenGroups)) {
+          nextOpenGroups[group.id] = false
+        }
+      }
+    }
+
+    openGroups.value = nextOpenGroups
+  },
+  { immediate: true },
+)
+
+function isGroupOpen(group: SidebarNavigationGroup): boolean {
+  return openGroups.value[group.id] ?? group.hasActiveItem
+}
+
+function setGroupOpen(groupId: string, open: boolean): void {
+  openGroups.value = {
+    ...openGroups.value,
+    [groupId]: open,
+  }
+}
 </script>
 
 <template>
@@ -125,7 +162,10 @@ const navigationSections = computed<SidebarNavigationSection[]>(() => {
       :aria-labelledby="`${section.id}-label`"
     >
       <div class="px-3">
-        <h2 :id="`${section.id}-label`" class="text-xs font-semibold uppercase tracking-wide text-muted">
+        <h2
+          :id="`${section.id}-label`"
+          class="text-[11px] font-bold uppercase tracking-[0.18em] text-highlighted"
+        >
           {{ section.label }}
         </h2>
       </div>
@@ -138,25 +178,48 @@ const navigationSections = computed<SidebarNavigationSection[]>(() => {
         highlight
       />
 
-      <div
+      <UCollapsible
         v-for="group in section.groups"
         :key="group.id"
         class="space-y-1"
-        :aria-labelledby="`${group.id}-label`"
+        :open="isGroupOpen(group)"
+        :unmount-on-hide="false"
+        @update:open="setGroupOpen(group.id, $event)"
       >
-        <div class="px-3 pt-2">
-          <h3 :id="`${group.id}-label`" class="text-[11px] font-medium uppercase tracking-wide text-dimmed">
-            {{ group.label }}
-          </h3>
-        </div>
+        <template #default="{ open }">
+          <div class="px-1 pt-2">
+            <h3 :id="`${group.id}-label`">
+              <UButton
+                color="neutral"
+                variant="ghost"
+                :label="group.label"
+                trailing-icon="i-lucide-chevron-down"
+                block
+                class="group w-full justify-between px-2.5"
+                :ui="{
+                  base: 'justify-between',
+                  label: 'text-sm font-semibold text-highlighted',
+                  trailingIcon: [
+                    'text-dimmed transition-transform duration-200',
+                    open ? 'rotate-180' : ''
+                  ]
+                }"
+              />
+            </h3>
+          </div>
+        </template>
 
-        <UNavigationMenu
-          class="w-full"
-          :items="group.items as NavigationMenuItem[]"
-          orientation="vertical"
-          highlight
-        />
-      </div>
+        <template #content>
+          <div :aria-labelledby="`${group.id}-label`" class="pb-1">
+            <UNavigationMenu
+              class="w-full"
+              :items="group.items as NavigationMenuItem[]"
+              orientation="vertical"
+              highlight
+            />
+          </div>
+        </template>
+      </UCollapsible>
 
       <USeparator v-if="section !== navigationSections[navigationSections.length - 1]" />
     </section>
