@@ -31,32 +31,32 @@ onMounted(async () => {
 				<p class="panel-label">Playground</p>
 				<h1>Welcome to the VJML playground</h1>
 				<p class="section-description">
-					This page renders the preview entirely through the plugin using <code>VJ</code>-prefixed component aliases throughout.
+					This page keeps the setup intentionally small. The preview below is rendered entirely through the plugin, and it mixes bare tags like <code>&lt;Mjml&gt;</code> with prefixed aliases like <code>&lt;VJText&gt;</code> and <code>&lt;VJButton&gt;</code>.
 				</p>
 			</div>
 
 			<div class="example-preview">
-				<VJMjml lang="en">
-					<VJBody width="340px" background-color="#f6efe7">
-						<VJSection background-color="#fffaf2" padding="24px">
-							<VJColumn>
-								<VJText color="#db7636" font-size="12px" font-weight="700" letter-spacing="0.18em" text-transform="uppercase">
+				<Mjml lang="en">
+					<Body width="340px" background-color="#f6efe7">
+						<Section background-color="#fffaf2" padding="24px">
+							<Column>
+								<Text color="#db7636" font-size="12px" font-weight="700" letter-spacing="0.18em" text-transform="uppercase">
 									Plugin check
-								</VJText>
+								</Text>
 
-								<VJSpacer height="10px" />
+								<Spacer height="10px" />
 
 								<VJText color="#173540" font-size="22px" font-weight="700" line-height="28px">
 									Welcome to the preview workspace
 								</VJText>
 
-								<VJSpacer height="10px" />
+								<Spacer height="10px" />
 
-								<VJText color="#425d64" font-size="14px" line-height="22px">
-									The plugin is configured to register both unprefixed and VJ-prefixed component aliases, so the playground can verify both paths in one place.
-								</VJText>
+								<Text color="#425d64" font-size="14px" line-height="22px">
+									The plugin is configured to register both unprefixed and <code>VJ</code>-prefixed component aliases, so the playground can verify both paths in one place.
+								</Text>
 
-								<VJSpacer height="16px" />
+								<Spacer height="16px" />
 
 								<VJButton
 									align="left"
@@ -68,38 +68,38 @@ onMounted(async () => {
 								>
 									Open documentation
 								</VJButton>
-							</VJColumn>
-						</VJSection>
+							</Column>
+						</Section>
 
 						<!-- Line items: iterated 5 times -->
-						<VJSection
+						<Section
 							v-for="item in lineItems"
 							:key="item.id"
 							background-color="#fffaf2"
 							padding="0 24px"
 							border-top="1px solid #e8ddd0"
 						>
-							<VJColumn>
-								<VJText color="#425d64" font-size="13px" line-height="20px">
+							<Column>
+								<Text color="#425d64" font-size="13px" line-height="20px">
 									{{ item.label }}
 									<span style="float:right; color:#173540; font-weight:600">${{ item.amount.toFixed(2) }}</span>
-								</VJText>
-							</VJColumn>
-						</VJSection>
+								</Text>
+							</Column>
+						</Section>
 
 						<!-- Total from mock API -->
-						<VJSection background-color="#16353f" padding="16px 24px">
-							<VJColumn>
-								<VJText color="#fffaf2" font-size="14px" font-weight="700" line-height="20px">
+						<Section background-color="#16353f" padding="16px 24px">
+							<Column>
+								<Text color="#fffaf2" font-size="14px" font-weight="700" line-height="20px">
 									Total
 									<span style="float:right">
 										{{ total !== null ? `$${total.toFixed(2)}` : 'Loading…' }}
 									</span>
-								</VJText>
-							</VJColumn>
-						</VJSection>
-					</VJBody>
-				</VJMjml>
+								</Text>
+							</Column>
+						</Section>
+					</Body>
+				</Mjml>
 			</div>
 		</section>
 	</main>
