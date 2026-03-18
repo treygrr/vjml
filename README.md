@@ -15,6 +15,7 @@ It includes:
 
 - `src` contains the publishable component library and is the only code compiled into `dist`.
 - `test` contains the component parity suites, shared test utilities, and end-to-end sample email fixtures.
+- `docs` contains the VitePress documentation site for local docs work and GitHub Pages deployment.
 - `playground` contains the local development app used for previewing and testing the library.
 - The playground imports the library through the local `vjml` source alias, so it exercises the same public entry surface a consumer would use.
 
@@ -22,6 +23,9 @@ It includes:
 
 - `npm run dev` starts the local playground.
 - `npm run dev:playground` also starts the local playground explicitly.
+- `npm run docs:dev` starts the VitePress docs site.
+- `npm run docs:build` builds the static docs output.
+- `npm run docs:preview` previews the built docs site locally.
 - `npm run build` builds the library from `src` into `dist` and emits declaration files.
 - `npm run build:lib` runs the library build directly.
 - `npm run test` runs the renderer parity test suite.
@@ -111,7 +115,7 @@ Inside a setup context, `useVjmlRenderer()` is also available from `vjml` and me
 ## Important entries
 
 - `src/index.ts` exports the plugin, components, metadata, and shared utilities.
-- `src/runtime/components` contains the copied VJML component implementations.
+- `src/runtime/components` contains the VJML component implementations.
 - `src/runtime/internal` contains the browser render pipeline and document/context helpers.
 - `src/metadata.ts` and `src/metadata.generated.ts` provide component metadata used by validation and serialization.
 - `playground/App.vue` is the development catalog that imports and exercises the library.
