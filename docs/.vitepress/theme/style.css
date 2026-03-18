@@ -2,17 +2,23 @@
 @import "@nuxt/ui";
 
 :root {
-  --vp-c-brand-1: #16353f;
-  --vp-c-brand-2: #204e5d;
-  --vp-c-brand-3: #db7636;
-  --vp-c-brand-soft: rgba(219, 118, 54, 0.12);
-  --vp-home-hero-name-color: #16353f;
+  --vp-c-brand-1: #16a34a;
+  --vp-c-brand-2: #22c55e;
+  --vp-c-brand-3: #4ade80;
+  --vp-c-brand-soft: rgba(34, 197, 94, 0.14);
+  --vp-home-hero-name-color: #0f172a;
   --vp-home-hero-image-background-image:
-    radial-gradient(circle at 20% 20%, rgba(219, 118, 54, 0.28), transparent 28%),
-    radial-gradient(circle at 80% 10%, rgba(22, 53, 63, 0.22), transparent 24%),
-    linear-gradient(135deg, rgba(255, 249, 240, 0.94), rgba(239, 246, 243, 0.96));
-  --vp-home-hero-image-filter: blur(56px);
-  --vp-sidebar-bg-color: rgba(255, 255, 255, 0.84);
+    radial-gradient(circle at 22% 18%, rgba(34, 197, 94, 0.2), transparent 26%),
+    radial-gradient(circle at 76% 12%, rgba(59, 130, 246, 0.16), transparent 22%),
+    linear-gradient(135deg, rgba(248, 250, 252, 0.96), rgba(255, 255, 255, 0.98));
+  --vp-home-hero-image-filter: blur(52px);
+  --vp-c-bg: #ffffff;
+  --vp-c-bg-alt: #f8fafc;
+  --vp-c-bg-elv: #ffffff;
+  --vp-c-bg-soft: #f8fafc;
+  --vp-c-divider: rgba(148, 163, 184, 0.24);
+  --vp-c-gutter: rgba(148, 163, 184, 0.18);
+  --vp-sidebar-bg-color: rgba(255, 255, 255, 0.9);
 }
 
 .dark {
@@ -27,15 +33,15 @@
 .VPNavBar,
 .VPSidebar,
 .VPFooter {
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.88);
 }
 
 .VPNavBar {
-  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
 }
 
 .VPSidebar {
-  border-right: 1px solid rgba(148, 163, 184, 0.16);
+  border-right: 1px solid rgba(148, 163, 184, 0.14);
 }
 
 .vp-doc {
@@ -47,8 +53,9 @@
 
 .VPContent {
   background:
-    radial-gradient(circle at top left, rgba(251, 146, 60, 0.08), transparent 24%),
-    linear-gradient(180deg, rgba(255, 249, 240, 0.78), rgba(241, 245, 249, 0.74));
+    radial-gradient(circle at top right, rgba(34, 197, 94, 0.06), transparent 22%),
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.05), transparent 24%),
+    linear-gradient(180deg, rgba(248, 250, 252, 0.82), rgba(255, 255, 255, 0.78));
 }
 
 .VPDoc .container,
@@ -83,7 +90,7 @@
 .VPFeature {
   border-radius: 24px;
   border: 1px solid rgba(148, 163, 184, 0.14);
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.92);
   box-shadow: 0 18px 48px rgba(15, 23, 42, 0.05);
 }
 
@@ -94,7 +101,7 @@
 
 .sample-preview-frame .vjml-render-frame__iframe {
   border-radius: 18px;
-  background: #fffdf8;
+  background: #ffffff;
   box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.18);
 }
 
@@ -103,7 +110,7 @@
   max-height: 640px;
   overflow: auto;
   border-radius: 24px;
-  background: linear-gradient(180deg, #0f172a, #10262d 52%, #132c36);
+  background: linear-gradient(180deg, #0f172a, #111827 52%, #172554);
   box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.14);
 }
 
@@ -119,13 +126,41 @@
 .VPDocAsideOutline .content {
   border-radius: 18px;
   border: 1px solid rgba(148, 163, 184, 0.16);
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.88);
   padding: 14px;
 }
 
 .VPSidebarItem.level-0 > .item > .link > .text,
-.VPSidebarItem.level-1 > .item > .link > .text {
+.VPSidebarItem.level-1 > .item > .link > .text,
+.VPSidebarItem.level-2 > .item > .link > .text {
   font-weight: 600;
+}
+
+.VPSidebarItem.level-0 > .item > .link {
+  margin-bottom: 6px;
+  border-radius: 12px;
+}
+
+.VPSidebarItem.level-1 > .item > .link,
+.VPSidebarItem.level-2 > .item > .link,
+.VPSidebarItem.level-3 > .item > .link {
+  border-radius: 10px;
+}
+
+.VPSidebarItem.level-1 {
+  margin-left: 6px;
+}
+
+.VPSidebarItem.level-2 {
+  margin-left: 14px;
+}
+
+.VPSidebarItem.level-3 {
+  margin-left: 22px;
+}
+
+.VPSidebar .group:has(.VPSidebarItem.level-1) {
+  padding-top: 4px;
 }
 
 @media (max-width: 768px) {

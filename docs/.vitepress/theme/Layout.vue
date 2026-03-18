@@ -6,7 +6,7 @@ const { Layout } = DefaultTheme
 
 <template>
   <UApp>
-    <div class="isolate min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(251,146,60,0.12),transparent_24%),linear-gradient(180deg,rgba(255,249,240,0.92),rgba(241,245,249,0.92))]">
+    <div class="isolate min-h-screen bg-[radial-gradient(circle_at_top_right,rgba(34,197,94,0.1),transparent_20%),radial-gradient(circle_at_top_left,rgba(59,130,246,0.08),transparent_22%),linear-gradient(180deg,rgba(248,250,252,0.96),rgba(255,255,255,0.94))]">
       <Layout />
     </div>
   </UApp>

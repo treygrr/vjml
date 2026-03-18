@@ -11,21 +11,82 @@ const componentMetadataByTagName = new Map(
   VJML_COMPONENT_METADATA.map(metadata => [metadata.tagName, metadata] as const),
 )
 
+type ComponentTreeNode = string | {
+  items: ComponentTreeNode[]
+  tag: string
+}
+
 const componentGroupDefinitions = [
   {
-    tags: ['mjml', 'mj-body', 'mj-wrapper', 'mj-section', 'mj-group', 'mj-column'],
+    items: [
+      {
+        items: [
+          {
+            items: [
+              'mj-wrapper',
+              {
+                items: ['mj-group', 'mj-column'],
+                tag: 'mj-section',
+              },
+            ],
+            tag: 'mj-body',
+          },
+        ],
+        tag: 'mjml',
+      },
+    ],
     text: 'Layout',
   },
   {
-    tags: ['mj-hero', 'mj-image', 'mj-text', 'mj-button', 'mj-divider', 'mj-spacer', 'mj-table'],
+    items: ['mj-hero', 'mj-image', 'mj-text', 'mj-button', 'mj-divider', 'mj-spacer', 'mj-table'],
     text: 'Content',
   },
   {
-    tags: ['mj-head', 'mj-title', 'mj-preview', 'mj-font', 'mj-style', 'mj-breakpoint', 'mj-attributes', 'mj-all', 'mj-class', 'mj-html-attributes', 'mj-selector', 'mj-html-attribute', 'mj-raw'],
+    items: [
+      {
+        items: ['mj-title', 'mj-preview', 'mj-font', 'mj-style', 'mj-breakpoint', 'mj-raw'],
+        tag: 'mj-head',
+      },
+      {
+        items: ['mj-all', 'mj-class'],
+        tag: 'mj-attributes',
+      },
+      {
+        items: [
+          {
+            items: ['mj-html-attribute'],
+            tag: 'mj-selector',
+          },
+        ],
+        tag: 'mj-html-attributes',
+      },
+    ],
     text: 'Head and Global',
   },
   {
-    tags: ['mj-accordion', 'mj-accordion-element', 'mj-accordion-title', 'mj-accordion-text', 'mj-carousel', 'mj-carousel-image', 'mj-navbar', 'mj-navbar-link', 'mj-social', 'mj-social-element'],
+    items: [
+      {
+        items: [
+          {
+            items: ['mj-accordion-title', 'mj-accordion-text'],
+            tag: 'mj-accordion-element',
+          },
+        ],
+        tag: 'mj-accordion',
+      },
+      {
+        items: ['mj-carousel-image'],
+        tag: 'mj-carousel',
+      },
+      {
+        items: ['mj-navbar-link'],
+        tag: 'mj-navbar',
+      },
+      {
+        items: ['mj-social-element'],
+        tag: 'mj-social',
+      },
+    ],
     text: 'Interactive',
   },
 ] as const
@@ -49,8 +110,30 @@ function getComponentSidebarItem(tagName: string) {
   }
 }
 
+function buildComponentTreeItem(node: ComponentTreeNode) {
+  if (typeof node === 'string') {
+    return getComponentSidebarItem(node)
+  }
+
+  return {
+    ...getComponentSidebarItem(node.tag),
+    collapsed: true,
+    items: node.items.map(buildComponentTreeItem),
+  }
+}
+
+function flattenComponentTree(nodes: readonly ComponentTreeNode[]): string[] {
+  return nodes.flatMap((node) => {
+    if (typeof node === 'string') {
+      return [node]
+    }
+
+    return [node.tag, ...flattenComponentTree(node.items)]
+  })
+}
+
 const groupedComponentTagNames = new Set(
-  componentGroupDefinitions.flatMap(group => group.tags),
+  componentGroupDefinitions.flatMap(group => flattenComponentTree(group.items)),
 )
 const ungroupedComponentTagNames = VJML_COMPONENT_METADATA
   .map(metadata => metadata.tagName)
@@ -66,7 +149,7 @@ const componentSidebarItems = [
   { text: 'Overview', link: '/components/' },
   ...componentGroupDefinitions.map(group => ({
     collapsed: true,
-    items: group.tags.map(getComponentSidebarItem),
+    items: group.items.map(buildComponentTreeItem),
     text: group.text,
   })),
 ]
@@ -125,7 +208,7 @@ export default defineConfig({
         ui: {
           colors: {
             neutral: 'slate',
-            primary: 'orange',
+            primary: 'green',
           },
         },
       }),
