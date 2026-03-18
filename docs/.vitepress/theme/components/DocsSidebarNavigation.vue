@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
-import { computed, ref, watch } from 'vue'
+import { computed } from 'vue'
 import { useData, withBase } from 'vitepress'
 import { useSidebar } from 'vitepress/theme'
 
@@ -11,31 +11,10 @@ const props = withDefaults(defineProps<{
 })
 
 interface SidebarItem {
+  collapsed?: boolean
   items?: SidebarItem[]
   link?: string
   text?: string
-}
-
-interface SidebarNavigationItem {
-  active?: boolean
-  labelIcon?: string
-  label: string
-  to?: string
-  value: string
-}
-
-interface SidebarNavigationSection {
-  groups: SidebarNavigationGroup[]
-  id: string
-  items: SidebarNavigationItem[]
-  label: string
-}
-
-interface SidebarNavigationGroup {
-  hasActiveItem: boolean
-  id: string
-  items: SidebarNavigationItem[]
-  label: string
 }
 
 const ICONS_BY_LABEL: Record<string, string> = {
@@ -59,7 +38,6 @@ const EXTERNAL_URL_RE = /^(?:[a-z]+:|\/\/)/i
 
 const { page, site } = useData()
 const { sidebarGroups } = useSidebar()
-const openGroups = ref<Record<string, boolean>>({})
 
 function normalizePath(path: string): string {
   return decodeURI(path)
@@ -98,11 +76,14 @@ function normalizeLink(url: string): string {
   return withBase(normalizedPath)
 }
 
-function toNavigationItem(item: SidebarItem, value: string): SidebarNavigationItem {
+function toNavigationItem(item: SidebarItem, value: string): NavigationMenuItem {
+  const label = item.text ?? 'Untitled'
+  const isComponentLink = item.link?.startsWith('/components/')
+
   return {
     active: isActiveLink(page.value.relativePath, item.link),
-    labelIcon: item.link?.startsWith('/components/') ? 'i-lucide-file-text' : undefined,
-    label: item.text ?? 'Untitled',
+    icon: isComponentLink ? 'i-lucide-file-text' : getItemIcon(label),
+    label,
     to: item.link ? normalizeLink(item.link) : undefined,
     value,
   }
@@ -112,21 +93,29 @@ function getItemIcon(label: string, fallback = 'i-lucide-file-text'): string {
   return ICONS_BY_LABEL[label] ?? fallback
 }
 
-const navigationSections = computed<SidebarNavigationSection[]>(() => {
+const navigationMenuItems = computed<NavigationMenuItem[][]>(() => {
   return sidebarGroups.value.map((group, index) => {
     const groupItem = group as SidebarItem
-    const items: SidebarNavigationItem[] = []
-    const nestedGroups: SidebarNavigationGroup[] = []
+    const items: NavigationMenuItem[] = [{
+      label: groupItem.text ?? 'Navigation',
+      type: 'label',
+      value: `section-${index}-label`,
+    }]
 
     for (const [itemIndex, item] of (groupItem.items ?? []).entries()) {
       if (item.items?.length) {
-        nestedGroups.push({
-          hasActiveItem: item.items.some(child => isActiveLink(page.value.relativePath, child.link)),
-          id: `section-${index}-group-${itemIndex}`,
-          items: item.items.map((child, childIndex) => {
+        const hasActiveItem = item.items.some(child => isActiveLink(page.value.relativePath, child.link))
+
+        items.push({
+          active: hasActiveItem,
+          children: item.items.map((child, childIndex) => {
             return toNavigationItem(child, `section-${index}-group-${itemIndex}-${childIndex}`)
           }),
+          defaultOpen: item.collapsed === false || hasActiveItem,
+          icon: getItemIcon(item.text ?? 'Section'),
           label: item.text ?? 'Section',
+          type: 'trigger',
+          value: `section-${index}-group-${itemIndex}`,
         })
 
         continue
@@ -135,143 +124,19 @@ const navigationSections = computed<SidebarNavigationSection[]>(() => {
       items.push(toNavigationItem(item, `section-${index}-item-${itemIndex}`))
     }
 
-    return {
-      groups: nestedGroups,
-      id: `section-${index}`,
-      items,
-      label: groupItem.text ?? 'Navigation',
-    }
+    return items
   })
-})
-
-watch(
-  navigationSections,
-  (sections) => {
-    const nextOpenGroups = { ...openGroups.value }
-
-    for (const section of sections) {
-      for (const group of section.groups) {
-        if (group.hasActiveItem) {
-          nextOpenGroups[group.id] = true
-          continue
-        }
-
-        if (!(group.id in nextOpenGroups)) {
-          nextOpenGroups[group.id] = false
-        }
-      }
-    }
-
-    openGroups.value = nextOpenGroups
-  },
-  { immediate: true },
-)
-
-function isGroupOpen(group: SidebarNavigationGroup): boolean {
-  return openGroups.value[group.id] ?? group.hasActiveItem
-}
-
-function getSectionOpenValues(section: SidebarNavigationSection): string[] {
-  return section.groups
-    .filter(group => isGroupOpen(group))
-    .map(group => group.id)
-}
-
-function setSectionOpenValues(sectionId: string, value: string | string[] | undefined): void {
-  const section = navigationSections.value.find(candidate => candidate.id === sectionId)
-
-  if (!section) {
-    return
-  }
-
-  const nextOpenValues = new Set(Array.isArray(value) ? value : value ? [value] : [])
-  const nextOpenGroups = { ...openGroups.value }
-
-  for (const group of section.groups) {
-    nextOpenGroups[group.id] = nextOpenValues.has(group.id)
-  }
-
-  openGroups.value = nextOpenGroups
-}
-
-function toMenuItems(section: SidebarNavigationSection): NavigationMenuItem[] {
-  const items: NavigationMenuItem[] = []
-
-  if (!props.collapsed) {
-    items.push({
-      label: section.label,
-      type: 'label',
-      value: `${section.id}-label`,
-    })
-  }
-
-  for (const item of section.items) {
-    items.push({
-      active: item.active,
-      icon: item.labelIcon ?? getItemIcon(item.label, 'i-lucide-file-text'),
-      label: item.label,
-      to: item.to,
-      value: item.value,
-    })
-  }
-
-  for (const group of section.groups) {
-    items.push({
-      active: group.hasActiveItem,
-      children: group.items.map(item => ({
-        active: item.active,
-        icon: item.labelIcon ?? 'i-lucide-file-text',
-        label: item.label,
-        to: item.to,
-        value: item.value,
-      })),
-      icon: getItemIcon(group.label),
-      label: group.label,
-      type: 'trigger',
-      value: group.id,
-    })
-  }
-
-  return items
-}
-
-const navigationMenuUi = computed(() => {
-  return {
-    item: 'w-full',
-    label: 'px-2.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-highlighted',
-    list: 'w-full',
-    root: 'w-full',
-    content: 'rounded-lg border border-default bg-default shadow-lg',
-    link: props.collapsed ? 'justify-center' : 'justify-start',
-  }
 })
 </script>
 
 <template>
-  <div v-if="navigationSections.length > 0" class="DocsSidebarNavigation">
-    <UNavigationMenu
-      v-for="section in navigationSections"
-      :key="section.id"
-      :collapsed="collapsed"
-      :items="toMenuItems(section)"
-      :model-value="getSectionOpenValues(section)"
-      :popover="collapsed"
-      :tooltip="collapsed"
-      :ui="navigationMenuUi"
-      class="w-full"
-      color="neutral"
-      highlight
-      orientation="vertical"
-      type="multiple"
-      @update:model-value="setSectionOpenValues(section.id, $event)"
-    />
-  </div>
+  <UNavigationMenu
+    v-if="navigationMenuItems.length > 0"
+    :key="page.relativePath"
+    :collapsed="collapsed"
+    :items="navigationMenuItems"
+    :popover="collapsed"
+    :tooltip="collapsed"
+    orientation="vertical"
+  />
 </template>
-
-<style scoped>
-.DocsSidebarNavigation {
-  display: flex;
-  flex-direction: column;
-	gap: 0.75rem;
-}
-</style>
