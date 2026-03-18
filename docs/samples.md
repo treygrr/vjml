@@ -1,6 +1,6 @@
 # Samples
 
-These are full-email fixtures, not isolated component snippets. Each sample exists as both a `.vue` component and a matching `.mjml` source file, and the parity suite snapshots them under `samples/snapshots`.
+These are full-email fixtures, not isolated component snippets. Each sample exists as both a `.vue` component and a matching `.mjml` source file, and the parity suite snapshots them under `test/samples/snapshots`.
 
 ## Launch announcement
 

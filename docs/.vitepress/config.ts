@@ -58,7 +58,7 @@ export default defineConfig({
   vite: {
     resolve: {
       alias: {
-        '@samples': fileURLToPath(new URL('../../samples', import.meta.url)),
+        '@samples': fileURLToPath(new URL('../../test/samples', import.meta.url)),
         '@src': fileURLToPath(new URL('../../src', import.meta.url)),
         vjml: fileURLToPath(new URL('../../src/index.ts', import.meta.url)),
       },
