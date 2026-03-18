@@ -42,7 +42,6 @@ provide('hero-image-slot-exists', heroImageSlotExists)
           v-if="hasSidebar"
           id="docs-sidebar"
           v-model:open="isSidebarOpen"
-          collapsible
           resizable
           :default-size="18"
           :min-size="14"
@@ -53,36 +52,48 @@ provide('hero-image-slot-exists', heroImageSlotExists)
             footer: 'border-t border-default'
           }"
         >
-          <template #header="{ collapsed }">
-            <UButton
-              color="neutral"
-              variant="ghost"
-              class="w-full justify-start"
-              icon="i-lucide-book-open"
-              :label="collapsed ? undefined : site.title"
-              :square="collapsed"
-              block
-              :href="withBase('/')"
-            />
+          <template #header>
+            <div class="space-y-1">
+              <UButton
+                color="neutral"
+                variant="ghost"
+                class="w-full justify-start"
+                icon="i-lucide-book-open"
+                label="VJML Docs"
+                block
+                :href="withBase('/')"
+              />
+            </div>
           </template>
 
-          <template #default="{ collapsed }">
+          <template #default>
             <slot name="sidebar-nav-before" />
-            <DocsSidebarNavigation :collapsed="collapsed" />
+            <DocsSidebarNavigation />
             <slot name="sidebar-nav-after" />
           </template>
 
-          <template #footer="{ collapsed }">
-            <UButton
-              color="neutral"
-              variant="ghost"
-              class="w-full justify-start"
-              icon="i-lucide-gallery-vertical-end"
-              :label="collapsed ? undefined : 'Browse samples'"
-              :square="collapsed"
-              block
-              :href="withBase('/samples')"
-            />
+          <template #footer>
+            <div class="flex flex-col gap-2">
+              <UButton
+                color="neutral"
+                variant="ghost"
+                class="w-full justify-start"
+                icon="i-lucide-gallery-vertical-end"
+                label="Browse samples"
+                block
+                :href="withBase('/samples')"
+              />
+              <UButton
+                color="neutral"
+                variant="ghost"
+                class="w-full justify-start"
+                icon="i-simple-icons-github"
+                label="Project repository"
+                block
+                href="https://github.com/gilbertrogers/vjml"
+                target="_blank"
+              />
+            </div>
           </template>
         </UDashboardSidebar>
 
@@ -97,10 +108,6 @@ provide('hero-image-slot-exists', heroImageSlotExists)
                 title: 'truncate'
               }"
             >
-              <template #leading>
-                <UDashboardSidebarCollapse v-if="hasSidebar" />
-              </template>
-
               <template #default>
                 <DocsTopNavigation />
               </template>

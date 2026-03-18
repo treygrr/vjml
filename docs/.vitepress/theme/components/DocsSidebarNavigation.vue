@@ -12,16 +12,23 @@ interface SidebarItem {
 
 interface SidebarNavigationItem {
   active?: boolean
-  children?: SidebarNavigationItem[]
-  defaultOpen?: boolean
   href?: string
   label: string
   value: string
 }
 
-defineProps<{
-  collapsed?: boolean
-}>()
+interface SidebarNavigationSection {
+  groups: SidebarNavigationGroup[]
+  id: string
+  items: SidebarNavigationItem[]
+  label: string
+}
+
+interface SidebarNavigationGroup {
+  id: string
+  items: SidebarNavigationItem[]
+  label: string
+}
 
 const HASH_RE = /#.*$/
 const HASH_OR_QUERY_RE = /[?#].*$/
@@ -69,45 +76,97 @@ function normalizeLink(url: string): string {
 }
 
 function toNavigationItem(item: SidebarItem, value: string): SidebarNavigationItem {
-  const children = item.items?.map((child, index) => toNavigationItem(child, `${value}-${index}`))
-  const active = isActiveLink(page.value.relativePath, item.link)
-  const hasActiveChild = children?.some(child => child.active || child.defaultOpen) ?? false
-
   return {
-    active: active || hasActiveChild,
-    children,
-    defaultOpen: children?.length ? hasActiveChild : undefined,
+    active: isActiveLink(page.value.relativePath, item.link),
     href: item.link ? normalizeLink(item.link) : undefined,
     label: item.text ?? 'Untitled',
     value,
   }
 }
 
-const navigationItems = computed(() => {
-  return sidebarGroups.value.flatMap((group, index) => {
+const navigationSections = computed<SidebarNavigationSection[]>(() => {
+  return sidebarGroups.value.map((group, index) => {
     const groupItem = group as SidebarItem
+    const items: SidebarNavigationItem[] = []
+    const nestedGroups: SidebarNavigationGroup[] = []
 
-    if (!groupItem.text) {
-      return groupItem.items?.map((item, itemIndex) => {
-        return toNavigationItem(item, `group-${index}-${itemIndex}`)
-      }) ?? []
+    for (const [itemIndex, item] of (groupItem.items ?? []).entries()) {
+      if (item.items?.length) {
+        nestedGroups.push({
+          id: `section-${index}-group-${itemIndex}`,
+          items: item.items.map((child, childIndex) => {
+            return toNavigationItem(child, `section-${index}-group-${itemIndex}-${childIndex}`)
+          }),
+          label: item.text ?? 'Section',
+        })
+
+        continue
+      }
+
+      items.push(toNavigationItem(item, `section-${index}-item-${itemIndex}`))
     }
 
-    return [toNavigationItem(groupItem, `group-${index}`)]
+    return {
+      groups: nestedGroups,
+      id: `section-${index}`,
+      items,
+      label: groupItem.text ?? 'Navigation',
+    }
   })
 })
 </script>
 
 <template>
-  <UNavigationMenu
-    v-if="navigationItems.length > 0"
-    class="VPNuxtSidebarNav w-full"
-    :items="navigationItems as NavigationMenuItem[]"
-    :collapsed="collapsed"
-    collapsible
-    orientation="vertical"
-    popover
-    tooltip
-    type="multiple"
-  />
+  <div v-if="navigationSections.length > 0" class="DocsSidebarNavigation">
+    <section
+      v-for="section in navigationSections"
+      :key="section.id"
+      class="space-y-3"
+      :aria-labelledby="`${section.id}-label`"
+    >
+      <div class="px-3">
+        <h2 :id="`${section.id}-label`" class="text-xs font-semibold uppercase tracking-wide text-muted">
+          {{ section.label }}
+        </h2>
+      </div>
+
+      <UNavigationMenu
+        v-if="section.items.length > 0"
+        class="w-full"
+        :items="section.items as NavigationMenuItem[]"
+        orientation="vertical"
+        highlight
+      />
+
+      <div
+        v-for="group in section.groups"
+        :key="group.id"
+        class="space-y-1"
+        :aria-labelledby="`${group.id}-label`"
+      >
+        <div class="px-3 pt-2">
+          <h3 :id="`${group.id}-label`" class="text-[11px] font-medium uppercase tracking-wide text-dimmed">
+            {{ group.label }}
+          </h3>
+        </div>
+
+        <UNavigationMenu
+          class="w-full"
+          :items="group.items as NavigationMenuItem[]"
+          orientation="vertical"
+          highlight
+        />
+      </div>
+
+      <USeparator v-if="section !== navigationSections[navigationSections.length - 1]" />
+    </section>
+  </div>
 </template>
+
+<style scoped>
+.DocsSidebarNavigation {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+</style>

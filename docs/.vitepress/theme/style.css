@@ -23,3 +23,34 @@
 		padding-right: 0;
 	}
 }
+
+@media (min-width: 1280px) {
+	.VPDoc .aside {
+		align-self: flex-start;
+		max-width: 240px;
+		padding-left: 24px;
+	}
+
+	.VPDoc .left-aside {
+		padding-left: 0;
+		padding-right: 24px;
+	}
+
+	.VPDoc .aside-container {
+		position: sticky;
+		top: 24px;
+		padding-top: 0;
+		width: 100%;
+		height: auto;
+		max-height: calc(100dvh - 48px);
+	}
+
+	.VPDoc .aside-curtain {
+		display: none;
+	}
+
+	.VPDoc .aside-content {
+		min-height: auto;
+		padding-bottom: 24px;
+	}
+}
