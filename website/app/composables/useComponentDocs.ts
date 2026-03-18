@@ -33,7 +33,7 @@ export const COMPONENT_DOC_GROUPS = [
 
 export const COMPONENT_DOCS_GROUP_ROUTE = '/docs/components'
 
-const COMPONENT_DOC_GROUP_BY_TAG = new Map(
+const COMPONENT_DOC_GROUP_BY_TAG = new Map<string, string>(
   COMPONENT_DOC_GROUPS.flatMap(group => group.tags.map(tag => [tag, group.slug] as const)),
 )
 
@@ -63,7 +63,7 @@ const COMPONENT_DOC_NAV_ORDER = COMPONENT_DOC_GROUPS.flatMap(group => [
   ...group.tags.map(tag => getComponentDocsRoute(tag)),
 ])
 
-const COMPONENT_DOC_NAV_ORDER_INDEX = new Map(
+const COMPONENT_DOC_NAV_ORDER_INDEX = new Map<string, number>(
   COMPONENT_DOC_NAV_ORDER.map((path, index) => [path, index]),
 )
 

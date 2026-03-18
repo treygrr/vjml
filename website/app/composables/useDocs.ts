@@ -14,7 +14,7 @@ const TOP_LEVEL_NAV_ORDER = [
   COMPONENT_DOCS_GROUP_ROUTE,
 ] as const
 
-const TOP_LEVEL_NAV_INDEX = new Map(
+const TOP_LEVEL_NAV_INDEX = new Map<string, number>(
   TOP_LEVEL_NAV_ORDER.map((path, index) => [path, index]),
 )
 
@@ -27,7 +27,7 @@ type DocsSearchFile = {
 }
 
 export function getDocsRoutePath(contentPath: string): string {
-  const [pathname, hash] = contentPath.split('#')
+  const [pathname = '', hash] = contentPath.split('#')
   const normalizedPath = pathname === '/' ? '' : pathname.replace(/\/$/, '')
   const basePath = normalizedPath ? `${DOCS_PREFIX}${normalizedPath}` : DOCS_PREFIX
 

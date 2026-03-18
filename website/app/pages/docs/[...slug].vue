@@ -13,6 +13,20 @@ if (!page.value) {
   })
 }
 
+const resolvedPage = computed(() => {
+  const value = page.value
+
+  if (!value) {
+    throw createError({
+      statusCode: 404,
+      statusMessage: 'Documentation page not found',
+      fatal: true,
+    })
+  }
+
+  return value
+})
+
 const { data: surroundings } = await useAsyncData(
   () => `docs-surround:${contentPath.value}`,
   () => queryCollectionItemSurroundings('content', contentPath.value),
@@ -38,15 +52,15 @@ const previousPage = computed(() => docsSurroundings.value[0])
 const nextPage = computed(() => docsSurroundings.value[1])
 
 useSeoMeta({
-  title: () => page.value?.title ? `${page.value.title} · VJML Docs` : 'VJML Docs',
-  description: () => page.value?.description ?? 'Guides, rendering workflows, and component reference pages for VJML.',
+  title: () => `${resolvedPage.value.title} · VJML Docs`,
+  description: () => resolvedPage.value.description ?? 'Guides, rendering workflows, and component reference pages for VJML.',
 })
 </script>
 
 <template>
   <div class="space-y-10">
     <article class="docs-content max-w-none">
-      <ContentRenderer :value="page" />
+      <ContentRenderer :value="resolvedPage" />
     </article>
 
     <div

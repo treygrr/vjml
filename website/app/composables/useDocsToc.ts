@@ -20,12 +20,19 @@ function buildTocLinks(headings: HTMLHeadingElement[]): TocLink[] {
       depth,
     }
 
-    while (stack.length && stack[stack.length - 1].depth >= depth) {
+    while (stack.length) {
+      const currentParent = stack.at(-1)
+
+      if (!currentParent || currentParent.depth < depth) {
+        break
+      }
+
       stack.pop()
     }
 
-    if (stack.length) {
-      const parent = stack[stack.length - 1]
+    const parent = stack.at(-1)
+
+    if (parent) {
       parent.children = [...(parent.children ?? []), link]
     }
     else {
