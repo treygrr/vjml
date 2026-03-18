@@ -5,48 +5,42 @@ description: Development setup, coverage requirements, and GitHub pull request p
 
 # Contributing
 
-VJML accepts changes through GitHub pull requests. This page summarizes what contributors should do before a change is ready to merge.
+VJML accepts changes through GitHub pull requests. This document is the merge policy for changes to the library, test suites, playground, and docs site.
 
-<UAlert
-  class="not-prose mt-6"
-  color="warning"
-  variant="subtle"
-  title="Coverage is required"
-  description="If you change behavior, add coverage. If you add behavior, add coverage. Pull requests without matching tests are not ready to merge."
-/>
+## Working areas
 
-## Start in the right package
+- `src/` is the publishable library code that ships in the package.
+- `test/` contains component parity suites, plugin tests, shared normalizers, and sample email parity coverage.
+- `playground/` is the local app for manually exercising the package surface.
+- `website/` is the Nuxt docs site and content source.
 
-The repo has two main working areas:
-
-- the publishable library at the repo root
-- the Nuxt docs app in `website/`
+## Local setup
 
 Use Node 20 when possible to match the checked-in GitHub workflow.
 
-Install dependencies at the repo root before working on the library, tests, or playground:
+Install root dependencies before working on the library or tests:
 
 ```bash
 npm ci
 ```
 
-If your change touches the docs app or its dependencies, install there as well:
+If you touch the docs app or its dependencies, install inside `website/` as well:
 
 ```bash
 cd website
 npm ci
 ```
 
-## Match coverage to the change
+## Coverage policy
 
-- Update or add coverage for every behavior change.
-- Add coverage for every new feature or new component.
-- Component and renderer changes should usually add or update parity fixtures under `test/components/<component>/`.
-- Multi-component rendering, document shell, or broader email output changes should also be covered under `test/samples/`.
-- Plugin changes should add or update focused tests such as `test/plugin/plugin.test.ts`.
-- When parity output changes intentionally, commit the updated files under `test/**/snapshots/`.
+- Every behavior change must ship with test coverage.
+- Every new feature or component must ship with test coverage.
+- Component and renderer changes should add or update parity fixtures under `test/components/<component>/`.
+- Cross-cutting rendering, document shell, or multi-component changes should add or update coverage under `test/samples/`.
+- Plugin or registration changes should add or update focused Vitest coverage such as `test/plugin/plugin.test.ts`.
+- When parity output changes intentionally, commit the updated snapshot files under `test/**/snapshots/` in the same pull request.
 
-## Verify locally before opening a pull request
+## Required verification
 
 For library, runtime, plugin, or test changes run:
 
@@ -63,19 +57,19 @@ cd website
 npm run build
 ```
 
-If your pull request changes both the library and the docs, run both flows.
+If a pull request touches both the library and the docs, run both verification flows.
 
-## Keep related repo files in sync
+## Keeping the repo in sync
 
-- Public API and component-surface changes should update the matching docs under `website/content/`.
-- Public component-surface changes should also keep the generated metadata and runtime files in sync: `src/metadata.generated.ts`, `src/runtime/manifest.generated.ts`, `src/runtime/components.generated.ts`, and `src/runtime/component-types.generated.ts`.
-- Dependency changes should include the matching lockfile update in the directory you changed.
+- If you change the public component surface, keep the metadata and generated runtime files in sync in the same pull request, including `src/metadata.generated.ts`, `src/runtime/manifest.generated.ts`, `src/runtime/components.generated.ts`, and `src/runtime/component-types.generated.ts`.
+- Update docs under `website/content/` when public APIs, component behavior, or examples change.
+- If you change dependencies, commit the matching lockfile in the directory you changed: `package-lock.json` at the repo root or `website/package-lock.json`.
 - Do not commit local build output or caches such as `dist/`, `website/.nuxt/`, or `website/.output/`.
 
 ## GitHub pull request policy
 
 - Open a GitHub pull request against `main`.
-- Keep the change scoped to one logical unit of work.
-- Explain what changed, why it changed, and which commands you ran locally.
-- Include screenshots for docs UI changes and HTML evidence or snapshot diffs for email output changes.
+- Keep the pull request scoped to one logical change.
+- Describe what changed, why it changed, and which commands you ran locally.
+- Include screenshots when the docs UI changes and HTML evidence or snapshot diffs when rendered email output changes.
 - A pull request is not ready to merge if changed behavior or new functionality is missing coverage.

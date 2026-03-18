@@ -30,14 +30,28 @@ function isRouteInTree(item: ContentNavigationItem): boolean {
   return item.path === route.path || item.children?.some(child => isRouteInTree(child)) === true
 }
 
+function getNavigationItemType(
+  item: ContentNavigationItem,
+  hasChildren: boolean,
+): DocsNavigationMenuItem['type'] | undefined {
+  if (item.page !== false) {
+    return undefined
+  }
+
+  return hasChildren ? 'trigger' : 'label'
+}
+
 function toNavigationMenuItem(item: ContentNavigationItem): DocsNavigationMenuItem {
   const children = item.children?.map(toNavigationMenuItem)
+  const hasChildren = (children?.length ?? 0) > 0
   const isActive = isRouteInTree(item)
+  const type = getNavigationItemType(item, hasChildren)
 
   return {
     label: item.title,
+    ...(type ? { type } : {}),
     ...(item.page === false ? {} : { to: item.path }),
-    ...(children?.length ? { children, defaultOpen: isActive } : {}),
+    ...(hasChildren ? { children, defaultOpen: isActive } : {}),
     ...(item.page === false ? { active: isActive } : {}),
   }
 }
