@@ -1,0 +1,25 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-group background-color="#fff8ee" direction="rtl" vertical-align="middle" />
+      <mj-column width="50%" />
+      <mj-text color="#173540" font-size="15px" line-height="22px" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#f6efe7" width="340px">
+    <mj-section padding="20px">
+      <mj-group>
+        <mj-column>
+          <mj-text>
+            Priority tasks stay visible together.
+          </mj-text>
+        </mj-column>
+        <mj-column>
+          <mj-text>
+            Head attributes drive the group wrapper defaults.
+          </mj-text>
+        </mj-column>
+      </mj-group>
+    </mj-section>
+  </mj-body>
+</mjml>

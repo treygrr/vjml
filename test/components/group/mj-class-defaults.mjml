@@ -1,0 +1,25 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-attributes>
+      <mj-class background-color="#fff7ed" name="paired-group" vertical-align="bottom" />
+      <mj-class background-color="#f2e0cd" name="paired-column" width="50%" />
+      <mj-class color="#173540" font-size="14px" line-height="21px" name="paired-copy" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#f7efe6" width="340px">
+    <mj-section padding="20px">
+      <mj-group mj-class="paired-group">
+        <mj-column mj-class="paired-column">
+          <mj-text mj-class="paired-copy">
+            Shared defaults keep grouped layouts consistent.
+          </mj-text>
+        </mj-column>
+        <mj-column background-color="#ead4be" mj-class="paired-column">
+          <mj-text mj-class="paired-copy">
+            Variant-specific overrides still apply cleanly.
+          </mj-text>
+        </mj-column>
+      </mj-group>
+    </mj-section>
+  </mj-body>
+</mjml>

@@ -1,0 +1,26 @@
+<mjml lang="en">
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section padding="20px">
+      <mj-group background-color="#fff9f1">
+        <mj-column width="50%">
+          <mj-text color="#173540" font-size="18px" font-weight="700" line-height="24px">
+            Feature A
+          </mj-text>
+          <mj-spacer height="10px" />
+          <mj-text color="#425d64" font-size="14px" line-height="22px">
+            Keep related columns together as a grouped row.
+          </mj-text>
+        </mj-column>
+        <mj-column width="50%">
+          <mj-text color="#173540" font-size="18px" font-weight="700" line-height="24px">
+            Feature B
+          </mj-text>
+          <mj-spacer height="10px" />
+          <mj-text color="#425d64" font-size="14px" line-height="22px">
+            Group is useful when you want columns to stay visually paired.
+          </mj-text>
+        </mj-column>
+      </mj-group>
+    </mj-section>
+  </mj-body>
+</mjml>

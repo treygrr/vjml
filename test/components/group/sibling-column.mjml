@@ -1,0 +1,35 @@
+<mjml lang="en">
+  <mj-body background-color="#f6efe7" width="340px">
+    <mj-section background-color="#fffaf2" padding="20px">
+      <mj-group background-color="#f3e2d1" width="66%">
+        <mj-column width="50%">
+          <mj-text color="#173540" font-size="16px" font-weight="700" line-height="22px">
+            Paired left
+          </mj-text>
+          <mj-spacer height="8px" />
+          <mj-text color="#425d64" font-size="13px" line-height="20px">
+            This content shares the wider grouped area.
+          </mj-text>
+        </mj-column>
+        <mj-column width="50%">
+          <mj-text color="#173540" font-size="16px" font-weight="700" line-height="22px">
+            Paired right
+          </mj-text>
+          <mj-spacer height="8px" />
+          <mj-text color="#425d64" font-size="13px" line-height="20px">
+            Width calculations should stay aligned in Outlook.
+          </mj-text>
+        </mj-column>
+      </mj-group>
+      <mj-column background-color="#173540" width="34%">
+        <mj-text color="#fff8ef" font-size="16px" font-weight="700" line-height="22px">
+          Aside
+        </mj-text>
+        <mj-spacer height="8px" />
+        <mj-text color="#dfe9e6" font-size="13px" line-height="20px">
+          A standalone column sits beside the group.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
