@@ -158,70 +158,77 @@ function setGroupOpen(groupId: string, open: boolean): void {
     <section
       v-for="section in navigationSections"
       :key="section.id"
-      class="space-y-3"
+      class="DocsSidebarSection"
       :aria-labelledby="`${section.id}-label`"
     >
-      <div class="px-3">
-        <h2
-          :id="`${section.id}-label`"
-          class="text-[11px] font-bold uppercase tracking-[0.18em] text-highlighted"
-        >
-          {{ section.label }}
-        </h2>
-      </div>
+      <UCard variant="subtle" :ui="{ root: 'overflow-hidden', header: 'px-4 py-3.5', body: 'p-2' }">
+        <template #header>
+          <div class="flex items-center justify-between gap-3">
+            <h2
+              :id="`${section.id}-label`"
+              class="text-[11px] font-bold uppercase tracking-[0.18em] text-highlighted"
+            >
+              {{ section.label }}
+            </h2>
 
-      <UNavigationMenu
-        v-if="section.items.length > 0"
-        class="w-full"
-        :items="section.items as NavigationMenuItem[]"
-        orientation="vertical"
-        highlight
-      />
-
-      <UCollapsible
-        v-for="group in section.groups"
-        :key="group.id"
-        class="space-y-1"
-        :open="isGroupOpen(group)"
-        :unmount-on-hide="false"
-        @update:open="setGroupOpen(group.id, $event)"
-      >
-        <template #default="{ open }">
-          <div class="px-1 pt-2">
-            <h3 :id="`${group.id}-label`">
-              <UButton
-                color="neutral"
-                variant="ghost"
-                :label="group.label"
-                trailing-icon="i-lucide-chevron-down"
-                block
-                class="group w-full justify-between px-2.5"
-                :ui="{
-                  base: 'justify-between',
-                  label: 'text-sm font-semibold text-highlighted',
-                  trailingIcon: [
-                    'text-dimmed transition-transform duration-200',
-                    open ? 'rotate-180' : ''
-                  ]
-                }"
-              />
-            </h3>
+            <div class="h-px flex-1 bg-border" />
           </div>
         </template>
 
-        <template #content>
-          <div :aria-labelledby="`${group.id}-label`" class="pb-1">
-            <UNavigationMenu
-              class="w-full"
-              :items="group.items as NavigationMenuItem[]"
-              orientation="vertical"
-              highlight
-            />
-          </div>
-        </template>
-      </UCollapsible>
+        <UNavigationMenu
+          v-if="section.items.length > 0"
+          class="DocsSidebarMenu"
+          :items="section.items as NavigationMenuItem[]"
+          orientation="vertical"
+          highlight
+        />
 
-      <USeparator v-if="section !== navigationSections[navigationSections.length - 1]" />
+        <div v-if="section.groups.length > 0" class="space-y-2">
+          <UCollapsible
+            v-for="group in section.groups"
+            :key="group.id"
+            class="DocsSidebarGroup"
+            :open="isGroupOpen(group)"
+            :unmount-on-hide="false"
+            @update:open="setGroupOpen(group.id, $event)"
+          >
+            <template #default="{ open }">
+              <div class="px-1">
+                <h3 :id="`${group.id}-label`">
+                  <UButton
+                    color="neutral"
+                    variant="ghost"
+                    :label="group.label"
+                    trailing-icon="i-lucide-chevron-down"
+                    block
+                    class="group w-full justify-between rounded-xl px-3 py-2.5"
+                    :class="open ? 'bg-default shadow-sm ring ring-default' : 'hover:bg-default/70'"
+                    :ui="{
+                      base: 'justify-between rounded-xl',
+                      label: 'text-sm font-semibold text-highlighted',
+                      trailingIcon: [
+                        'text-dimmed transition-transform duration-200',
+                        open ? 'rotate-180' : ''
+                      ]
+                    }"
+                  />
+                </h3>
+              </div>
+            </template>
+
+            <template #content>
+              <div :aria-labelledby="`${group.id}-label`" class="px-1 pb-1.5">
+                <UNavigationMenu
+                  class="DocsSidebarMenu DocsSidebarMenuNested"
+                  :items="group.items as NavigationMenuItem[]"
+                  orientation="vertical"
+                  highlight
+                />
+              </div>
+            </template>
+          </UCollapsible>
+        </div>
+      </UCard>
     </section>
   </div>
 </template>
@@ -230,6 +237,29 @@ function setGroupOpen(groupId: string, open: boolean): void {
 .DocsSidebarNavigation {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+	gap: 1rem;
+}
+
+.DocsSidebarSection {
+	position: relative;
+}
+
+.DocsSidebarMenu {
+	border-radius: 1rem;
+	background: color-mix(in oklab, var(--ui-bg) 85%, var(--ui-bg-elevated) 15%);
+	padding: 0.375rem;
+}
+
+.DocsSidebarMenuNested {
+	border-radius: 0.875rem;
+	background: color-mix(in oklab, var(--ui-bg) 75%, var(--ui-bg-elevated) 25%);
+	padding: 0.375rem;
+}
+
+.DocsSidebarGroup {
+	border-radius: 1rem;
+	background: color-mix(in oklab, var(--ui-bg-elevated) 55%, transparent);
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 }
 </style>

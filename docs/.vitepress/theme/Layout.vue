@@ -47,17 +47,18 @@ provide('hero-image-slot-exists', heroImageSlotExists)
           :min-size="14"
           :max-size="22"
           :ui="{
-            body: 'gap-3',
-            header: 'border-b border-default',
-            footer: 'border-t border-default'
+            root: 'bg-default/95 supports-[backdrop-filter]:bg-default/85 backdrop-blur',
+            body: 'gap-4 px-3 py-4',
+            header: 'border-b border-default bg-elevated/30 px-3 py-4',
+            footer: 'border-t border-default bg-elevated/15 px-3 py-3'
           }"
         >
           <template #header>
-            <div class="space-y-1">
+            <div class="space-y-3">
               <UButton
                 color="neutral"
-                variant="ghost"
-                class="w-full justify-start"
+                variant="soft"
+                class="w-full justify-start rounded-xl"
                 icon="i-lucide-book-open"
                 label="VJML Docs"
                 block
@@ -77,7 +78,7 @@ provide('hero-image-slot-exists', heroImageSlotExists)
               <UButton
                 color="neutral"
                 variant="ghost"
-                class="w-full justify-start"
+                class="w-full justify-start rounded-xl"
                 icon="i-lucide-gallery-vertical-end"
                 label="Browse samples"
                 block
@@ -86,7 +87,7 @@ provide('hero-image-slot-exists', heroImageSlotExists)
               <UButton
                 color="neutral"
                 variant="ghost"
-                class="w-full justify-start"
+                class="w-full justify-start rounded-xl"
                 icon="i-simple-icons-github"
                 label="Project repository"
                 block
