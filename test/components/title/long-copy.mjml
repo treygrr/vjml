@@ -1,0 +1,14 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-title>Today's "release notes" highlight steadier rendering for high-signal campaigns.</mj-title>
+  </mj-head>
+  <mj-body background-color="#f6efe5" width="340px">
+    <mj-section background-color="#fff9f1" padding="22px">
+      <mj-column>
+        <mj-text color="#173540" font-size="18px" font-weight="700" line-height="24px">
+          Longer title copy
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

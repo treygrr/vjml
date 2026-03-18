@@ -1,0 +1,14 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-preview>Today's "release notes" highlight faster previews, steadier rendering, and fewer inbox surprises.</mj-preview>
+  </mj-head>
+  <mj-body background-color="#f6efe5" width="340px">
+    <mj-section background-color="#fff9f1" padding="22px">
+      <mj-column>
+        <mj-text color="#173540" font-size="18px" font-weight="700" line-height="24px">
+          Longer preview copy
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

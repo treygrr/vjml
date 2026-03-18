@@ -1,0 +1,15 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-title>Weekly digest</mj-title>
+    <mj-preview>Preview and title should coexist cleanly.</mj-preview>
+  </mj-head>
+  <mj-body background-color="#f7efe6" width="340px">
+    <mj-section background-color="#fffaf2" padding="22px">
+      <mj-column>
+        <mj-text color="#173540" font-size="18px" font-weight="700" line-height="24px">
+          Title and preview
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

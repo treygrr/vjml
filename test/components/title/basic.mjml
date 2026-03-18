@@ -1,0 +1,14 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-title>Account alert</mj-title>
+  </mj-head>
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section background-color="#fffdf8" padding="22px">
+      <mj-column>
+        <mj-text color="#173540" font-size="18px" font-weight="700" line-height="24px">
+          Document title
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

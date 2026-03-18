@@ -27,12 +27,19 @@ function filterDefinedStrings(values: Array<string | null | undefined>): string[
   return values.filter((value): value is string => typeof value === 'string' && value.length > 0)
 }
 
+function escapeHtmlText(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+}
+
 export function buildPreview(content: string): string {
   if (content === '') {
     return ''
   }
 
-  return `<div style="display:none;font-size:1px;color:#ffffff;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;">${content}</div>`
+  return `<div style="display:none;font-size:1px;color:#ffffff;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;">${escapeHtmlText(content)}</div>`
 }
 
 export function buildFontsTags(

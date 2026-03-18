@@ -1,0 +1,17 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-preview>
+      First line for the inbox.
+      Second line keeps the summary specific.
+    </mj-preview>
+  </mj-head>
+  <mj-body background-color="#f6efe8" width="340px">
+    <mj-section background-color="#fffbf6" padding="22px">
+      <mj-column>
+        <mj-text color="#173540" font-size="18px" font-weight="700" line-height="24px">
+          Multiline preview text
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

@@ -1,0 +1,14 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-preview>Shipping &amp; setup &lt;completed&gt; by Friday.</mj-preview>
+  </mj-head>
+  <mj-body background-color="#f6eee6" width="340px">
+    <mj-section background-color="#fffaf4" padding="22px">
+      <mj-column>
+        <mj-text color="#173540" font-size="18px" font-weight="700" line-height="24px">
+          Encoded preview text
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
