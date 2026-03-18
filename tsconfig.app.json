@@ -3,11 +3,13 @@
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "types": ["vite/client"],
+    "allowArbitraryExtensions": true,
     "baseUrl": ".",
     "paths": {
+      "#build/ui/content/content-navigation": ["./docs/.vitepress/theme/nuxt-ui/content-navigation.ts"],
       "@samples/*": ["./test/samples/*"],
       "@src/*": ["./src/*"],
-      "#build/ui/*": ["./node_modules/.nuxt-ui/ui/*"],
+      "#build/ui/*": ["./docs/node_modules/.nuxt-ui/ui/*"],
       "vjml": ["./src/index.ts"]
     },
 
