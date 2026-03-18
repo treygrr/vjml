@@ -42,7 +42,7 @@ const fileStartRaw = '<!-- support-template-start -->'
             <AccordionElement>
               <AccordionTitle>Where do parity snapshots get written?</AccordionTitle>
               <AccordionText>
-                Each sample writes raw and normalized MJML and VJML output into the samples snapshots folder.
+                Each sample writes raw and normalized MJML and VJML output into the sample snapshots folder.
               </AccordionText>
             </AccordionElement>
             <AccordionElement>

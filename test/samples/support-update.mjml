@@ -18,7 +18,7 @@
           <mj-accordion-element>
             <mj-accordion-title>Where do parity snapshots get written?</mj-accordion-title>
             <mj-accordion-text>
-              Each sample writes raw and normalized MJML and VJML output into the samples snapshots folder.
+              Each sample writes raw and normalized MJML and VJML output into the sample snapshots folder.
             </mj-accordion-text>
           </mj-accordion-element>
           <mj-accordion-element>
