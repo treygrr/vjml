@@ -28,6 +28,7 @@
     "vite",
     "typescript"
   ],
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "dev:playground": "vite",

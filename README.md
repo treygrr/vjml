@@ -45,6 +45,22 @@ The parity harness lives under `test/components`.
 - Each variant is represented by a `.vue` fixture and a matching `.mjml` fixture.
 - The component test renders both sides, normalizes the generated HTML, and compares the results.
 
+## Contributing
+
+Contributions go through GitHub pull requests. Before opening a pull request, make sure the change is covered by tests, run the relevant verification commands, and update docs or generated metadata when the public surface changes.
+
+- Changes to existing behavior need updated coverage.
+- New features and new components need new coverage.
+- Runtime and component changes should update parity fixtures under `test/components` or `test/samples`.
+- Library changes should be verified with `npm run typecheck`, `npm run test`, and `npm run build`.
+- Docs changes live under `website/` and should be verified with `cd website && npm run build`.
+
+See `CONTRIBUTING.md` for the full contributor workflow and GitHub merge policy.
+
+## License
+
+MIT. See `LICENSE`.
+
 ## Install the plugin
 
 ```ts
