@@ -11,82 +11,21 @@ const componentMetadataByTagName = new Map(
   VJML_COMPONENT_METADATA.map(metadata => [metadata.tagName, metadata] as const),
 )
 
-type ComponentTreeNode = string | {
-  items: ComponentTreeNode[]
-  tag: string
-}
-
 const componentGroupDefinitions = [
   {
-    items: [
-      {
-        items: [
-          {
-            items: [
-              'mj-wrapper',
-              {
-                items: ['mj-group', 'mj-column'],
-                tag: 'mj-section',
-              },
-            ],
-            tag: 'mj-body',
-          },
-        ],
-        tag: 'mjml',
-      },
-    ],
+    tags: ['mjml', 'mj-body', 'mj-wrapper', 'mj-section', 'mj-group', 'mj-column'],
     text: 'Layout',
   },
   {
-    items: ['mj-hero', 'mj-image', 'mj-text', 'mj-button', 'mj-divider', 'mj-spacer', 'mj-table'],
+    tags: ['mj-hero', 'mj-image', 'mj-text', 'mj-button', 'mj-divider', 'mj-spacer', 'mj-table'],
     text: 'Content',
   },
   {
-    items: [
-      {
-        items: ['mj-title', 'mj-preview', 'mj-font', 'mj-style', 'mj-breakpoint', 'mj-raw'],
-        tag: 'mj-head',
-      },
-      {
-        items: ['mj-all', 'mj-class'],
-        tag: 'mj-attributes',
-      },
-      {
-        items: [
-          {
-            items: ['mj-html-attribute'],
-            tag: 'mj-selector',
-          },
-        ],
-        tag: 'mj-html-attributes',
-      },
-    ],
+    tags: ['mj-head', 'mj-title', 'mj-preview', 'mj-font', 'mj-style', 'mj-breakpoint', 'mj-attributes', 'mj-all', 'mj-class', 'mj-html-attributes', 'mj-selector', 'mj-html-attribute', 'mj-raw'],
     text: 'Head and Global',
   },
   {
-    items: [
-      {
-        items: [
-          {
-            items: ['mj-accordion-title', 'mj-accordion-text'],
-            tag: 'mj-accordion-element',
-          },
-        ],
-        tag: 'mj-accordion',
-      },
-      {
-        items: ['mj-carousel-image'],
-        tag: 'mj-carousel',
-      },
-      {
-        items: ['mj-navbar-link'],
-        tag: 'mj-navbar',
-      },
-      {
-        items: ['mj-social-element'],
-        tag: 'mj-social',
-      },
-    ],
+    tags: ['mj-accordion', 'mj-accordion-element', 'mj-accordion-title', 'mj-accordion-text', 'mj-carousel', 'mj-carousel-image', 'mj-navbar', 'mj-navbar-link', 'mj-social', 'mj-social-element'],
     text: 'Interactive',
   },
 ] as const
@@ -110,30 +49,8 @@ function getComponentSidebarItem(tagName: string) {
   }
 }
 
-function buildComponentTreeItem(node: ComponentTreeNode) {
-  if (typeof node === 'string') {
-    return getComponentSidebarItem(node)
-  }
-
-  return {
-    ...getComponentSidebarItem(node.tag),
-    collapsed: true,
-    items: node.items.map(buildComponentTreeItem),
-  }
-}
-
-function flattenComponentTree(nodes: readonly ComponentTreeNode[]): string[] {
-  return nodes.flatMap((node) => {
-    if (typeof node === 'string') {
-      return [node]
-    }
-
-    return [node.tag, ...flattenComponentTree(node.items)]
-  })
-}
-
 const groupedComponentTagNames = new Set(
-  componentGroupDefinitions.flatMap(group => flattenComponentTree(group.items)),
+  componentGroupDefinitions.flatMap(group => group.tags),
 )
 const ungroupedComponentTagNames = VJML_COMPONENT_METADATA
   .map(metadata => metadata.tagName)
@@ -149,18 +66,15 @@ const componentSidebarItems = [
   { text: 'Overview', link: '/components/' },
   ...componentGroupDefinitions.map(group => ({
     collapsed: true,
-    items: group.items.map(buildComponentTreeItem),
+    items: group.tags.map(getComponentSidebarItem),
     text: group.text,
   })),
 ]
 
 export default defineConfig({
-  appearance: false,
+  appearance: true,
   base: isGitHubActions ? `/${repositoryName}/` : '/',
   description: 'Vue MJML-style email components with browser previews and parity-tested HTML output.',
-  head: [
-    ['meta', { content: '#16353f', name: 'theme-color' }],
-  ],
   lang: 'en-US',
   lastUpdated: true,
   themeConfig: {
@@ -202,15 +116,9 @@ export default defineConfig({
   vite: {
     plugins: [
       ui({
-        colorMode: false,
+        colorMode: true,
         prose: true,
         router: false,
-        ui: {
-          colors: {
-            neutral: 'slate',
-            primary: 'green',
-          },
-        },
       }),
     ],
     resolve: {

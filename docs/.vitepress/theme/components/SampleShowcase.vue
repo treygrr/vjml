@@ -109,61 +109,56 @@ const source = computed(() => {
 </script>
 
 <template>
-  <UCard class="not-prose overflow-hidden border-0 shadow-lg shadow-slate-950/5 ring-1 ring-slate-200/80">
+  <UCard class="not-prose">
     <template #header>
       <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div class="space-y-2">
           <div class="flex flex-wrap gap-2">
-            <UBadge color="primary" variant="subtle">Sample</UBadge>
-            <UBadge color="neutral" variant="soft">{{ sample.title }}</UBadge>
+            <UBadge>Sample</UBadge>
+            <UBadge color="neutral" variant="subtle">{{ sample.title }}</UBadge>
           </div>
           <div>
-            <h3 class="text-xl font-semibold tracking-tight text-slate-900">{{ sample.title }}</h3>
-            <p class="mt-2 max-w-3xl text-sm leading-6 text-slate-600">{{ sample.description }}</p>
+            <h3 class="text-xl font-semibold">{{ sample.title }}</h3>
+            <p class="mt-2">{{ sample.description }}</p>
           </div>
         </div>
 
-        <div class="flex flex-wrap gap-2">
+        <UButtonGroup>
           <UButton
-            :color="activeTab === 'preview' ? 'primary' : 'neutral'"
-            :variant="activeTab === 'preview' ? 'solid' : 'soft'"
+            :variant="activeTab === 'preview' ? 'solid' : 'ghost'"
             size="sm"
             @click="activeTab = 'preview'"
           >
             Preview
           </UButton>
           <UButton
-            :color="activeTab === 'vue' ? 'primary' : 'neutral'"
-            :variant="activeTab === 'vue' ? 'solid' : 'soft'"
+            :variant="activeTab === 'vue' ? 'solid' : 'ghost'"
             size="sm"
             @click="activeTab = 'vue'"
           >
             Vue
           </UButton>
           <UButton
-            :color="activeTab === 'mjml' ? 'primary' : 'neutral'"
-            :variant="activeTab === 'mjml' ? 'solid' : 'soft'"
+            :variant="activeTab === 'mjml' ? 'solid' : 'ghost'"
             size="sm"
             @click="activeTab = 'mjml'"
           >
             MJML
           </UButton>
-        </div>
+        </UButtonGroup>
       </div>
     </template>
 
-    <div v-if="activeTab === 'preview'" class="rounded-3xl border border-slate-200/80 bg-linear-to-b from-white to-orange-50/60 p-4">
-      <div class="sample-preview-frame">
-        <VjmlRenderFrame
-          :component="sample.component"
-          :height="sample.height"
-          :title="`${sample.title} preview`"
-        />
-      </div>
+    <div v-if="activeTab === 'preview'">
+      <VjmlRenderFrame
+        :component="sample.component"
+        :height="sample.height"
+        :title="`${sample.title} preview`"
+      />
     </div>
 
-    <div v-else>
-      <pre class="sample-code"><code>{{ source }}</code></pre>
+    <div v-else class="overflow-x-auto">
+      <pre><code>{{ source }}</code></pre>
     </div>
   </UCard>
 </template>
