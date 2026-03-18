@@ -1,0 +1,19 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-breakpoint width="280px" />
+  </mj-head>
+  <mj-body background-color="#f6eee5" width="360px">
+    <mj-section background-color="#fff9f1" padding="20px">
+      <mj-column width="30%">
+        <mj-text color="#173540" font-size="15px" font-weight="700" line-height="22px">
+          30%
+        </mj-text>
+      </mj-column>
+      <mj-column width="70%">
+        <mj-text color="#425d64" font-size="14px" line-height="22px">
+          A tighter breakpoint keeps the multi-column layout active on smaller screens.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

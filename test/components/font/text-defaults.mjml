@@ -1,0 +1,29 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-font
+      href="https://fonts.googleapis.com/css?family=Merriweather:400,700"
+      name="Merriweather"
+    />
+    <mj-attributes>
+      <mj-text
+        color="#173540"
+        font-family="Merriweather, Georgia, serif"
+        font-size="15px"
+        line-height="22px"
+      />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#f6efe7" width="340px">
+    <mj-section background-color="#fff8ef" padding="22px">
+      <mj-column>
+        <mj-text>
+          Shared text defaults can reference a declared font without repeating the font-family on every node.
+        </mj-text>
+        <mj-spacer height="10px" />
+        <mj-text>
+          The font import should still appear because the resolved output uses Merriweather.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

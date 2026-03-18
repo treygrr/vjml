@@ -1,0 +1,19 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-breakpoint width="640px" />
+  </mj-head>
+  <mj-body background-color="#f4ede4" width="600px">
+    <mj-section background-color="#fff8ef" padding="24px">
+      <mj-column width="33.333333%">
+        <mj-text color="#173540" font-size="15px" font-weight="700" line-height="22px">
+          Stage one
+        </mj-text>
+      </mj-column>
+      <mj-column width="66.666667%">
+        <mj-text color="#425d64" font-size="14px" line-height="22px">
+          A wider breakpoint delays the stacked mobile layout until larger viewports.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

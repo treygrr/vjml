@@ -1,0 +1,21 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-font
+      href="https://fonts.googleapis.com/css?family=Raleway:400,700"
+      name="Raleway"
+    />
+  </mj-head>
+  <mj-body background-color="#f5eee6" width="340px">
+    <mj-section background-color="#fffaf5" padding="22px">
+      <mj-column>
+        <mj-text color="#173540" font-size="18px" font-weight="700" line-height="24px">
+          Unused font declaration
+        </mj-text>
+        <mj-spacer height="10px" />
+        <mj-text color="#425d64" font-size="14px" line-height="22px">
+          The head declaration should not emit import tags until a rendered node references the custom family.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

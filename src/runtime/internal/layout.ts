@@ -351,7 +351,7 @@ export function getRenderedWidthAsPixel(
   const { parsedWidth, unit } = getParsedWidthValue(explicitWidth, nonRawSiblings)
 
   if (unit === '%') {
-    return `${Math.trunc(getNumericWidth(containerWidth) * parsedWidth / 100)}px`
+    return `${getNumericWidth(containerWidth) * parsedWidth / 100}px`
   }
 
   return `${parsedWidth}px`

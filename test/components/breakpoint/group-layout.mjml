@@ -1,0 +1,21 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-breakpoint width="360px" />
+  </mj-head>
+  <mj-body background-color="#f6efe7" width="360px">
+    <mj-section background-color="#fff8f0" padding="20px">
+      <mj-group>
+        <mj-column width="50%">
+          <mj-text color="#173540" font-size="15px" font-weight="700" line-height="22px">
+            Morning
+          </mj-text>
+        </mj-column>
+        <mj-column width="50%">
+          <mj-text color="#425d64" font-size="14px" line-height="22px">
+            Group children should respect the same responsive breakpoint tags as regular section columns.
+          </mj-text>
+        </mj-column>
+      </mj-group>
+    </mj-section>
+  </mj-body>
+</mjml>

@@ -1,0 +1,19 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-breakpoint width="480px" />
+  </mj-head>
+  <mj-body background-color="#f5efe6" width="520px">
+    <mj-section background-color="#fff9f2" padding="18px">
+      <mj-column width="180px">
+        <mj-text color="#173540" font-size="15px" font-weight="700" line-height="22px">
+          Fixed rail
+        </mj-text>
+      </mj-column>
+      <mj-column width="304px">
+        <mj-text color="#425d64" font-size="14px" line-height="22px">
+          Pixel-based column classes should still pick up the custom breakpoint in the emitted media query.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

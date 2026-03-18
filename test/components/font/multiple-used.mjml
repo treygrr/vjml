@@ -1,0 +1,25 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-font
+      href="https://fonts.googleapis.com/css?family=Lora:400,700"
+      name="Lora"
+    />
+    <mj-font
+      href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,700"
+      name="Libre Baskerville"
+    />
+  </mj-head>
+  <mj-body background-color="#f4ece3" width="360px">
+    <mj-section background-color="#fff9f1" padding="22px">
+      <mj-column>
+        <mj-text color="#173540" font-family="Lora, Georgia, serif" font-size="18px" font-weight="700" line-height="24px">
+          Summary set in Lora
+        </mj-text>
+        <mj-spacer height="10px" />
+        <mj-text color="#425d64" font-family="Libre Baskerville, Georgia, serif" font-size="14px" line-height="22px">
+          Supporting copy uses a second declared family, so both imports should be emitted.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

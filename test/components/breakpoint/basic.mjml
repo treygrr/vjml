@@ -1,0 +1,19 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-breakpoint width="320px" />
+  </mj-head>
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section background-color="#fffdf8" padding="22px">
+      <mj-column width="50%">
+        <mj-text color="#173540" font-size="16px" font-weight="700" line-height="22px">
+          Left summary
+        </mj-text>
+      </mj-column>
+      <mj-column width="50%">
+        <mj-text color="#425d64" font-size="14px" line-height="22px">
+          The responsive media query should switch at 320px.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

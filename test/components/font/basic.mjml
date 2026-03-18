@@ -1,0 +1,21 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-font
+      href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap"
+      name="Lora"
+    />
+  </mj-head>
+  <mj-body background-color="#f7efe4" width="340px">
+    <mj-section background-color="#fffdf8" padding="22px">
+      <mj-column>
+        <mj-text color="#173540" font-family="Lora, Georgia, serif" font-size="18px" font-weight="700" line-height="24px">
+          External font declarations
+        </mj-text>
+        <mj-spacer height="10px" />
+        <mj-text color="#425d64" font-family="Lora, Georgia, serif" font-size="14px" line-height="22px">
+          Declare web fonts in Head, then reference them from content components such as Text and Button.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
