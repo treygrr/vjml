@@ -3,7 +3,6 @@ import { getDefaultComponentDocsRoute } from '~/composables/useComponentDocs'
 import { useDocsToc } from '~/composables/useDocsToc'
 
 const route = useRoute()
-const showMobileNavigation = ref(false)
 const defaultComponentDocsRoute = getDefaultComponentDocsRoute()
 const pageContentRef = ref<HTMLElement | null>(null)
 
@@ -81,25 +80,14 @@ const { tocLinks } = useDocsToc(pageContentRef)
       :files="searchFiles"
     />
 
-    <AppHeader :show-search="true" />
+    <AppHeader :show-search="true">
+      <template #mobile-navigation>
+        <DocsNavigationPanel :navigation="docsNavigation" />
+      </template>
+    </AppHeader>
 
     <main class="flex-1">
       <UContainer>
-        <div class="space-y-4 lg:hidden">
-          <UButton
-            color="neutral"
-            variant="outline"
-            label="Browse docs"
-            :trailing-icon="showMobileNavigation ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down'"
-            @click="showMobileNavigation = !showMobileNavigation"
-          />
-
-          <DocsNavigationPanel
-            v-if="showMobileNavigation"
-            :navigation="docsNavigation"
-          />
-        </div>
-
         <UPage>
           <template #left>
             <UPageAside class="hidden lg:block">

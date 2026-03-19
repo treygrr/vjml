@@ -21,10 +21,10 @@ const props = defineProps<{
 }>()
 
 const fixtureByTag: Record<string, ExampleFixture> = {
-  'mj-accordion': { fixturePath: 'accordion/basic', previewHeight: '520px' },
-  'mj-accordion-element': { fixturePath: 'accordion/basic', previewHeight: '520px' },
-  'mj-accordion-text': { fixturePath: 'accordion/basic', previewHeight: '520px' },
-  'mj-accordion-title': { fixturePath: 'accordion/basic', previewHeight: '520px' },
+  'mj-accordion': { fixturePath: 'accordion/head-attributes', previewHeight: '520px' },
+  'mj-accordion-element': { fixturePath: 'accordion/head-attributes', previewHeight: '520px' },
+  'mj-accordion-text': { fixturePath: 'accordion/head-attributes', previewHeight: '520px' },
+  'mj-accordion-title': { fixturePath: 'accordion/head-attributes', previewHeight: '520px' },
   'mj-all': { fixturePath: 'attributes/all-defaults', previewHeight: '420px' },
   'mj-attributes': { fixturePath: 'attributes/all-defaults', previewHeight: '420px' },
   'mj-body': { fixturePath: 'document-shell/body-attributes', previewHeight: '420px' },
