@@ -50,7 +50,7 @@ VJML lets you author MJML-style email templates as Vue components. The library s
 ## Install
 
 ```bash
-npm install vjml vue
+npm install @treygrr/vjml vue
 ```
 
 ## Register the plugin
@@ -60,7 +60,7 @@ Use the plugin when you want global component registration and a shared renderer
 ```ts
 import { createApp } from 'vue'
 import App from './App.vue'
-import VjmlPlugin from 'vjml'
+import VjmlPlugin from '@treygrr/vjml'
 
 createApp(App)
   .use(VjmlPlugin, {
@@ -81,7 +81,7 @@ If you do not want global registration, import the components you use explicitly
 
 ```vue
 <script setup lang="ts">
-import { Body, Button, Column, Mjml, Section, Text } from 'vjml'
+import { Body, Button, Column, Mjml, Section, Text } from '@treygrr/vjml'
 </script>
 
 <template>

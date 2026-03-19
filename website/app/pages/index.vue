@@ -81,7 +81,7 @@ const heroLinks = [
   },
 ]
 
-const starterSnippet = `import { Body, Button, Column, Mjml, Section, Text } from 'vjml'
+const starterSnippet = `import { Body, Button, Column, Mjml, Section, Text } from '@treygrr/vjml'
 
 <Mjml lang="en">
   <Body width="600px" background-color="#f6efe7">

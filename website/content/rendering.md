@@ -36,7 +36,7 @@ VJML supports both interactive previews and direct HTML generation in the browse
 ```vue
 <script setup lang="ts">
 import WelcomeEmail from './WelcomeEmail.vue'
-import { VjmlRenderFrame } from 'vjml'
+import { VjmlRenderFrame } from '@treygrr/vjml'
 </script>
 
 <template>
@@ -52,7 +52,7 @@ Use `createVjmlRenderer()` when you want to reuse one renderer instance with sha
 
 ```ts
 import WelcomeEmail from './WelcomeEmail.vue'
-import { createVjmlRenderer } from 'vjml'
+import { createVjmlRenderer } from '@treygrr/vjml'
 
 const renderer = createVjmlRenderer({
   render: {
@@ -69,7 +69,7 @@ If you only need a single render, `renderVjmlToHtml()` is the short path.
 
 ```ts
 import InvoiceEmail from './InvoiceEmail.vue'
-import { renderVjmlToHtml } from 'vjml'
+import { renderVjmlToHtml } from '@treygrr/vjml'
 
 const result = await renderVjmlToHtml(InvoiceEmail, {
   runtime: {
@@ -89,7 +89,7 @@ Use `renderToDebugTree()` or `renderVjmlToDebugTree()` when you need to inspect 
 
 ```ts
 import DigestEmail from './DigestEmail.vue'
-import { createVjmlRenderer } from 'vjml'
+import { createVjmlRenderer } from '@treygrr/vjml'
 
 const renderer = createVjmlRenderer()
 const debug = await renderer.renderToDebugTree(DigestEmail)

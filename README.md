@@ -17,7 +17,7 @@ It includes:
 - `test` contains the component parity suites, shared test utilities, and end-to-end sample email fixtures.
 - `website` contains the Nuxt documentation site and is managed as a workspace from the repository root.
 - `playground` contains the local development app used for previewing and testing the library.
-- The playground imports the library through the local `vjml` source alias, so it exercises the same public entry surface a consumer would use.
+- The playground imports the library through the local `vjml` source alias, while the published npm package name is `@treygrr/vjml`.
 
 Run `npm install` from the repository root. The root package manages both the publishable library and the `website` workspace.
 
@@ -67,7 +67,7 @@ MIT. See `LICENSE`.
 ```ts
 import { createApp } from 'vue'
 import App from './App.vue'
-import VjmlPlugin from 'vjml'
+import VjmlPlugin from '@treygrr/vjml'
 
 createApp(App)
 	.use(VjmlPlugin, {
@@ -85,17 +85,17 @@ Set `includeUnprefixedAliases: true` when you want both `VJText`-style prefixed 
 You can also import components directly:
 
 ```ts
-import { Body, Button, Column, Mjml, Section, Text } from 'vjml'
+import { Body, Button, Column, Mjml, Section, Text } from '@treygrr/vjml'
 ```
 
 ## Preview in the browser
 
-The main `vjml` entry now includes a browser-side renderer and an iframe preview component.
+The main `@treygrr/vjml` entry now includes a browser-side renderer and an iframe preview component.
 
 ```vue
 <script setup lang="ts">
 import WelcomeEmail from './WelcomeEmail.vue'
-import { VjmlRenderFrame } from 'vjml'
+import { VjmlRenderFrame } from '@treygrr/vjml'
 </script>
 
 <template>
@@ -103,11 +103,11 @@ import { VjmlRenderFrame } from 'vjml'
 </template>
 ```
 
-If you want the generated HTML directly in a browser runtime, use `createVjmlRenderer()` from `vjml`.
+If you want the generated HTML directly in a browser runtime, use `createVjmlRenderer()` from `@treygrr/vjml`.
 
 ```ts
 import WelcomeEmail from './WelcomeEmail.vue'
-import { createVjmlRenderer } from 'vjml'
+import { createVjmlRenderer } from '@treygrr/vjml'
 
 const { renderToHtml } = createVjmlRenderer()
 const { html, issues } = await renderToHtml(WelcomeEmail)
@@ -117,7 +117,7 @@ const { html, issues } = await renderToHtml(WelcomeEmail)
 
 ```ts
 import WelcomeEmail from './WelcomeEmail.vue'
-import { createVjmlRenderer } from 'vjml'
+import { createVjmlRenderer } from '@treygrr/vjml'
 
 const { renderToHtml } = createVjmlRenderer({
 	render: {
@@ -132,7 +132,7 @@ const { html, issues } = await renderToHtml(WelcomeEmail, {
 })
 ```
 
-Inside a setup context, `useVjmlRenderer()` is also available from `vjml` and merges the injected plugin config automatically.
+Inside a setup context, `useVjmlRenderer()` is also available from `@treygrr/vjml` and merges the injected plugin config automatically.
 
 ## Important entries
 

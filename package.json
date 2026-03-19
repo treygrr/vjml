@@ -1,5 +1,5 @@
 {
-  "name": "vjml",
+  "name": "@treygrr/vjml",
   "version": "0.1.0",
   "description": "Vue MJML-style email components with a plain Vue plugin and browser renderer.",
   "type": "module",
@@ -13,6 +13,9 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",

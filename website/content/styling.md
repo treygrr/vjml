@@ -31,7 +31,7 @@ Use `Head` to collect styles and metadata before the email shell is finalized.
 
 ```vue
 <script setup lang="ts">
-import { Font, Head, Preview, Style, Title } from 'vjml'
+import { Font, Head, Preview, Style, Title } from '@treygrr/vjml'
 </script>
 
 <template>
@@ -72,7 +72,7 @@ For reusable docs or app-level email styles, import the CSS file as raw text and
 import emailHeadCss from './email-head.css?raw'
 import emailInlineCss from './email-inline.css?raw'
 
-import { Head, Style } from 'vjml'
+import { Head, Style } from '@treygrr/vjml'
 </script>
 
 <template>
@@ -91,7 +91,7 @@ Use `Attributes`, `All`, and `Class` when you want reusable component defaults i
 
 ```vue
 <script setup lang="ts">
-import { All, Attributes, Class, Head, Text } from 'vjml'
+import { All, Attributes, Class, Head, Text } from '@treygrr/vjml'
 </script>
 
 <template>
@@ -111,7 +111,7 @@ Use `HtmlAttributes`, `Selector`, and `HtmlAttribute` when you need literal HTML
 
 ```vue
 <script setup lang="ts">
-import { Head, HtmlAttribute, HtmlAttributes, Selector } from 'vjml'
+import { Head, HtmlAttribute, HtmlAttributes, Selector } from '@treygrr/vjml'
 </script>
 
 <template>
@@ -131,7 +131,7 @@ If you need literal head markup, use `Raw` with the `html` or `content` prop.
 
 ```vue
 <script setup lang="ts">
-import { Head, Raw } from 'vjml'
+import { Head, Raw } from '@treygrr/vjml'
 
 const headRaw = `
   <meta name="x-token" content="docs" />
