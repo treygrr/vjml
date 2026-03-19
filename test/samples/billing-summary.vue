@@ -1,5 +1,10 @@
 <script setup lang='ts'>
 import {
+  computed,
+  reactive,
+} from 'vue'
+
+import {
   Body,
   Button,
   Column,
@@ -14,10 +19,56 @@ import {
   Title,
 } from 'vjml'
 
-const billingHeadRaw = `
-      <meta name='x-billing-state' content='due-soon' />
+type BillingSummaryRecord = {
+  plan: string
+  renewalDate: string
+  seatCount: number
+  status: string
+  paymentMethodExpiresInDays: number
+}
+
+// In a real app this could be hydrated from an API response before rendering.
+function fetchBillingSummary(): BillingSummaryRecord {
+  return {
+    plan: 'Pro annual',
+    renewalDate: 'May 27',
+    seatCount: 12,
+    status: 'Active',
+    paymentMethodExpiresInDays: 7,
+  }
+}
+
+const billingSummary = reactive(fetchBillingSummary())
+
+const billingHeadRaw = computed(() => {
+  const billingState = billingSummary.paymentMethodExpiresInDays <= 7 ? 'due-soon' : 'current'
+
+  return `
+      <meta name='x-billing-state' content='${billingState}' />
       <style type='text/css'>.invoice-note div { color: #db7636; font-weight: 700; }</style>
     `
+})
+
+const billingRows = computed(() => {
+  return [
+    { label: 'Plan', value: billingSummary.plan },
+    { label: 'Status', value: billingSummary.status },
+    { label: 'Renewal', value: billingSummary.renewalDate },
+    { label: 'Seats', value: String(billingSummary.seatCount) },
+  ]
+})
+
+const showPaymentWarning = computed(() => {
+  return billingSummary.paymentMethodExpiresInDays <= 7
+})
+
+const billingNotice = computed(() => {
+  return `Payment method expires in ${billingSummary.paymentMethodExpiresInDays} days.`
+})
+
+const ctaLabel = computed(() => {
+  return showPaymentWarning.value ? 'Update billing' : 'Review billing'
+})
 </script>
 
 <template>
@@ -35,14 +86,18 @@ const billingHeadRaw = `
           </Text>
           <Spacer height='10px' />
           <Table cellpadding='6' cellspacing='0' color='#173540' font-size='14px' padding='0px' role='presentation' width='100%'>
-            <tr><td><strong>Plan</strong></td><td>Pro annual</td></tr>
-            <tr><td><strong>Status</strong></td><td>Active</td></tr>
-            <tr><td><strong>Renewal</strong></td><td>May 27</td></tr>
-            <tr><td><strong>Seats</strong></td><td>12</td></tr>
+            <tr v-for='row in billingRows' :key='row.label'>
+              <td><strong>{{ row.label }}</strong></td>
+              <td>{{ row.value }}</td>
+            </tr>
           </Table>
-          <Divider border-color='#d9c5ad' border-width='1px' padding='14px 0px' />
-          <Text css-class='invoice-note'>Payment method expires in 7 days.</Text>
-          <Spacer height='10px' />
+
+          <template v-if='showPaymentWarning'>
+            <Divider border-color='#d9c5ad' border-width='1px' padding='14px 0px' />
+            <Text css-class='invoice-note'>{{ billingNotice }}</Text>
+            <Spacer height='10px' />
+          </template>
+
           <Button
             align='left'
             background-color='#16353f'
@@ -51,7 +106,7 @@ const billingHeadRaw = `
             href='https://example.com/billing'
             inner-padding='10px 16px'
           >
-            Update billing
+            {{ ctaLabel }}
           </Button>
         </Column>
       </Section>

@@ -14,11 +14,12 @@ The docs are organized around the parts you will actually reach for when buildin
 - getting started with the plugin and direct imports
 - rendering to browser previews or raw HTML
 - global styling, fonts, selectors, and head content
+- end-to-end sample templates with live previews and component breakdowns
 - contributing workflow, verification, and GitHub pull request expectations
 - individual reference pages for every component in the sidebar
 - component categories grouped for faster tag lookup
 
-<div class="not-prose grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+<div class="not-prose grid gap-4 md:grid-cols-2 xl:grid-cols-3">
   <UCard>
     <template #header>
       <div class="flex items-center gap-2">
@@ -68,6 +69,19 @@ The docs are organized around the parts you will actually reach for when buildin
     <p>Browse every VJML tag with generated metadata, parent and child rules, defaults, and attribute coverage.</p>
     <template #footer>
       <UButton label="Browse reference" color="neutral" variant="outline" block href="./components/" />
+    </template>
+  </UCard>
+
+  <UCard>
+    <template #header>
+      <div class="flex items-center gap-2">
+        <UIcon name="i-lucide-mail" class="size-5 text-primary" />
+        <span class="font-semibold">Samples</span>
+      </div>
+    </template>
+    <p>Review five complete email examples with live previews, component inventories, and notes on how each template is assembled.</p>
+    <template #footer>
+      <UButton label="Browse samples" color="neutral" variant="outline" block href="./samples" />
     </template>
   </UCard>
 
