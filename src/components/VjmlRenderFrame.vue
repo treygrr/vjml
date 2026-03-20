@@ -25,6 +25,10 @@ const props = defineProps({
     default: '360px',
     type: [Number, String],
   },
+  width: {
+    default: '100%',
+    type: [Number, String],
+  },
   renderProps: {
     default: () => ({}),
     type: Object as PropType<Record<string, unknown>>,
@@ -184,6 +188,10 @@ const resolvedHeight = computed(() => {
   return typeof props.height === 'number' ? `${props.height}px` : props.height
 })
 
+const resolvedWidth = computed(() => {
+  return typeof props.width === 'number' ? `${props.width}px` : props.width
+})
+
 const srcdoc = computed(() => {
   if (html.value) {
     return html.value
@@ -207,7 +215,7 @@ defineExpose({
   <div class="vjml-render-frame">
     <iframe
       :srcdoc="srcdoc"
-      :style="{ minHeight: resolvedHeight }"
+      :style="{ minHeight: resolvedHeight, width: resolvedWidth }"
       class="vjml-render-frame__iframe"
       :title="title"
     />
