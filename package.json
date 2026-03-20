@@ -47,6 +47,7 @@
     "generate:website": "npm run generate --workspace website",
     "preview:website": "npm run preview --workspace website",
     "typecheck": "npm run typecheck:lib",
+    "prepublishOnly": "npm run build:lib",
     "typecheck:lib": "vue-tsc --noEmit -p tsconfig.app.json && vue-tsc --noEmit -p tsconfig.lib.json",
     "typecheck:website": "npm run typecheck --workspace website",
     "test": "vitest run",
