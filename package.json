@@ -1,6 +1,6 @@
 {
   "name": "@treygrr/vjml",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Vue MJML-style email components with a plain Vue plugin and browser renderer.",
   "type": "module",
   "private": false,
@@ -41,16 +41,18 @@
     "docs:generate": "npm run generate:website",
     "docs:preview": "npm run preview:website",
     "build": "npm run build:lib && npm run build:website",
-    "build:lib": "vite build && npm run build:types",
+    "clean:lib": "node --input-type=module --eval \"import { rmSync } from 'node:fs'; for (const path of ['dist', 'node_modules/.tmp/tsconfig.lib.tsbuildinfo']) { rmSync(path, { force: true, recursive: true }) }\"",
+    "build:lib": "npm run clean:lib && vite build && npm run build:types",
     "build:types": "vue-tsc -p tsconfig.lib.json",
     "build:website": "npm run build --workspace website",
     "generate:website": "npm run generate --workspace website",
     "preview:website": "npm run preview --workspace website",
     "typecheck": "npm run typecheck:lib",
-    "prepublishOnly": "npm run build:lib",
+    "prepack": "npm run build:lib",
     "typecheck:lib": "vue-tsc --noEmit -p tsconfig.app.json && vue-tsc --noEmit -p tsconfig.lib.json",
     "typecheck:website": "npm run typecheck --workspace website",
     "test": "vitest run",
+    "version": "npm run build:lib",
     "test:accordion": "vitest run test/components/accordion/accordion.test.ts"
   },
   "peerDependencies": {

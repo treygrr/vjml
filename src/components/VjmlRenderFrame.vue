@@ -3,6 +3,7 @@ import {
   computed,
   nextTick,
   onBeforeUnmount,
+  onMounted,
   ref,
   watch,
   type Component,
@@ -44,58 +45,53 @@ const issues = ref<VjmlValidationIssue[]>([])
 const renderError = ref('')
 const isRendering = ref(false)
 
-type ViteAfterUpdatePayload = {
-  updates: Array<{
-    acceptedPath?: string
-    path: string
-  }>
+const VITE_AFTER_UPDATE_EVENT = 'vite:afterUpdate'
+const VITE_CLIENT_MARKER = '/@vite/client'
+
+type ViteHotUpdateHandler = () => void | Promise<void>
+
+type ViteHotContext = {
+  off?: (event: typeof VITE_AFTER_UPDATE_EVENT, handler: ViteHotUpdateHandler) => void
+  on: (event: typeof VITE_AFTER_UPDATE_EVENT, handler: ViteHotUpdateHandler) => void
 }
 
-function normalizePath(value?: string): string {
-  return value
-    ? value.replace(/\\/g, '/').split('?')[0].split('#')[0]
-    : ''
+type ViteClientModule = {
+  createHotContext?: (ownerPath: string) => ViteHotContext
 }
 
-function getComponentDevPaths(component: unknown) {
-  const value = component as {
-    __file?: string
-    __hmrId?: string
-  } | null
-  const file = normalizePath(value?.__file)
-
-  return {
-    file,
-    fileName: file.split('/').pop() ?? '',
-    hmrId: value?.__hmrId ?? '',
-  }
-}
-
-function matchesComponentHotUpdate(
-  component: unknown,
-  updates: ViteAfterUpdatePayload['updates'],
-): boolean {
-  const { file, fileName, hmrId } = getComponentDevPaths(component)
-
-  if (!file && !hmrId) {
-    return true
+function getViteClientImportPath(): string | null {
+  if (typeof document === 'undefined') {
+    return null
   }
 
-  return updates.some((update) => {
-    const path = normalizePath(update.path)
-    const acceptedPath = normalizePath(update.acceptedPath)
-
-    return Boolean(
-      (file
-        && (
-          path.endsWith(file)
-          || acceptedPath.endsWith(file)
-          || (fileName && path.endsWith(fileName))
-          || (fileName && acceptedPath.endsWith(fileName))
-        ))
-      || (hmrId && (path.includes(hmrId) || acceptedPath.includes(hmrId))),
-    )
+  const viteClientScript = Array.from(document.scripts).find((script) => {
+    return script.src.includes(VITE_CLIENT_MARKER)
   })
+
+  return viteClientScript?.src ?? null
+}
+
+function createViteHotContextOwnerPath(): string {
+  const token = typeof crypto !== 'undefined' && 'randomUUID' in crypto
+    ? crypto.randomUUID()
+    : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`
+
+  return `vjml:VjmlRenderFrame:${token}`
+}
+
+// Published builds lose import.meta.hot, so subscribe through the Vite client when it exists.
+async function resolveViteHotContext(): Promise<ViteHotContext | null> {
+  const viteClientImportPath = getViteClientImportPath()
+
+  if (!viteClientImportPath || typeof window === 'undefined') {
+    return null
+  }
+
+  const viteClientModule = await import(/* @vite-ignore */ viteClientImportPath)
+    .then((module) => module as ViteClientModule)
+    .catch(() => null)
+
+  return viteClientModule?.createHotContext?.(createViteHotContextOwnerPath()) ?? null
 }
 
 function escapeHtml(value: string): string {
@@ -138,11 +134,18 @@ async function renderFrame() {
   }
 }
 
-if (import.meta.hot) {
-  const hot = import.meta.hot
+let isUnmounted = false
+let unregisterHotUpdateListener: (() => void) | undefined
 
-  const onHotUpdate = async (payload: ViteAfterUpdatePayload) => {
-    if (!payload.updates.length || !matchesComponentHotUpdate(props.component, payload.updates)) {
+async function registerHotUpdateListener() {
+  const hot = await resolveViteHotContext()
+
+  if (!hot || unregisterHotUpdateListener || isUnmounted) {
+    return
+  }
+
+  const onHotUpdate = async () => {
+    if (isUnmounted) {
       return
     }
 
@@ -150,12 +153,21 @@ if (import.meta.hot) {
     void renderFrame()
   }
 
-  hot.on('vite:afterUpdate', onHotUpdate)
+  hot.on(VITE_AFTER_UPDATE_EVENT, onHotUpdate)
 
-  onBeforeUnmount(() => {
-    hot.off?.('vite:afterUpdate', onHotUpdate)
-  })
+  unregisterHotUpdateListener = () => {
+    hot.off?.(VITE_AFTER_UPDATE_EVENT, onHotUpdate)
+  }
 }
+
+onMounted(() => {
+  void registerHotUpdateListener()
+})
+
+onBeforeUnmount(() => {
+  isUnmounted = true
+  unregisterHotUpdateListener?.()
+})
 
 watch(
   () => [props.component, props.renderProps, props.runtime],
